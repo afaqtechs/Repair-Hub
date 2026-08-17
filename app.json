@@ -1,6 +1,6 @@
 {
   "expo": {
-    "jsEngine": "jsc",
+   "jsEngine": "hermes",
     "name": "repair-hub",
     "slug": "repair-hub",
     "version": "1.0.0",
@@ -20,7 +20,10 @@
         "monochromeImage": "./assets/images/android-icon-monochrome.png"
       },
       "edgeToEdgeEnabled": true,
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "package": "com.anonymous.repairhub",
+       "googleServicesFile": "./google-services.json",
+      "softwareKeyboardLayoutMode": "resize"
     },
     "web": {
       "bundler": "metro",
@@ -41,12 +44,24 @@
           }
         }
       ],
+      [
+        "expo-notifications",
+        {
+          "color": "#5B3DF5"
+        }
+      ],
       "expo-font",
       "expo-sqlite"
     ],
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "83c40ed0-a289-4aa5-83f5-4058112c8ded"
+      }
     }
   }
 }

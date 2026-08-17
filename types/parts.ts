@@ -10,7 +10,7 @@ export interface Part {
   category_id?: string | null;
   condition_id?: string | null;
 
-  title?: string | null;
+  title?: string;
   brand?: string | null;
   model?: string | null;
   description?: string | null;
@@ -21,6 +21,7 @@ export interface Part {
 
   images?: string[] | null;
   is_available?: boolean | null;
+  is_negotiable?: boolean | null;
   created_at?: string | null;
 
   technician?: Technician | null;
@@ -28,3 +29,30 @@ export interface Part {
   condition?: Condition | null;
   platform?: Platform | null;
 }
+
+export type CreatePartDto = {
+  title: string;
+  technician_id?:string;
+  category_id: string;
+  platform_id: string;
+  condition_id: string;
+  model?: string;
+  brand?: string;
+  description?: string;
+  price: number;
+  is_negotiable?: boolean;
+  images: string[];
+};
+
+export type UpdatePartDto = Partial<{
+  title: string;
+  category_id: string | null;
+  platform_id: string | null;
+  condition_id: string | null;
+  description: string | null;
+  model: string | null;
+  brand: string | null;
+  price: number | null;
+  is_negotiable: boolean | null;
+  images: string[] | null;
+}>;

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "220785429098",
+    "project_id": "repair-hub-d3327",
+    "storage_bucket": "repair-hub-d3327.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:220785429098:android:8d0a3e95bfd8707e605813",
+        "android_client_info": {
+          "package_name": "com.anonymous.repairhub"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBv3xCTTfuIRhiaTLZPt5Tj3kJdcyagZGs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
