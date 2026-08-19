@@ -177,7 +177,7 @@ const PartsCard = ({
                     )}
                 </View>
 
-                <View className="flex-row items-center justify-between mt-2 pt-2 border-t bborder-border-dark/30">
+                <View className="flex-row items-center justify-between mt-2 pt-2 border-t border-border-dark/30">
                     <View className="flex-row items-center">
                         <View
                             className="w-6 h-6 rounded-full items-center justify-center"

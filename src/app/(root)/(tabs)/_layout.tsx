@@ -1,4 +1,4 @@
-import { useTheme } from "@/src/context/ThemeContext";
+
 import { useChatNavigationStore } from "@/store/chatNavigationStore";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { Tabs } from "expo-router";

@@ -1,6 +1,5 @@
 
 import { Ionicons } from '@expo/vector-icons';
-import React from 'react';
 import { Modal, Text, TouchableOpacity } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 

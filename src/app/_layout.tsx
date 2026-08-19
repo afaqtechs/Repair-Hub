@@ -1,6 +1,6 @@
 import { AuthProvider, useAuth } from "@/src/context/AuthContext";
 import { PresenceProvider } from "@/src/context/PresenceContext";
-
+import { NavigationBar } from 'expo-navigation-bar';
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useFonts } from "expo-font";
 import * as Notifications from "expo-notifications";
@@ -134,6 +134,7 @@ function AppContent() {
 
   return (
     <PresenceProvider userId={user.id}>
+       <NavigationBar style="dark" />
       <Slot />
       <Toast />
     </PresenceProvider>

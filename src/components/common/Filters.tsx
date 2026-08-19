@@ -1,4 +1,4 @@
-
+import * as NavigationBar from "expo-navigation-bar";
 import {
     useCategories,
     useConditions,
@@ -196,6 +196,11 @@ const Filters = ({
     const [draftFilters, setDraftFilters] =
         useState<FilterValues>(filters);
     const insets = useSafeAreaInsets();
+
+    useEffect(() => {
+        NavigationBar.setBackgroundColorAsync("#0B1120");
+        NavigationBar.setButtonStyleAsync("light");
+    }, []);
 
     useEffect(() => {
         if (visible) {

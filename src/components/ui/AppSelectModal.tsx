@@ -1,6 +1,6 @@
 
 import { Ionicons } from "@expo/vector-icons";
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
     ActivityIndicator,
     FlatList,
@@ -11,6 +11,7 @@ import {
     View,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import * as NavigationBar from "expo-navigation-bar";
 
 interface SelectItem {
     label: string;
@@ -46,6 +47,11 @@ const AppSelectModal = ({
     const insets = useSafeAreaInsets();
 
     const [addedItems, setAddedItems] = useState<SelectItem[]>([]);
+
+    useEffect(() => {
+        NavigationBar.setBackgroundColorAsync("#0B1120");
+        NavigationBar.setButtonStyleAsync("light");
+    }, []);
 
     const allItems = useMemo(() => {
         const merged = [...data, ...addedItems];
