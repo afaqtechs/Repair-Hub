@@ -2,7 +2,6 @@ import PartsCard from '@/src/components/cards/PartsCard';
 import Filters from '@/src/components/common/Filters';
 import AppRefreshControl from '@/src/components/ui/AppRefreshControl';
 import SortModal from '@/src/components/ui/SortModal';
-import { useTheme } from '@/src/context/ThemeContext';
 import { useTechniciansLocation } from '@/src/hooks';
 import { useInfiniteParts } from '@/src/hooks/useParts';
 import { useSearch } from '@/src/hooks/useSearch';
@@ -24,7 +23,6 @@ import {
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const Parts = () => {
-    const { isDark } = useTheme();
     const router = useRouter();
 
     const insets = useSafeAreaInsets();
@@ -173,35 +171,35 @@ const Parts = () => {
     };
 
     return (
-        <View style={{ flex: 1, paddingTop: insets.top, paddingBottom: insets.bottom }} className="flex-1 bg-bg dark:bg-bg-dark">
+        <View style={{ flex: 1, paddingTop: insets.top, paddingBottom: insets.bottom }} className="flex-1 bg-bg-dark">
             <View className="px-5 py-3">
                 <View className="flex-row items-center gap-3">
                     <TouchableOpacity
                         onPress={() => router.push("/(root)/(tabs)")}
                         activeOpacity={0.7}
-                        className="w-11 h-11 items-center justify-center rounded-2xl bg-card dark:bg-card-dark border border-border dark:border-border-dark"
+                        className="w-11 h-11 items-center justify-center rounded-2xl bg-card-dark border border-border-dark"
                     >
                         <Ionicons
                             name="arrow-back"
                             size={20}
-                            color={isDark ? '#94A3B8' : '#667085'}
+                            color="#94A3B8"
                         />
                     </TouchableOpacity>
-                    <View className="flex-1 h-12 rounded-md flex-row items-center px-4 border bg-input/30 dark:bg-input-dark/30 border-border dark:border-border-dark">
+                    <View className="flex-1 h-12 rounded-md flex-row items-center px-4 border bg-input-dark/30 border-border-dark">
                         <Ionicons
                             name="search"
                             size={20}
-                            color={isDark ? '#94A3B8' : '#667085'}
+                            color="#94A3B8"
                         />
 
                         <TextInput
                             keyboardType="default"
                             returnKeyType="search"
                             placeholder="Search for parts..."
-                            placeholderTextColor={isDark ? '#94A3B8' : '#9CA3AF'}
+                            placeholderTextColor="#94A3B8"
                             className="flex-1 ml-2 "
                             style={{
-                                color: isDark ? '#F8FAFC' : '#0F172A',
+                                color: "#F8FAFC",
                                 fontSize: 16,
                             }}
                             onChangeText={setSearchQuery}
@@ -215,17 +213,17 @@ const Parts = () => {
                                 <Ionicons
                                     name="close-circle"
                                     size={20}
-                                    color={isDark ? '#94A3B8' : '#9CA3AF'}
+                                    color="#94A3B8"
                                 />
                             </TouchableOpacity>
                         )}
                     </View>
                     <View className="relative">
-                        <TouchableOpacity onPress={() => setShowFilters(true)} className="w-12 h-12 rounded-md flex-row items-center justify-center bg-card dark:bg-card-dark border border-border dark:border-border-dark">
+                        <TouchableOpacity onPress={() => setShowFilters(true)} className="w-12 h-12 rounded-md flex-row items-center justify-center bg-card-dark border border-border-dark">
                             <Ionicons
                                 name="funnel-outline"
                                 size={24}
-                                color={isDark ? '#94A3B8' : '#667085'}
+                                color='#94A3B8'
                             />
                         </TouchableOpacity >
                         {activeFilterCount > 0 && (
@@ -236,7 +234,7 @@ const Parts = () => {
                     </View>
                 </View>
             </View>
-            <View className="px-5 pb-3 border-b border-border dark:border-border-dark">
+            <View className="px-5 pb-3 border-b border-border-dark">
 
                 {filterLabels.length > 0 && (
                     <View className="mb-3 flex-row items-center justify-between gap-2">
@@ -269,7 +267,7 @@ const Parts = () => {
                     </View>
                 )}
                 <View className="flex-row items-center justify-between">
-                    <Text className="text-text-muted dark:text-text-darkMuted text-base font-medium">
+                    <Text className="text-text-darkMuted text-base font-medium">
                         Found{' '}
                         <Text className="font-bold text-primary">({totalCount})</Text>
                     </Text>
@@ -277,23 +275,23 @@ const Parts = () => {
                     <View className="flex-row items-center gap-2">
                         <TouchableOpacity
                             onPress={() => setSortModalVisible(true)}
-                            className="w-10 h-10 rounded-md border border-border dark:border-border-dark bg-card dark:bg-card-dark items-center justify-center"
+                            className="w-10 h-10 rounded-md border border-border-dark bg-card-dark items-center justify-center"
                         >
                             <Ionicons
                                 name="swap-vertical-outline"
                                 size={20}
-                                color={isDark ? '#94A3B8' : '#667085'}
+                                color='#94A3B8'
                             />
                         </TouchableOpacity>
 
                         <TouchableOpacity
                             onPress={() => setListView(!listView)}
-                            className="w-10 h-10 rounded-md border border-border dark:border-border-dark bg-card dark:bg-card-dark items-center justify-center"
+                            className="w-10 h-10 rounded-md border border-border-dark bg-card-dark items-center justify-center"
                         >
                             <Ionicons
                                 name={listView ? 'grid-outline' : 'list-outline'}
                                 size={20}
-                                color={isDark ? '#94A3B8' : '#667085'}
+                                color='#94A3B8'
                             />
                         </TouchableOpacity>
                     </View>
@@ -305,9 +303,9 @@ const Parts = () => {
                     <View className="flex-1 justify-center items-center">
                         <ActivityIndicator
                             size="large"
-                            color={isDark ? '#60A5FA' : '#3B82F6'}
+                            color="#60A5FA"
                         />
-                        <Text className="text-text dark:text-text-dark mt-4">
+                        <Text className="text-text-dark mt-4">
                             Loading parts...
                         </Text>
                     </View>
@@ -335,7 +333,7 @@ const Parts = () => {
                                 isFetchingNextPage ? (
                                     <View className="flex-row justify-center items-center py-4">
                                         <ActivityIndicator />
-                                        <Text className="text-text dark:text-text-dark ml-2">
+                                        <Text className="text-text-dark ml-2">
                                             Loading more parts...
                                         </Text>
                                     </View>
@@ -356,12 +354,12 @@ const Parts = () => {
                         <Ionicons
                             name="search-outline"
                             size={60}
-                            color={isDark ? '#64748B' : '#94A3B8'}
+                            color="#64748B"
                         />
-                        <Text className="text-text dark:text-text-dark text-lg font-semibold mt-4">
+                        <Text className="text-text-dark text-lg font-semibold mt-4">
                             No parts found
                         </Text>
-                        <Text className="text-text-secondary dark:text-text-darkMuted text-center mt-2">
+                        <Text className="text-text-darkMuted text-center mt-2">
                             Try adjusting your search or filters
                         </Text>
                     </View>

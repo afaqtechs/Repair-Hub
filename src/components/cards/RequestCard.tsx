@@ -1,5 +1,4 @@
 import { useAuth } from '@/src/context/AuthContext';
-import { useTheme } from '@/src/context/ThemeContext';
 import { useRequestMutations, useTechnicianLocation } from '@/src/hooks';
 import { showError, showSuccess } from '@/src/lib/toast';
 import { Request } from '@/types/requests';
@@ -26,7 +25,6 @@ const RequestCard = ({
     allowEdit = false,
 }: RequestCardProps) => {
     const router = useRouter();
-    const { isDark } = useTheme();
     const { user } = useAuth();
     const loggedInUserId = user?.id;
     const technicianId = request?.technician_id;
@@ -81,7 +79,7 @@ const RequestCard = ({
 
     return (
         <View
-            className={`m-1 ${isListView ? "w-full flex-row items-center" : "flex-col"} bg-card/50 dark:bg-card-dark/50 p-2 border border-border dark:border-border-dark overflow-hidden rounded-md`}
+            className={`m-1 ${isListView ? "w-full flex-row items-center" : "flex-col"} bg-card-dark/50 p-2 border border-border-dark overflow-hidden rounded-md`}
             style={{ elevation: 0 }}
         >
             <TouchableOpacity
@@ -126,7 +124,7 @@ const RequestCard = ({
                     >
                         <Text
                             numberOfLines={2}
-                            className="text-sm font-manrope-semibold text-text dark:text-text-dark leading-5 min-h-[40px] hover:opacity-70"
+                            className="text-sm font-manrope-semibold text-text-dark leading-5 min-h-[40px] hover:opacity-70"
                             style={Platform.select({
                                 web: {
                                     cursor: 'pointer',
@@ -141,7 +139,7 @@ const RequestCard = ({
                     {request?.description && (
                         <Text
                             numberOfLines={2}
-                            className="text-xs text-text-secondary dark:text-text-darkSecondary mt-1 leading-4"
+                            className="text-xs text-text-darkSecondary mt-1 leading-4"
                         >
                             {request.description.replace(/<[^>]*>/g, '').substring(0, 100)}
                             {request.description.replace(/<[^>]*>/g, '').length > 100 && '...'}
@@ -150,15 +148,15 @@ const RequestCard = ({
 
                     {request?.platform?.name && (
                         <View className="flex-row items-center mt-1">
-                            <Ionicons name="hardware-chip-outline" size={12} color={isDark ? "#94A3B8" : "#64748B"} />
-                            <Text className="text-xs text-text-secondary dark:text-text-darkSecondary ml-1">
+                            <Ionicons name="hardware-chip-outline" size={12} color="#94A3B8" />
+                            <Text className="text-xs text-text-darkSecondary ml-1">
                                 {request.platform.name}
                             </Text>
                         </View>
                     )}
 
-                    <View className="flex-row items-center justify-between mt-2 pt-2 border-t border-border/30 dark:border-border-dark/30">
-                        <Text className="text-xs text-gray-600 dark:text-gray-400">
+                    <View className="flex-row items-center justify-between mt-2 pt-2 border-t border-border-dark/30">
+                        <Text className="text-xs text-gray-400">
                             {request?.category?.name || 'Uncategorized'}
                         </Text>
 
@@ -166,7 +164,6 @@ const RequestCard = ({
                             <SimpleDropdownMenu
                                 items={menuItems}
                                 onSelect={handleMenuAction}
-                                isDark={isDark}
                                 triggerIcon="ellipsis-vertical"
                                 triggerSize={18}
                             />

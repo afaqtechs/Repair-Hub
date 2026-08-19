@@ -1,17 +1,18 @@
+import EmptySearch from '@/src/components/cards/EmptySearch';
 import PartsCard from '@/src/components/cards/PartsCard';
+import RecentSearches from '@/src/components/cards/RecentSearches';
 import RequestCard from '@/src/components/cards/RequestCard';
 import ServiceCard from '@/src/components/cards/ServiceCard';
 import Filters from '@/src/components/common/Filters';
 import AppRefreshControl from '@/src/components/ui/AppRefreshControl';
 import ConfirmModal from '@/src/components/ui/ConfirmModal';
 import SortModal from '@/src/components/ui/SortModal';
-import { useTheme } from '@/src/context/ThemeContext';
 import { useTechniciansLocation } from '@/src/hooks';
 import { useInfiniteParts } from '@/src/hooks/useParts';
 import { useInfiniteRequests } from '@/src/hooks/useRequest';
 import { useSearch } from '@/src/hooks/useSearch';
 import { useInfiniteServices } from '@/src/hooks/useServices';
-import { clearAllFilters, getActiveFilterCount } from '@/src/utils/filters';
+import { clearAllFilters, clearFilter, getActiveFilterCount, getFilterLabels } from '@/src/utils/filters';
 import { FilterValues } from '@/types/filters';
 import { Ionicons } from '@expo/vector-icons';
 import { FlashList } from '@shopify/flash-list';
@@ -19,6 +20,7 @@ import { useRouter } from 'expo-router';
 import React, { useEffect, useMemo, useState } from 'react';
 import {
   ActivityIndicator,
+  ScrollView,
   Text,
   TextInput,
   TouchableOpacity,
@@ -29,7 +31,6 @@ type SearchType = 'parts' | 'services' | 'requests';
 type SortValue = 'latest' | 'nearby' | 'lowest' | 'highest' | 'urgent';
 
 const SearchScreen = () => {
-  const { isDark } = useTheme();
   const router = useRouter();
 
   const [selectedType, setSelectedType] = useState<SearchType>('parts');
@@ -44,6 +45,16 @@ const SearchScreen = () => {
 
   const [filters, setFilters] = useState<FilterValues>(clearAllFilters());
 
+  const filterLabels = getFilterLabels(filters, type);
+
+  const handleClearFilter = (key: keyof FilterValues) => {
+    setFilters((prev) => clearFilter(prev, key));
+  };
+
+  const handleClearAll = () => {
+    setFilters(clearAllFilters());
+  };
+
   const activeFilterCount = getActiveFilterCount(filters, type);
 
   const {
@@ -57,6 +68,7 @@ const SearchScreen = () => {
   } = useSearch();
 
   const [debouncedSearch, setDebouncedSearch] = useState(searchQuery);
+  const hasSearched = searchQuery.trim().length > 0;
 
   useEffect(() => {
     const handler = setTimeout(() => setDebouncedSearch(searchQuery), 400);
@@ -375,35 +387,35 @@ const SearchScreen = () => {
   return (
     <>
       {/* Header / Search Input */}
-      <View className="px-5 py-4">
+      <View className="px-5 py-3">
         <View className="flex-row items-center gap-3">
           <TouchableOpacity
             onPress={() => router.back()}
             activeOpacity={0.7}
-            className="w-11 h-11 items-center justify-center rounded-2xl bg-card dark:bg-card-dark border border-border dark:border-border-dark"
+            className="w-11 h-11 items-center justify-center rounded-2xl bg-card-dark border border-border-dark"
           >
             <Ionicons
               name="arrow-back"
               size={24}
-              color={isDark ? '#94A3B8' : '#667085'}
+              color="#94A3B8"
             />
           </TouchableOpacity>
 
-          <View className="flex-1 h-12 rounded-md flex-row items-center px-4 border bg-input/30 dark:bg-input-dark/30 border-border dark:border-border-dark">
+          <View className="flex-1 h-12 rounded-md flex-row items-center px-4 border bg-input-dark/30 border-border-dark">
             <Ionicons
               name="search"
               size={20}
-              color={isDark ? '#94A3B8' : '#667085'}
+              color="#94A3B8"
             />
             <TextInput
               autoFocus
               keyboardType="default"
               returnKeyType="search"
               placeholder={`Search for ${selectedType}...`}
-              placeholderTextColor={isDark ? '#94A3B8' : '#9CA3AF'}
+              placeholderTextColor="#94A3B8"
               className="flex-1 ml-2 "
               style={{
-                color: isDark ? '#F8FAFC' : '#0F172A',
+                color: "#F8FAFC",
                 fontSize: 16,
               }}
               onChangeText={setSearchQuery}
@@ -418,7 +430,7 @@ const SearchScreen = () => {
                 <Ionicons
                   name="close-circle"
                   size={20}
-                  color={isDark ? '#94A3B8' : '#9CA3AF'}
+                  color="#94A3B8"
                 />
               </TouchableOpacity>
             )}
@@ -426,12 +438,12 @@ const SearchScreen = () => {
           <View className="relative">
             <TouchableOpacity
               onPress={() => setShowFilters(true)}
-              className="w-12 h-12 rounded-md flex-row items-center justify-center bg-card dark:bg-card-dark border border-border dark:border-border-dark"
+              className="w-12 h-12 rounded-md flex-row items-center justify-center bg-card-dark border border-border-dark"
             >
               <Ionicons
                 name="funnel-outline"
                 size={24}
-                color={isDark ? '#94A3B8' : '#667085'}
+                color="#94A3B8"
               />
             </TouchableOpacity>
             {activeFilterCount > 0 && (
@@ -446,54 +458,89 @@ const SearchScreen = () => {
       </View>
 
       {/* Segment Controls & Sorting Bar */}
-      <View className="px-5 pb-3 flex-col gap-3 border-b border-border dark:border-border-dark">
-        <View className="flex-row justify-between items-center gap-3">
-          {types.map((type) => (
+      <View className="px-5 pb-3 flex-col gap-3 border-b border-border-dark">
+
+        {filterLabels.length > 0 ? (
+
+          <View className="flex-row items-center justify-between gap-2">
+            <ScrollView horizontal>
+              <View className="flex-row flex-wrap gap-2">
+                {filterLabels.map((filter) => (
+                  <View
+                    key={filter.key}
+                    className="rounded-full flex-row gap-1 items-center bg-primary/10 px-3 py-1.5"
+                  >
+                    <Text className="text-sm font-medium text-primary">
+                      {filter.label}
+                    </Text>
+                    <TouchableOpacity onPress={() => handleClearFilter(filter.key)} className="items-center p-0.5 rounded-full bg-danger">
+                      <Ionicons
+                        name="close"
+                        size={12}
+                        color="#ffffff"
+                      />
+                    </TouchableOpacity>
+                  </View>
+                ))}
+              </View>
+            </ScrollView>
             <TouchableOpacity
-              key={type.value}
-              onPress={() => setSelectedType(type.value)}
-              className={`px-3 w-[31%] justify-center py-2 rounded-md flex-row items-center ${selectedType === type.value
-                ? 'border border-primary bg-primary'
-                : 'border border-border dark:border-border-dark bg-card dark:bg-card-dark'
-                }`}
-            >
-              <Text
-                className={`text-sm mr-1 ${selectedType === type.value
-                  ? 'text-white font-medium'
-                  : 'text-text dark:text-text-dark'
+              onPress={() => handleClearAll()}
+              className="border-danger bg-danger px-3 py-1.5 rounded-full">
+              <Text className="text-white text-xs">Clear All</Text>
+            </TouchableOpacity>
+          </View>
+        ) : (
+          <View className="flex-row justify-between items-center gap-3">
+            {types.map((type) => (
+              <TouchableOpacity
+                key={type.value}
+                onPress={() => setSelectedType(type.value)}
+                className={`px-3 w-[31%] justify-center py-2 rounded-md flex-row items-center ${selectedType === type.value
+                  ? 'border border-primary bg-primary'
+                  : 'border border-border-dark bg-card-dark'
                   }`}
               >
-                {type.label}
-              </Text>
-            </TouchableOpacity>
-          ))}
-        </View>
+                <Text
+                  className={`text-sm mr-1 ${selectedType === type.value
+                    ? 'text-white font-medium'
+                    : 'text-text-dark'
+                    }`}
+                >
+                  {type.label}
+                </Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+        )}
 
         <View className="flex-row items-center justify-between">
-          <Text className="text-text-muted dark:text-text-darkMuted text-base font-medium">
-            Found <Text className="font-bold text-primary">({totalCount})</Text>
+          <Text className="text-text-darkMuted text-base font-medium">
+            Found {hasSearched && (
+              <Text className="font-bold text-primary">({totalCount})</Text>
+            )}
           </Text>
 
           <View className="flex-row items-center gap-2">
             <TouchableOpacity
               onPress={() => setSortModalVisible(true)}
-              className="w-10 h-10 rounded-md border border-border dark:border-border-dark bg-card dark:bg-card-dark items-center justify-center"
+              className="w-10 h-10 rounded-md border border-border-dark bg-card-dark items-center justify-center"
             >
               <Ionicons
                 name="swap-vertical-outline"
                 size={20}
-                color={isDark ? '#94A3B8' : '#667085'}
+                color="#94A3B8"
               />
             </TouchableOpacity>
 
             <TouchableOpacity
               onPress={() => setListView(!listView)}
-              className="w-10 h-10 rounded-md border border-border dark:border-border-dark bg-card dark:bg-card-dark items-center justify-center"
+              className="w-10 h-10 rounded-md border border-border-dark bg-card-dark items-center justify-center"
             >
               <Ionicons
                 name={listView ? 'grid-outline' : 'list-outline'}
                 size={20}
-                color={isDark ? '#94A3B8' : '#667085'}
+                color="#94A3B8"
               />
             </TouchableOpacity>
           </View>
@@ -502,132 +549,109 @@ const SearchScreen = () => {
 
       {/* Content Body */}
       <View className="flex-1 pt-4">
-        {showRecentSearches ? (
-          /* Recent Searches Section */
-          <View className="px-5">
-            <View className="flex-row justify-between items-center mb-4">
-              <Text className="text-text dark:text-text-dark text-lg font-semibold">
-                Recent Searches
-              </Text>
-              {recentSearches.length > 0 && (
-                <TouchableOpacity onPress={() => setShowClearModal(true)}>
-                  <Text className="text-danger text-sm">Clear All</Text>
-                </TouchableOpacity>
+        <View className="flex-1 pt-4">
+          {showRecentSearches ? (
+            recentSearches.length > 0 ? (
+              /* Recent Searches */
+              <View className="px-5 flex-col">
+                <View className="flex-row justify-between items-center mb-4">
+                  <Text className="text-text-dark text-lg font-semibold">
+                    Recent Searches
+                  </Text>
+
+                  {recentSearches.length > 1 && (
+                    <TouchableOpacity
+                      onPress={() => setShowClearModal(true)}
+                    >
+                      <Text className="text-danger text-sm">
+                        Clear All
+                      </Text>
+                    </TouchableOpacity>
+                  )}
+                </View>
+
+                {isLoadingRecent ? (
+                  <View className="flex-1 justify-center items-center py-10">
+                    <ActivityIndicator
+                      size="small"
+                      color="#60A5FA"
+                    />
+                  </View>
+                ) : (
+                  <RecentSearches
+                    searches={recentSearches}
+                    onPress={handleRecentSearchPress}
+                    onRemove={removeRecentSearch}
+                  />
+                )}
+              </View>
+            ) : (
+              /* No recent searches */
+              <EmptySearch
+                type={type}
+                onSuggestionPress={handleRecentSearchPress}
+              />
+            )
+          ) : (
+            /* Search Results */
+            <View className="flex-1">
+              {isLoadingData && sortedResults.length === 0 ? (
+                <View className="flex-1 justify-center items-center">
+                  <ActivityIndicator
+                    size="large"
+                    color="#60A5FA"
+                  />
+
+                  <Text className="-text-dark mt-4">
+                    Loading...
+                  </Text>
+                </View>
+              ) : sortedResults.length > 0 ? (
+                <View className="flex-1 px-3">
+                  <FlashList
+                    key={`${selectedType}-${columns}`}
+                    data={sortedResults}
+                    keyExtractor={(item) => item.id}
+                    contentContainerStyle={{
+                      paddingBottom: 50,
+                    }}
+                    showsVerticalScrollIndicator={false}
+                    numColumns={columns}
+                    masonry={isMasonry}
+                    onEndReached={handleLoadMore}
+                    onEndReachedThreshold={0.5}
+                    refreshControl={
+                      <AppRefreshControl
+                        refreshing={refetching}
+                        onRefresh={refetchData}
+                      />
+                    }
+                    ListFooterComponent={
+                      isFetchingNext ? (
+                        <View className="flex-row justify-center items-center py-4">
+                          <ActivityIndicator
+                            color="#60A5FA"
+                          />
+
+                          <Text className="text-text-dark ml-2">
+                            Loading more {selectedType}...
+                          </Text>
+                        </View>
+                      ) : null
+                    }
+                    renderItem={renderCard}
+                  />
+                </View>
+              ) : (
+                <EmptySearch
+                  type={type}
+                  query={searchQuery}
+                  onSuggestionPress={handleRecentSearchPress}
+                />
               )}
             </View>
-
-            {isLoadingRecent ? (
-              <View className="flex-1 justify-center items-center py-10">
-                <ActivityIndicator
-                  size="small"
-                  color={isDark ? '#60A5FA' : '#3B82F6'}
-                />
-              </View>
-            ) : recentSearches.length > 0 ? (
-              <View className="gap-3">
-                {recentSearches.map((item, index) => (
-                  <TouchableOpacity
-                    key={`${item}-${index}`}
-                    onPress={() => handleRecentSearchPress(item)}
-                    className="flex-row items-center justify-between py-1"
-                  >
-                    <View className="flex-row items-center flex-1">
-                      <View className="w-8 h-8 rounded-full items-center justify-center bg-input dark:bg-input-dark">
-                        <Ionicons
-                          name="time-outline"
-                          size={16}
-                          color={isDark ? '#94A3B8' : '#667085'}
-                        />
-                      </View>
-                      <Text className="ml-3 text-text-secondary dark:text-text-dark font-medium flex-1">
-                        {item}
-                      </Text>
-                    </View>
-                    <TouchableOpacity
-                      onPress={() => removeRecentSearch(item)}
-                      className="p-2"
-                    >
-                      <Ionicons name="close" size={18} color="#EF4444" />
-                    </TouchableOpacity>
-                  </TouchableOpacity>
-                ))}
-              </View>
-            ) : (
-              <View className="flex-1 justify-center items-center py-10">
-                <Ionicons
-                  name="search-outline"
-                  size={40}
-                  color={isDark ? '#64748B' : '#94A3B8'}
-                />
-                <Text className="text-text-secondary dark:text-text-darkMuted text-center mt-2">
-                  No recent searches
-                </Text>
-              </View>
-            )}
-          </View>
-        ) : (
-          /* Search Results Section */
-          <View className="flex-1">
-            {isLoadingData && sortedResults.length === 0 ? (
-              <View className="flex-1 justify-center items-center">
-                <ActivityIndicator
-                  size="large"
-                  color={isDark ? '#60A5FA' : '#3B82F6'}
-                />
-                <Text className="text-text dark:text-text-dark mt-4">
-                  Loading...
-                </Text>
-              </View>
-            ) : sortedResults.length > 0 ? (
-              <View className="flex-1 px-3">
-                <FlashList
-                  key={`${selectedType}-${columns}`}
-                  data={sortedResults}
-                  keyExtractor={(item) => item.id}
-                  contentContainerStyle={{ paddingBottom: 50 }}
-                  showsVerticalScrollIndicator={false}
-                  numColumns={columns}
-                  masonry={isMasonry}
-                  onEndReached={handleLoadMore}
-                  onEndReachedThreshold={0.5}
-                  refreshControl={
-                    <AppRefreshControl
-                      refreshing={refetching}
-                      onRefresh={refetchData}
-                    />
-                  }
-                  ListFooterComponent={
-                    isFetchingNext ? (
-                      <View className="flex-row justify-center items-center py-4">
-                        <ActivityIndicator
-                          color={isDark ? '#60A5FA' : '#3B82F6'}
-                        />
-                        <Text className="text-text dark:text-text-dark ml-2">
-                          Loading more {selectedType}...
-                        </Text>
-                      </View>
-                    ) : null
-                  }
-                  renderItem={renderCard}
-                />
-              </View>
-            ) : (
-              <View className="flex-1 justify-center items-center">
-                <Ionicons
-                  name="search-outline"
-                  size={60}
-                  color={isDark ? '#64748B' : '#94A3B8'}
-                />
-                <Text className="text-text dark:text-text-dark text-lg font-semibold mt-4">
-                  No results found
-                </Text>
-                <Text className="text-text-secondary dark:text-text-darkMuted text-center mt-2">
-                  Try adjusting your search or filters
-                </Text>
-              </View>
-            )}
-          </View>
-        )}
+          )}
+        </View>
       </View>
 
       {/* Modals */}
@@ -643,7 +667,7 @@ const SearchScreen = () => {
           setShowClearModal(false);
         }}
       />
-
+      
       <SortModal
         sortModalVisible={sortModalVisible}
         setSortModalVisible={setSortModalVisible}

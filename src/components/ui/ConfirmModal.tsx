@@ -44,14 +44,14 @@ const ConfirmModal = ({
         >
             <View className="flex-1 bg-black/50 items-center justify-center px-5">
 
-                <View className="w-full rounded-2xl p-5 bg-card dark:bg-card-dark">
+                <View className="w-full rounded-2xl p-5 bg-card-dark">
 
-                    <Text className="text-xl font-bold text-text dark:text-text-dark">
+                    <Text className="text-xl font-bold text-text-dark">
                         {title}
                     </Text>
 
 
-                    <Text className="mt-3 text-base text-text-secondary dark:text-text-darkMuted">
+                    <Text className="mt-3 text-base text-text-darkMuted">
                         {message}
                     </Text>
 
@@ -60,9 +60,9 @@ const ConfirmModal = ({
 
                         <TouchableOpacity
                             onPress={onCancel}
-                            className="px-4 py-2 rounded-lg bg-input dark:bg-input-dark"
+                            className="px-4 py-2 rounded-lg bg-input-dark"
                         >
-                            <Text className="text-text dark:text-text-dark font-medium">
+                            <Text className="text-text-dark font-medium">
                                 {cancelText}
                             </Text>
                         </TouchableOpacity>

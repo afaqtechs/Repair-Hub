@@ -38,11 +38,11 @@ const CreateScreen = () => {
     return (
         <>
             <View className="px-5 pt-3">
-                <Text className="text-text dark:text-text-dark text-2xl font-bold">
+                <Text className="text-text-dark text-2xl font-bold">
                     Create
                 </Text>
 
-                <Text className="text-text-secondary dark:text-text-darkMuted mt-2 text-base">
+                <Text className="text-text-darkMuted mt-2 text-base">
                     Choose what you&apos;d like to create and share with the community.
                 </Text>
 
@@ -54,9 +54,9 @@ const CreateScreen = () => {
                             <TouchableOpacity
                                 key={tab.value}
                                 onPress={() => setActiveTab(tab.value)}
-                                className={`bg-card dark:bg-card-dark border rounded-xl p-5 ${isActive
+                                className={`bg-card-dark border rounded-xl p-5 ${isActive
                                     ? 'border-blue-500'
-                                    : 'border-border dark:border-border-dark'
+                                    : 'border-border-dark'
                                     }`}
                             >
                                 <View className="flex-row items-center">
@@ -69,11 +69,11 @@ const CreateScreen = () => {
                                     </View>
 
                                     <View className="ml-4 flex-1">
-                                        <Text className="text-text dark:text-text-dark text-lg font-semibold">
+                                        <Text className="text-text-dark text-lg font-semibold">
                                             {tab.label}
                                         </Text>
 
-                                        <Text className="text-text-secondary dark:text-text-darkMuted mt-1">
+                                        <Text className="text-text-darkMuted mt-1">
                                             {tab.description}
                                         </Text>
                                     </View>
@@ -94,7 +94,7 @@ const CreateScreen = () => {
                             router.push(selectedTab.href as any);
                         }
                     }}
-                    className="mt-8 bg-button-primary dark:bg-button-primary rounded-xl py-4 px-5 flex-row items-center justify-center gap-2 active:opacity-80"
+                    className="mt-8 bg-button-primary rounded-xl py-4 px-5 flex-row items-center justify-center gap-2 active:opacity-80"
                 >
                     <Ionicons
                         name="add-circle-outline"

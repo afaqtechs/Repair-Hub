@@ -1,4 +1,4 @@
-import { createClient } from '@supabase/supabase-js';
+import { createClient } from "@supabase/supabase-js";
 
 interface NotificationRequest {
   userid: string;
@@ -15,12 +15,34 @@ interface PushToken {
 
 Deno.serve(async (req: Request) => {
   try {
+   
     // ------------------------------------------
     // 1. Read request body
     // ------------------------------------------
 
-    const payload =
-      (await req.json()) as NotificationRequest;
+    let payload: NotificationRequest;
+
+    try {
+      payload = (await req.json()) as NotificationRequest;
+    } catch (error) {
+      console.log(
+        "[send-notification] Failed to parse request body:",
+        error
+      );
+
+      return new Response(
+        JSON.stringify({
+          success: false,
+          error: "Invalid JSON request body.",
+        }),
+        {
+          status: 400,
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+    }
 
     const {
       userid,
@@ -30,16 +52,26 @@ Deno.serve(async (req: Request) => {
       data = {},
     } = payload;
 
+    console.log(
+      "[send-notification] Request:",
+      {
+        userid,
+        type,
+        title,
+        body,
+        data,
+      }
+    );
+
     // ------------------------------------------
     // 2. Validate request
     // ------------------------------------------
 
-    if (
-      !userid ||
-      !type ||
-      !title ||
-      !body
-    ) {
+    if (!userid || !type || !title || !body) {
+      console.log(
+        "[send-notification] Missing required fields."
+      );
+
       return new Response(
         JSON.stringify({
           success: false,
@@ -56,36 +88,110 @@ Deno.serve(async (req: Request) => {
     }
 
     // ------------------------------------------
-    // 3. Create Supabase admin client
+    // 3. Get Supabase environment variables
+    // ------------------------------------------
+
+    const supabaseUrl =
+      Deno.env.get("SUPABASE_URL");
+
+    const serviceRoleKey =
+      Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
+
+    if (!supabaseUrl) {
+      console.log(
+        "[send-notification] SUPABASE_URL is missing."
+      );
+
+      return new Response(
+        JSON.stringify({
+          success: false,
+          error: "SUPABASE_URL is not configured.",
+        }),
+        {
+          status: 500,
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+    }
+
+    if (!serviceRoleKey) {
+      console.log(
+        "[send-notification] SUPABASE_SERVICE_ROLE_KEY is missing."
+      );
+
+      return new Response(
+        JSON.stringify({
+          success: false,
+          error:
+            "SUPABASE_SERVICE_ROLE_KEY is not configured.",
+        }),
+        {
+          status: 500,
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+    }
+
+    // ------------------------------------------
+    // 4. Create Supabase admin client
     // ------------------------------------------
 
     const supabase = createClient(
-      Deno.env.get("EXPO_PUBLIC_SUPABASE_URL")!,
-      Deno.env.get(
-        "SUPABASE_SERVICE_ROLE_KEY"
-      )!
+      supabaseUrl,
+      serviceRoleKey
     );
 
+
     // ------------------------------------------
-    // 4. Check notification setting
+    // 5. Check notification setting
     // ------------------------------------------
 
     const {
       data: setting,
       error: settingError,
     } = await supabase
-      .from("notifications_settings")
-      .select("enable")
-      .eq("userid", userid)
+      .from("notification_settings")
+      .select("enabled")
+      .eq("user_id", userid)
       .eq("type", type)
       .maybeSingle();
 
     if (settingError) {
-      console.log(settingError);
+      console.log(
+        "[send-notification] Notification setting error:",
+        settingError
+      );
+
+      return new Response(
+        JSON.stringify({
+          success: false,
+          sent: false,
+          error:
+            "Failed to check notification settings.",
+          details: settingError.message,
+        }),
+        {
+          status: 500,
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
     }
 
-    // Notification disabled or not configured.
-    if (!setting || setting.enable !== true) {
+    // ------------------------------------------
+    // 6. Notification disabled
+    // ------------------------------------------
+
+    if (!setting || setting.enabled !== true) {
+      console.log(
+        "[send-notification] Notification disabled or not configured."
+      );
+
       return new Response(
         JSON.stringify({
           success: true,
@@ -96,16 +202,11 @@ Deno.serve(async (req: Request) => {
         {
           status: 200,
           headers: {
-            "Content-Type":
-              "application/json",
+            "Content-Type": "application/json",
           },
         }
       );
     }
-
-    // ------------------------------------------
-    // 5. Get push tokens
-    // ------------------------------------------
 
     const {
       data: tokens,
@@ -116,10 +217,37 @@ Deno.serve(async (req: Request) => {
       .eq("userid", userid);
 
     if (tokenError) {
-      console.log(tokenError);
+      console.log(
+        "[send-notification] Push token error:",
+        tokenError
+      );
+
+      return new Response(
+        JSON.stringify({
+          success: false,
+          sent: false,
+          error:
+            "Failed to retrieve push tokens.",
+          details: tokenError.message,
+        }),
+        {
+          status: 500,
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
     }
 
+    // ------------------------------------------
+    // 8. No push tokens
+    // ------------------------------------------
+
     if (!tokens || tokens.length === 0) {
+      console.log(
+        "[send-notification] No push token found."
+      );
+
       return new Response(
         JSON.stringify({
           success: true,
@@ -129,19 +257,47 @@ Deno.serve(async (req: Request) => {
         {
           status: 200,
           headers: {
-            "Content-Type":
-              "application/json",
+            "Content-Type": "application/json",
           },
         }
       );
     }
 
     // ------------------------------------------
-    // 6. Create Expo messages
+    // 9. Validate tokens
     // ------------------------------------------
 
-    const pushTokens =
-      tokens as PushToken[];
+    const pushTokens = (
+      tokens as PushToken[]
+    ).filter(
+      (item) =>
+        item.token &&
+        item.token.trim().length > 0
+    );
+
+    if (pushTokens.length === 0) {
+      console.log(
+        "[send-notification] No valid push tokens found."
+      );
+
+      return new Response(
+        JSON.stringify({
+          success: true,
+          sent: false,
+          reason: "No valid push tokens found.",
+        }),
+        {
+          status: 200,
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+    }
+
+    // ------------------------------------------
+    // 10. Create Expo push messages
+    // ------------------------------------------
 
     const messages = pushTokens.map(
       (item: PushToken) => ({
@@ -154,7 +310,7 @@ Deno.serve(async (req: Request) => {
     );
 
     // ------------------------------------------
-    // 7. Send notification to Expo
+    // 11. Send notification to Expo
     // ------------------------------------------
 
     const expoResponse = await fetch(
@@ -164,49 +320,77 @@ Deno.serve(async (req: Request) => {
 
         headers: {
           Accept: "application/json",
-          "Content-Type":
-            "application/json",
+          "Content-Type": "application/json",
         },
 
         body: JSON.stringify(messages),
       }
     );
 
+
     const expoResult =
       await expoResponse.json();
 
-    console.log(
-      "Expo response:",
-      expoResult
-    );
 
     // ------------------------------------------
-    // 8. Return result
+    // 12. Handle Expo failure
+    // ------------------------------------------
+
+    if (!expoResponse.ok) {
+      console.log(
+        "[send-notification] Expo request failed."
+      );
+
+      return new Response(
+        JSON.stringify({
+          success: false,
+          sent: false,
+          error:
+            "Expo push notification request failed.",
+          status: expoResponse.status,
+          result: expoResult,
+        }),
+        {
+          status: 502,
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+    }
+
+    // ------------------------------------------
+    // 13. Return success
     // ------------------------------------------
 
     return new Response(
       JSON.stringify({
         success: true,
         sent: true,
+        tokenCount: pushTokens.length,
         result: expoResult,
       }),
       {
         status: 200,
         headers: {
-          "Content-Type":
-            "application/json",
+          "Content-Type": "application/json",
         },
       }
     );
   } catch (error) {
-    console.error(
-      "Notification error:",
+    // ------------------------------------------
+    // Global error
+    // ------------------------------------------
+
+    console.log(
+      "[send-notification] Unexpected error:",
       error
     );
 
     return new Response(
       JSON.stringify({
         success: false,
+        sent: false,
         error:
           error instanceof Error
             ? error.message
@@ -215,8 +399,7 @@ Deno.serve(async (req: Request) => {
       {
         status: 500,
         headers: {
-          "Content-Type":
-            "application/json",
+          "Content-Type": "application/json",
         },
       }
     );

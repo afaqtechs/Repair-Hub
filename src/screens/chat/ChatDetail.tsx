@@ -22,7 +22,7 @@ export default function ChatDetail({ conversationId, onBack }: { conversationId:
 
     if (!conversationId || !user?.id) {
         return (
-            <View className="flex-1 items-center justify-center bg-bg dark:bg-bg-dark">
+            <View className="flex-1 items-center justify-center bg-bg-dark">
                 <ActivityIndicator />
             </View>
         );

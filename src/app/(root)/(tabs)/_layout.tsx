@@ -5,7 +5,6 @@ import { Tabs } from "expo-router";
 import { View } from "react-native";
 
 export default function TabsLayout() {
-    const { isDark } = useTheme();
     const isChatOpen = useChatNavigationStore(
         (state) => state.isChatOpen
     );
@@ -19,9 +18,7 @@ export default function TabsLayout() {
 
                 tabBarActiveTintColor: "#5B3DF5",
 
-                tabBarInactiveTintColor: isDark
-                    ? "#94A3B8"
-                    : "#98A2B3",
+                tabBarInactiveTintColor: "#94A3B8",
 
                 tabBarLabelStyle: {
                     fontSize: 12,
@@ -31,13 +28,9 @@ export default function TabsLayout() {
                 tabBarStyle: isChatOpen
                     ? { display: "none" }
                     : {
-                        backgroundColor: isDark
-                            ? "#000000"
-                            : "#ffffff",
+                        backgroundColor: "#000000",
 
-                        borderTopColor: isDark
-                            ? "#263449"
-                            : "#E5E7EB",
+                        borderTopColor: "#263449",
 
                         borderTopWidth: 0,
                     },

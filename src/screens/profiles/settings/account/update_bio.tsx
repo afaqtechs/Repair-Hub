@@ -1,4 +1,4 @@
-import { useTheme } from '@/src/context/ThemeContext';
+
 import { useProfileMutations } from '@/src/hooks';
 import { showError, showSuccess } from '@/src/lib/toast';
 import { useProfileStore } from '@/store/useProfileStore';
@@ -14,8 +14,6 @@ type Props = {
 };
 
 const UpdateBio = ({ setEditingBio, technician }: Props) => {
-
-    const { isDark } = useTheme();
 
     const bioRef = useRef<RichEditor>(null);
 
@@ -58,19 +56,19 @@ const UpdateBio = ({ setEditingBio, technician }: Props) => {
     return (
         <View className="mb-6">
             <View className="flex-row items-center justify-between mb-1 px-3">
-                <Text className="text-xs font-manrope-bold uppercase tracking-wider text-text-muted dark:text-text-darkMuted">
+                <Text className="text-xs font-manrope-bold uppercase tracking-wider text-text-darkMuted">
                     Update Bio
                 </Text>
                 <TouchableOpacity
                     onPress={() => setEditingBio(false)}
                     activeOpacity={0.7}
-                    className="flex-row items-center gap-1 px-2 py-1 rounded-lg bg-primary/10 dark:bg-primary/20"
+                    className="flex-row items-center gap-1 px-2 py-1 rounded-lg bg-primary/20"
                 >
                     <Ionicons name="arrow-back" size={14} color="#6366F1" />
                     <Text className="text-xs font-manrope-medium text-primary">Back</Text>
                 </TouchableOpacity>
             </View>
-            <View className="rounded-lg overflow-hidden border border-border/50 dark:border-border-dark/50">
+            <View className="rounded-lg overflow-hidden border border-border-dark/50">
                 <RichToolbar
                     editor={bioRef}
                     actions={[
@@ -86,9 +84,9 @@ const UpdateBio = ({ setEditingBio, technician }: Props) => {
                         "redo",
                     ]}
                     style={{
-                        backgroundColor: isDark ? "#172033" : "#FFFFFF",
+                        backgroundColor: "#172033",
                     }}
-                    iconTint={isDark ? "#F8FAFC" : "#171A2B"}
+                    iconTint="#F8FAFC"
                 />
 
 
@@ -96,9 +94,9 @@ const UpdateBio = ({ setEditingBio, technician }: Props) => {
                     initialContentHTML={form.bio || technician.bio || ""}
                     ref={bioRef}
                     editorStyle={{
-                        backgroundColor: isDark ? "#0B112080" : "#F8F7FC80",
-                        color: isDark ? "#F8FAFC" : "#171A2B",
-                        placeholderColor: isDark ? "#94A3B8" : "#9CA3AF",
+                        backgroundColor: "#0B112080",
+                        color: "#F8FAFC",
+                        placeholderColor: "#94A3B8",
                         contentCSSText: `font-family: Manrope; font-size: 16px; padding: 12px; min-height: 120px;`,
                     }}
                     placeholder="Describe your experience and skills..."

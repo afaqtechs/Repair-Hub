@@ -1,4 +1,4 @@
-import { useTheme } from "@/src/context/ThemeContext";
+
 import { useWindowDimensions } from "react-native";
 import RenderHTML from "react-native-render-html";
 
@@ -14,8 +14,6 @@ const HTMLRenderer = ({
     lineHeight = 24,
 }: Props) => {
 
-    const { isDark } = useTheme();
-
     const { width } = useWindowDimensions();
 
 
@@ -27,7 +25,7 @@ const HTMLRenderer = ({
             }}
             tagsStyles={{
                 body: {
-                    color: isDark ? "#F8FAFC" : "#171A2B",
+                    color: "#F8FAFC",
                     fontFamily: "Manrope",
                     fontSize,
                     lineHeight,

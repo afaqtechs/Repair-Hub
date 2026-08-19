@@ -1,6 +1,5 @@
 import DocumentViewerModal from "@/src/components/ui/DocumentViewerModal";
 import { useAuth } from "@/src/context/AuthContext";
-import { useTheme } from "@/src/context/ThemeContext";
 import { useProfileMutations, useTechnician } from "@/src/hooks";
 import { supabase } from "@/src/lib/supabase";
 import { showError, showSuccess } from "@/src/lib/toast";
@@ -16,7 +15,6 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const LegalDocument = () => {
     const router = useRouter();
-    const { isDark } = useTheme();
     const insets = useSafeAreaInsets();
 
     const { user } = useAuth();
@@ -180,7 +178,7 @@ const LegalDocument = () => {
 
     if (loadingTechnician) {
         return (
-            <View className="flex-1 items-center justify-center bg-bg dark:bg-bg-dark">
+            <View className="flex-1 items-center justify-center bg-bg-dark">
                 <ActivityIndicator size="large" color="#6366F1" />
             </View>
         );
@@ -189,19 +187,19 @@ const LegalDocument = () => {
     return (
         <View
             style={{ flex: 1, paddingTop: insets.top, paddingBottom: insets.bottom }}
-            className="flex-1 bg-bg dark:bg-bg-dark"
+            className="flex-1 bg-bg-dark"
         >
             {/* Header */}
-            <View className="px-4 pt-2 pb-5 bg-bg dark:bg-bg-dark border-b border-border/50 dark:border-border-dark/50">
+            <View className="px-4 pt-2 pb-5 bg-bg-dark border-b border-border-dark/50">
                 <View className="flex-row items-center">
                     <TouchableOpacity
                         onPress={() => router.back()}
                         activeOpacity={0.7}
-                        className="w-10 h-10 items-center justify-center rounded-2xl bg-card dark:bg-card-dark border border-border dark:border-border-dark"
+                        className="w-10 h-10 items-center justify-center rounded-2xl bg-card-dark border border-border-dark"
                     >
-                        <Ionicons name="arrow-back" size={20} color={isDark ? "#F8FAFC" : "#171A2B"} />
+                        <Ionicons name="arrow-back" size={20} color="#F8FAFC" />
                     </TouchableOpacity>
-                    <Text className="ml-2 text-[20px] font-manrope-semibold text-text dark:text-text-dark">
+                    <Text className="ml-2 text-[20px] font-manrope-semibold text-text-dark">
                         Legal Documents
                     </Text>
                 </View>
@@ -213,23 +211,23 @@ const LegalDocument = () => {
             >
 
                 {!isLicenseUploaded && !selectedFile && (
-                    <View className="mb-6 px-4 py-3 bg-red-500/10 dark:bg-red-500/20 border border-red-500/30 rounded-xl flex-row items-center gap-3">
+                    <View className="mb-6 px-4 py-3 bg-red-500/20 border border-red-500/30 rounded-xl flex-row items-center gap-3">
                         <Ionicons name="alert-circle" size={20} color="#EF4444" />
-                        <Text className="flex-1 text-sm font-manrope-medium text-red-600 dark:text-red-400">
+                        <Text className="flex-1 text-sm font-manrope-medium text-red-400">
                             License required to access all features
                         </Text>
                     </View>
                 )}
 
                 <View className="mb-6">
-                    <Text className="mb-3 px-3 text-xs font-manrope-bold uppercase tracking-wider text-text-muted dark:text-text-darkMuted">
+                    <Text className="mb-3 px-3 text-xs font-manrope-bold uppercase tracking-wider text-text-darkMuted">
                         Business License
                     </Text>
 
-                    <View className="bg-card dark:bg-card-dark border border-border dark:border-border-dark rounded-lg overflow-hidden">
+                    <View className="bg-card-dark border border-border-dark rounded-lg overflow-hidden">
                         <View className="px-4 py-4 flex-row items-center">
                             <View className={`w-12 h-12 rounded-full items-center justify-center ${isLicenseUploaded ? 'bg-primary/10' :
-                                selectedFile ? 'bg-yellow-500/10' : 'bg-input dark:bg-input-dark'
+                                selectedFile ? 'bg-yellow-500/10' : 'bg-input-dark'
                                 }`}>
                                 <Ionicons
                                     name={
@@ -240,16 +238,15 @@ const LegalDocument = () => {
                                     size={24}
                                     color={
                                         isLicenseUploaded ? '#10B981' :
-                                            selectedFile ? '#F59E0B' :
-                                                (isDark ? '#94A3B8' : '#64748B')
+                                            selectedFile ? '#F59E0B' :'#94A3B8'
                                     }
                                 />
                             </View>
                             <View className="flex-1 ml-3">
-                                <Text className="text-base font-manrope-semibold text-text dark:text-text-dark">
+                                <Text className="text-base font-manrope-semibold text-text-dark">
                                     Business License
                                 </Text>
-                                <Text className="text-xs font-manrope-light text-text-muted dark:text-text-darkMuted">
+                                <Text className="text-xs font-manrope-light text-text-darkMuted">
                                     {isLicenseUploaded ? (
                                         `Status: ${getStatusText(licenseStatus)}`
                                     ) : selectedFile ? (
@@ -286,11 +283,11 @@ const LegalDocument = () => {
                             ) : isLicenseUploaded ? (
                                 <View className="flex-row gap-2">
                                     <TouchableOpacity
-                                        className="flex-1 py-3 bg-card dark:bg-card-dark border border-border dark:border-border-dark rounded-lg flex-row items-center justify-center gap-2"
+                                        className="flex-1 py-3 bg-card-dark border border-border-dark rounded-lg flex-row items-center justify-center gap-2"
                                         onPress={handleViewDocument}
                                     >
-                                        <Ionicons name="eye-outline" size={18} color={isDark ? "#F8FAFC" : "#171A2B"} />
-                                        <Text className="text-text dark:text-text-dark font-manrope-semibold text-sm">View</Text>
+                                        <Ionicons name="eye-outline" size={18} color="#F8FAFC" />
+                                        <Text className="text-text-dark font-manrope-semibold text-sm">View</Text>
                                     </TouchableOpacity>
                                     <TouchableOpacity
                                         className="flex-1 py-3 bg-red-500/10 border border-red-500/30 rounded-lg flex-row items-center justify-center gap-2"
@@ -322,36 +319,36 @@ const LegalDocument = () => {
                 </View>
 
                 {/* Why Upload */}
-                <View className="mb-6 px-4 py-4 bg-card dark:bg-card-dark rounded-lg border border-border dark:border-border-dark">
-                    <Text className="text-sm font-manrope-semibold text-text dark:text-text-dark mb-2">
+                <View className="mb-6 px-4 py-4 bg-card-dark rounded-lg border border-border-dark">
+                    <Text className="text-sm font-manrope-semibold text-text-dark mb-2">
                         Why upload your license?
                     </Text>
-                    <Text className="text-xs font-manrope-light text-text-muted dark:text-text-darkMuted leading-5">
+                    <Text className="text-xs font-manrope-light text-text-darkMuted leading-5">
                         Verifies your legitimacy as a technician and builds trust within our community.
                     </Text>
                 </View>
 
                 {/* Requirements */}
-                <View className="mb-6 px-4 py-4 bg-card dark:bg-card-dark rounded-lg border border-border dark:border-border-dark">
-                    <Text className="text-sm font-manrope-semibold text-text dark:text-text-dark mb-2">
+                <View className="mb-6 px-4 py-4 bg-card-dark rounded-lg border border-border-dark">
+                    <Text className="text-sm font-manrope-semibold text-text-dark mb-2">
                         Requirements
                     </Text>
                     <View className="space-y-2">
                         <View className="flex-row items-start gap-2">
                             <Ionicons name="checkmark-circle" size={16} color="#10B981" />
-                            <Text className="flex-1 text-xs font-manrope-light text-text-muted dark:text-text-darkMuted">
+                            <Text className="flex-1 text-xs font-manrope-light text-text-darkMuted">
                                 Valid business license or registration
                             </Text>
                         </View>
                         <View className="flex-row items-start gap-2">
                             <Ionicons name="checkmark-circle" size={16} color="#10B981" />
-                            <Text className="flex-1 text-xs font-manrope-light text-text-muted dark:text-text-darkMuted">
+                            <Text className="flex-1 text-xs font-manrope-light text-text-darkMuted">
                                 Accepted: PDF, JPG, PNG (max 2MB)
                             </Text>
                         </View>
                         <View className="flex-row items-start gap-2">
                             <Ionicons name="checkmark-circle" size={16} color="#10B981" />
-                            <Text className="flex-1 text-xs font-manrope-light text-text-muted dark:text-text-darkMuted">
+                            <Text className="flex-1 text-xs font-manrope-light text-text-darkMuted">
                                 Must be clearly visible and valid
                             </Text>
                         </View>
@@ -359,10 +356,10 @@ const LegalDocument = () => {
                 </View>
 
                 {/* Footer Note */}
-                <View className="px-4 py-3 bg-input dark:bg-input-dark rounded-lg">
+                <View className="px-4 py-3 bg-input-dark rounded-lg">
                     <View className="flex-row items-center gap-2">
-                        <Ionicons name="shield-outline" size={16} color={isDark ? "#94A3B8" : "#64748B"} />
-                        <Text className="text-xs font-manrope-light text-text-muted dark:text-text-darkMuted flex-1">
+                        <Ionicons name="shield-outline" size={16} color="#94A3B8" />
+                        <Text className="text-xs font-manrope-light text-text-darkMuted flex-1">
                             Securely stored and reviewed within 24-48 hours
                         </Text>
                     </View>
@@ -370,8 +367,7 @@ const LegalDocument = () => {
             </ScrollView>
 
             <DocumentViewerModal
-                isDark={isDark}
-                visible={viewerVisible}
+                 visible={viewerVisible}
                 url={viewerUrl}
                 onClose={() => {
                     setViewerVisible(false);

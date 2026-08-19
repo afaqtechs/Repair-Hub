@@ -1,4 +1,4 @@
-import { useTheme } from "@/src/context/ThemeContext";
+
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import React from "react";
@@ -10,7 +10,6 @@ import {
 
 const HeroCards = () => {
     const router = useRouter();
-    const { isDark } = useTheme();
 
     const cards = [
         {
@@ -43,7 +42,7 @@ const HeroCards = () => {
         <View className="mt-3">
             {/* Section Header */}
             <View className="flex-row items-center justify-between mb-3.5">
-                <Text className="text-base font-manrope-bold text-text dark:text-text-dark">
+                <Text className="text-base font-manrope-bold text-text-dark">
                     Quick Actions
                 </Text>
             </View>
@@ -60,10 +59,7 @@ const HeroCards = () => {
                         className="flex-1"
                     >
                         <View
-                            className={`h-[142px] rounded-2xl overflow-hidden border ${isDark
-                                    ? "bg-card-dark/30 border-border-dark/50"
-                                    : "bg-bg/50 border-border/50"
-                                }`}
+                            className={`h-[142px] rounded-2xl overflow-hidden border bg-card-dark/30 border-border-dark/50`}
                         >
                             <View className="flex-1 p-3.5">
                                 {/* Icon + Arrow */}
@@ -71,9 +67,7 @@ const HeroCards = () => {
                                     <View
                                         className="w-10 h-10 rounded-xl items-center justify-center"
                                         style={{
-                                            backgroundColor: isDark
-                                                ? "rgba(59, 130, 246, 0.12)"
-                                                : "rgba(59, 130, 246, 0.08)",
+                                            backgroundColor: "rgba(59, 130, 246, 0.12)",
                                         }}
                                     >
                                         <Ionicons
@@ -86,9 +80,7 @@ const HeroCards = () => {
                                     <View
                                         className="w-6 h-6 rounded-full items-center justify-center"
                                         style={{
-                                            backgroundColor: isDark
-                                                ? "rgba(59, 130, 246, 0.10)"
-                                                : "rgba(59, 130, 246, 0.06)",
+                                            backgroundColor: "rgba(59, 130, 246, 0.10)",
                                         }}
                                     >
                                         <Ionicons
@@ -103,14 +95,14 @@ const HeroCards = () => {
                                 <View className="mt-auto">
                                     <Text
                                         numberOfLines={1}
-                                        className="text-[12px] font-manrope-bold text-text dark:text-text-dark"
+                                        className="text-[12px] font-manrope-bold text-text-dark"
                                     >
                                         {item.label}
                                     </Text>
 
                                     <Text
                                         numberOfLines={1}
-                                        className="mt-0.5 text-[9px] font-manrope-medium text-text-muted dark:text-text-darkMuted"
+                                        className="mt-0.5 text-[9px] font-manrope-medium text-text-darkMuted"
                                     >
                                         {item.description}
                                     </Text>
@@ -122,7 +114,7 @@ const HeroCards = () => {
                                 className="h-[3px] w-full"
                                 style={{
                                     backgroundColor: item.color,
-                                    opacity: isDark ? 0.55 : 0.7,
+                                    opacity: 0.55,
                                 }}
                             />
                         </View>

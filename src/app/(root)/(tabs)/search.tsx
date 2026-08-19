@@ -10,7 +10,7 @@ const SearchPage = () => {
     return (
         <View
             style={{ flex: 1, paddingTop: insets.top }}
-            className="flex-1 bg-bg dark:bg-bg-dark"
+            className="flex-1 bg-bg-dark"
         >
             <SearchScreen />
         </View>

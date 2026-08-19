@@ -2,7 +2,6 @@ import PartsCard from '@/src/components/cards/PartsCard';
 import EmptyState from '@/src/components/ui/EmptyState';
 import HTMLRenderer from '@/src/components/ui/HTMLRenderer';
 import { useAuth } from '@/src/context/AuthContext';
-import { useTheme } from '@/src/context/ThemeContext';
 import {
     useInfiniteParts,
     usePart,
@@ -40,7 +39,6 @@ const PartDetail = () => {
     const { id } = useLocalSearchParams<{ id: string }>();
     const { user } = useAuth();
     const { isSaved, saveLoading, toggleSave } = useSavedPart(id ?? '');
-    const { isDark } = useTheme();
     const router = useRouter();
 
     const insets = useSafeAreaInsets();
@@ -117,7 +115,7 @@ const PartDetail = () => {
 
     if (loading) {
         return (
-            <View className="flex-1 items-center justify-center bg-bg dark:bg-bg-dark">
+            <View className="flex-1 items-center justify-center bg-bg-dark">
                 <ActivityIndicator size="large" color="#2563EB" />
             </View>
         );
@@ -127,21 +125,21 @@ const PartDetail = () => {
         return (
             <SafeAreaView
                 edges={['top', 'left', 'right']}
-                className="flex-1 bg-bg dark:bg-bg-dark"
+                className="flex-1 bg-bg-dark"
             >
                 <View className="flex-1 items-center justify-center px-4">
                     <Ionicons name="alert-circle-outline" size={60} color="#EF4444" />
                     <Text className="text-danger-text text-lg font-bold mt-4">
                         Something went wrong
                     </Text>
-                    <Text className="text-text-secondary dark:text-text-darkSecondary text-sm text-center mt-2">
+                    <Text className="text-text-darkSecondary text-sm text-center mt-2">
                         {error.message}
                     </Text>
                     <TouchableOpacity
                         className="mt-6 bg-primary px-6 py-3 rounded-xl"
                         onPress={() => refetchPart()}
                     >
-                        <Text className="text-text dark:text-text-dark font-semibold">
+                        <Text className="text-text-dark font-semibold">
                             Try Again
                         </Text>
                     </TouchableOpacity>
@@ -152,8 +150,8 @@ const PartDetail = () => {
 
     if (!part) {
         return (
-            <View className="flex-1 items-center justify-center bg-bg dark:bg-bg-dark">
-                <Text className="text-text-secondary dark:text-text-darkSecondary">
+            <View className="flex-1 items-center justify-center bg-bg-dark">
+                <Text className="text-text-darkSecondary">
                     Part not found
                 </Text>
             </View>
@@ -169,7 +167,7 @@ const PartDetail = () => {
     const renderHeader = () => {
         return (
             <View className={`px-4 py-3 items-start`}>
-                <Text className="text-lg text-text dark:text-text-dark font-manrope-semibold">
+                <Text className="text-lg text-text-dark font-manrope-semibold">
                     Related Parts
                 </Text>
             </View>
@@ -218,7 +216,7 @@ const PartDetail = () => {
     return (
         <View
             style={{ flex: 1, paddingBottom: insets.bottom }}
-            className="flex-1 bg-bg dark:bg-bg-dark"
+            className="flex-1 bg-bg-dark"
         >
             <View>
                 <View>
@@ -274,23 +272,23 @@ const PartDetail = () => {
                             onPress={() => {
                                 router.back();
                             }}
-                            className="w-10 h-10 items-center justify-center rounded-2xl bg-bg dark:bg-bg-dark border border-border dark:border-border-dark"
+                            className="w-10 h-10 items-center justify-center rounded-2xl bg-bg-dark border border-border-dark"
                         >
                             <Ionicons
                                 name="arrow-back"
                                 size={20}
-                                color={isDark ? '#F8FAFC' : '#171A2B'}
+                                color="#F8FAFC"
                             />
                         </TouchableOpacity>
                         <TouchableOpacity
                             onPress={() => toggleSave()}
                             disabled={saveLoading}
-                            className="absolute top-2 right-2 bg-bg dark:bg-bg-dark rounded-full p-2 items-center justify-center"
+                            className="absolute top-2 right-2 bg-bg-dark rounded-full p-2 items-center justify-center"
                         >
                             <Ionicons
                                 name={isSaved ? 'heart' : 'heart-outline'}
                                 size={20}
-                                color={isSaved ? '#EF4444' : isDark ? '#ffffff' : '#000000'}
+                                color={isSaved ? '#EF4444' : '#ffffff'}
                             />
                         </TouchableOpacity>
                     </View>
@@ -299,22 +297,22 @@ const PartDetail = () => {
 
             <ScrollView showsVerticalScrollIndicator={false}>
                 <View className="flex-col gap-5 mt-5 pb-32 px-5">
-                    <View className="w-full px-5 pt-5 pb-6 bg-card dark:bg-card-dark rounded-xl shadow-xs">
+                    <View className="w-full px-5 pt-5 pb-6 bg-card-dark rounded-xl shadow-xs">
                         <View className="flex-row items-center justify-between mb-4">
                             <View className="flex-row items-center gap-1">
                                 <Ionicons name="location" size={15} color="#5B3DF5" />
-                                <Text className="text-xs text-text-secondary dark:text-text-darkSecondary font-manrope-medium">
+                                <Text className="text-xs text-text-darkSecondary font-manrope-medium">
                                     {technician?.city}
                                 </Text>
                             </View>
-                            <View className="px-3 py-1 bg-bg/70 dark:bg-bg-dark/70 rounded-xl">
-                                <Text className="text-xs text-text dark:text-text-dark font-manrope-medium">
+                            <View className="px-3 py-1 bg-bg-dark/70 rounded-xl">
+                                <Text className="text-xs text-text-dark font-manrope-medium">
                                     {part?.condition?.name}
                                 </Text>
                             </View>
                         </View>
                         <Text
-                            className="text-xl text-text dark:text-text-dark font-manrope-bold mb-2"
+                            className="text-xl text-text-dark font-manrope-bold mb-2"
                             numberOfLines={2}
                         >
                             {part?.title}
@@ -370,13 +368,13 @@ const PartDetail = () => {
                         )}
                     </View>
 
-                    <View className="w-full px-5 py-5 bg-card dark:bg-card-dark rounded-xl shadow-xs">
-                        <Text className="text-lg text-text dark:text-text-dark font-manrope-bold mb-4">
+                    <View className="w-full px-5 py-5 bg-card-dark rounded-xl shadow-xs">
+                        <Text className="text-lg text-text-dark font-manrope-bold mb-4">
                             Details
                         </Text>
                         <View className="flex-row flex-wrap justify-between gap-y-5">
                             <View className="w-[48%]">
-                                <Text className="text-base text-text dark:text-text-dark font-manrope-semibold">
+                                <Text className="text-base text-text-dark font-manrope-semibold">
                                     {part?.brand || 'N/A'}
                                 </Text>
                                 <Text className="text-xs text-gray-500 font-manrope">
@@ -386,7 +384,7 @@ const PartDetail = () => {
 
                             {/* Model */}
                             <View className="w-[48%]">
-                                <Text className="text-base text-text dark:text-text-dark font-manrope-semibold">
+                                <Text className="text-base text-text-dark font-manrope-semibold">
                                     {part?.model || 'N/A'}
                                 </Text>
                                 <Text className="text-xs text-gray-500 font-manrope">
@@ -395,7 +393,7 @@ const PartDetail = () => {
                             </View>
 
                             <View className="w-[48%]">
-                                <Text className="text-base text-text dark:text-text-dark font-manrope-semibold">
+                                <Text className="text-base text-text-dark font-manrope-semibold">
                                     {part?.platform?.name || 'N/A'}
                                 </Text>
                                 <Text className="text-xs text-gray-500 font-manrope">
@@ -405,7 +403,7 @@ const PartDetail = () => {
 
                             {/* Category */}
                             <View className="w-[48%]">
-                                <Text className="text-base text-text dark:text-text-dark font-manrope-semibold">
+                                <Text className="text-base text-text-dark font-manrope-semibold">
                                     {part?.category?.name || 'N/A'}
                                 </Text>
                                 <Text className="text-xs text-gray-500 font-manrope">
@@ -415,7 +413,7 @@ const PartDetail = () => {
 
                             {/* Condition */}
                             <View className="w-[48%]">
-                                <Text className="text-base text-text dark:text-text-dark font-manrope-semibold">
+                                <Text className="text-base text-text-dark font-manrope-semibold">
                                     {part?.condition?.name || 'N/A'}
                                 </Text>
                                 <Text className="text-xs text-gray-500 font-manrope">
@@ -452,8 +450,8 @@ const PartDetail = () => {
                     </View>
 
                     {part?.description && (
-                        <View className="w-full px-5 pt-5 pb-6 bg-card dark:bg-card-dark rounded-xl shadow-xs">
-                            <Text className="text-lg text-text dark:text-text-dark font-manrope-bold mb-3">
+                        <View className="w-full px-5 pt-5 pb-6 bg-card-dark rounded-xl shadow-xs">
+                            <Text className="text-lg text-text-dark font-manrope-bold mb-3">
                                 Description
                             </Text>
 
@@ -468,7 +466,7 @@ const PartDetail = () => {
                         </View>
                     )}
 
-                    <View className="w-full px-5 pt-5 pb-6 bg-card dark:bg-card-dark rounded-xl shadow-xs">
+                    <View className="w-full px-5 pt-5 pb-6 bg-card-dark rounded-xl shadow-xs">
                         <View className="w-full flex-row items-center justify-center gap-3">
                             <Ionicons
                                 name={part?.is_negotiable ? 'checkmark-circle' : 'close-circle'}
@@ -489,14 +487,14 @@ const PartDetail = () => {
                         </View>
                     </View>
 
-                    <View className="w-full px-5 pt-5 pb-6 bg-card dark:bg-card-dark rounded-xl shadow-xs">
+                    <View className="w-full px-5 pt-5 pb-6 bg-card-dark rounded-xl shadow-xs">
                         <View className="flex-row items-center justify-between">
                             <TouchableOpacity className="flex-1 items-center justify-center">
                                 <Text className="text-base text-red-500 font-manrope">
                                     Report
                                 </Text>
                             </TouchableOpacity>
-                            <View className="h-full w-[1px] bg-gray-300 dark:bg-gray-700" />
+                            <View className="h-full w-[1px] bg-gray-700" />
                             <TouchableOpacity className="flex-1 items-center justify-center">
                                 <Text className="text-base text-emerald-500 font-manrope">
                                     {' '}
@@ -506,7 +504,7 @@ const PartDetail = () => {
                         </View>
                     </View>
 
-                    <View className="flex-row w-full px-5 pt-5 pb-6 bg-card dark:bg-card-dark rounded-xl shadow-xs gap-3">
+                    <View className="flex-row w-full px-5 pt-5 pb-6 bg-card-dark rounded-xl shadow-xs gap-3">
                         <View className="self-start overflow-hidden">
                             <Image
                                 source={
@@ -582,7 +580,7 @@ const PartDetail = () => {
                         </View>
                     </View>
                 </View>
-                <View className="bg-card dark:bg-card-dark">
+                <View className="bg-card-dark">
                     <FlashList
                         data={visibleRelatedParts}
                         keyExtractor={(item) => item.id}

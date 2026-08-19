@@ -10,11 +10,10 @@ import { ActivityIndicator, Text, TextInput, TouchableOpacity, View } from 'reac
 type Props = {
     setUpdatingLocation: React.Dispatch<React.SetStateAction<boolean>>;
     location: TechnicianLocation | null;
-    isDark: boolean;
-    technicianId: string
+     technicianId: string
 };
 
-const UpdateLocation = ({ technicianId, location, setUpdatingLocation, isDark }: Props) => {
+const UpdateLocation = ({ technicianId, location, setUpdatingLocation }: Props) => {
     const [isLoading, setIsLoading] = useState(false);
     const [isFetchingLocation, setIsFetchingLocation] = useState(false);
 
@@ -107,8 +106,8 @@ const UpdateLocation = ({ technicianId, location, setUpdatingLocation, isDark }:
 
     return (
         <View className='p-4'>
-            <View className="bg-card dark:bg-card-dark p-4 rounded-xl shadow-sm">
-                <Text className="text-text dark:text-text-dark text-lg font-bold mb-3">
+            <View className="bg-card-dark p-4 rounded-xl shadow-sm">
+                <Text className="text-text-dark text-lg font-bold mb-3">
                     Update Location
                 </Text>
 
@@ -130,39 +129,39 @@ const UpdateLocation = ({ technicianId, location, setUpdatingLocation, isDark }:
                     )}
                 </TouchableOpacity>
 
-                <View className="h-px bg-border dark:bg-border-dark my-2" />
+                <View className="h-px bg-border-dark my-2" />
 
                 {/* Latitude Input */}
-                <View className="bg-input dark:bg-input-dark border border-border dark:border-border-dark rounded-xl flex-row items-center px-4 mb-3">
+                <View className="bg-input-dark border border-border-dark rounded-xl flex-row items-center px-4 mb-3">
                     <Ionicons
                         name="navigate-outline"
                         size={20}
-                        color={isDark ? "#94A3B8" : "#9CA3AF"}
+                        color="#94A3B8"
                     />
                     <TextInput
                         value={form.latitude ?? ""}
                         onChangeText={(text) => handleInputChange("latitude", text)}
                         placeholder="Latitude"
-                        placeholderTextColor={isDark ? "#94A3B8" : "#9CA3AF"}
-                        className="flex-1 py-3.5 ml-2 text-text dark:text-text-dark"
+                        placeholderTextColor="#94A3B8"
+                        className="flex-1 py-3.5 ml-2 text-text-dark"
                         keyboardType="numbers-and-punctuation"
                         editable={!isLoading}
                     />
                 </View>
 
                 {/* Longitude Input */}
-                <View className="bg-input dark:bg-input-dark border border-border dark:border-border-dark rounded-xl flex-row items-center px-4 mb-3">
+                <View className="bg-input-dark border border-border-dark rounded-xl flex-row items-center px-4 mb-3">
                     <Ionicons
                         name="navigate-outline"
                         size={20}
-                        color={isDark ? "#94A3B8" : "#9CA3AF"}
+                        color="#94A3B8"
                     />
                     <TextInput
                         value={form.longitude ?? ""}
                         onChangeText={(text) => handleInputChange('longitude', text)}
                         placeholder="Longitude"
-                        placeholderTextColor={isDark ? "#94A3B8" : "#9CA3AF"}
-                        className="flex-1 py-3.5 ml-2 text-text dark:text-text-dark"
+                        placeholderTextColor="#94A3B8"
+                        className="flex-1 py-3.5 ml-2 text-text-dark"
                         keyboardType="numeric"
                         editable={!isLoading}
                     />
@@ -173,9 +172,9 @@ const UpdateLocation = ({ technicianId, location, setUpdatingLocation, isDark }:
                     <TouchableOpacity
                         onPress={handleCancel}
                         disabled={isLoading}
-                        className="flex-1 bg-gray-200 dark:bg-gray-700 rounded-xl py-3 px-4"
+                        className="flex-1 bg-gray-700 rounded-xl py-3 px-4"
                     >
-                        <Text className="text-text dark:text-text-dark font-semibold text-center">
+                        <Text className="text-text-dark font-semibold text-center">
                             Cancel
                         </Text>
                     </TouchableOpacity>

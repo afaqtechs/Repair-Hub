@@ -2,7 +2,6 @@ import RequestCard from '@/src/components/cards/RequestCard';
 import AppRefreshControl from '@/src/components/ui/AppRefreshControl';
 import SortModal from '@/src/components/ui/SortModal';
 import { useAuth } from '@/src/context/AuthContext';
-import { useTheme } from '@/src/context/ThemeContext';
 import { useRequestsByTechnician } from '@/src/hooks';
 import RequestForm from '@/src/screens/create/RequestForm';
 import { Request } from '@/types/requests';
@@ -14,7 +13,6 @@ import { ActivityIndicator, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const MyRequests = () => {
-    const { isDark } = useTheme();
     const router = useRouter();
 
     const { user } = useAuth();
@@ -84,7 +82,7 @@ const MyRequests = () => {
 
     if (requestError) {
         return (
-            <SafeAreaView edges={["top", "left", "right"]} className="flex-1 bg-bg dark:bg-bg-dark">
+            <SafeAreaView edges={["top", "left", "right"]} className="flex-1 bg-bg-dark">
                 <View className="flex-1 items-center justify-center px-4">
                     <Ionicons name="alert-circle-outline" size={60} color="#EF4444" />
                     <Text className="text-red-500 text-lg font-bold mt-4">Something went wrong</Text>
@@ -92,7 +90,7 @@ const MyRequests = () => {
                     <TouchableOpacity className="mt-6 bg-[#5B3DF5] px-6 py-3 rounded-xl" onPress={() => {
                         fetchRequests();
                     }}>
-                        <Text className="text-text dark:text-text-dark font-semibold">Try Again</Text>
+                        <Text className="text-text-dark font-semibold">Try Again</Text>
                     </TouchableOpacity>
                 </View>
             </SafeAreaView>
@@ -114,7 +112,7 @@ const MyRequests = () => {
                     paddingTop: insets.top,
                     paddingBottom: insets.bottom,
                 }}
-                className="bg-bg dark:bg-bg-dark"
+                className="bg-bg-dark"
             >
                 <RequestForm
                     isEdit
@@ -128,25 +126,25 @@ const MyRequests = () => {
     return (
         <View
             style={{ flex: 1, paddingTop: insets.top, paddingBottom: insets.bottom }}
-            className="relative flex-1 bg-bg dark:bg-bg-dark">
+            className="relative flex-1 bg-bg-dark">
             <View className="px-5 pt-2 pb-5">
                 <View className="flex-row items-center">
                     <TouchableOpacity
                         onPress={() => router.push("/(root)/(tabs)/profile")}
                         activeOpacity={0.7}
-                        className="w-10 h-10 items-center justify-center rounded-2xl bg-card dark:bg-card-dark border border-border dark:border-border-dark"
+                        className="w-10 h-10 items-center justify-center rounded-2xl bg-card-dark border border-border-dark"
                     >
-                        <Ionicons name="arrow-back" size={20} color={isDark ? "#F8FAFC" : "#171A2B"} />
+                        <Ionicons name="arrow-back" size={20} color="#F8FAFC" />
                     </TouchableOpacity>
-                    <Text className="ml-2 text-[20px] font-manrope-semibold text-text dark:text-text-dark">
+                    <Text className="ml-2 text-[20px] font-manrope-semibold text-text-dark">
                         My Requests
                     </Text>
                 </View>
             </View>
 
-            <View className="px-5 pb-3 border-b border-border dark:border-border-dark">
+            <View className="px-5 pb-3 border-b border-border-dark">
                 <View className="flex-row items-center justify-between">
-                    <Text className="text-text-muted dark:text-text-darkMuted text-base font-medium">
+                    <Text className="text-text-darkMuted text-base font-medium">
                         Found <Text className="font-bold text-primary">
                             ({sortedResults.length})
                         </Text>
@@ -155,23 +153,23 @@ const MyRequests = () => {
                     <View className="flex-row items-center gap-2">
                         <TouchableOpacity
                             onPress={() => setSortModalVisible(true)}
-                            className="w-10 h-10 rounded-md border border-border dark:border-border-dark bg-card dark:bg-card-dark items-center justify-center"
+                            className="w-10 h-10 rounded-md border border-border-dark bg-card-dark items-center justify-center"
                         >
                             <Ionicons
                                 name="swap-vertical-outline"
                                 size={20}
-                                color={isDark ? '#94A3B8' : '#667085'}
+                                color="#94A3B8"
                             />
                         </TouchableOpacity>
 
                         <TouchableOpacity
                             onPress={() => setListView(!listView)}
-                            className="w-10 h-10 rounded-md border border-border dark:border-border-dark bg-card dark:bg-card-dark items-center justify-center"
+                            className="w-10 h-10 rounded-md border border-border-dark bg-card-dark items-center justify-center"
                         >
                             <Ionicons
                                 name={listView ? 'grid-outline' : 'list-outline'}
                                 size={20}
-                                color={isDark ? '#94A3B8' : '#667085'}
+                                color="#94A3B8"
                             />
                         </TouchableOpacity>
                     </View>
@@ -183,9 +181,9 @@ const MyRequests = () => {
                     <View className="flex-1 justify-center items-center">
                         <ActivityIndicator
                             size="large"
-                            color={isDark ? '#60A5FA' : '#3B82F6'}
+                            color="#60A5FA"
                         />
-                        <Text className="text-text dark:text-text-dark mt-4">
+                        <Text className="text-text-dark mt-4">
                             Loading requests...
                         </Text>
                     </View>
@@ -208,7 +206,7 @@ const MyRequests = () => {
                             }
                             ListFooterComponent={
                                 <View className="flex-row justify-center items-center py-4">
-                                    <Text className="text-text dark:text-text-dark ml-2">
+                                    <Text className="text-text-dark ml-2">
                                         No more requests...
                                     </Text>
                                 </View>
@@ -229,12 +227,12 @@ const MyRequests = () => {
                         <Ionicons
                             name="search-outline"
                             size={60}
-                            color={isDark ? '#64748B' : '#94A3B8'}
+                            color="#64748B"
                         />
-                        <Text className="text-text dark:text-text-dark text-lg font-semibold mt-4">
+                        <Text className="text-text-dark text-lg font-semibold mt-4">
                             No requests found
                         </Text>
-                        <Text className="text-text-secondary dark:text-text-darkMuted text-center mt-2">
+                        <Text className="text-text-darkMuted text-center mt-2">
                             Try adjusting your search or filters
                         </Text>
                     </View>
@@ -243,7 +241,7 @@ const MyRequests = () => {
 
             <TouchableOpacity
                 onPress={() => router.push("/(pages)/create/request")}
-                className="absolute w-16 h-16 bottom-10 right-5 rounded-full border border-primary/10 bg-primary items-center justify-center"
+                className="absolute w-16 h-16 bottom-16 right-5 rounded-full border border-primary/10 bg-primary items-center justify-center"
             >
                 <Ionicons
                     name="add"

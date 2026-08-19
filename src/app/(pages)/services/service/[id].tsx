@@ -2,7 +2,6 @@ import ServiceCard from '@/src/components/cards/ServiceCard';
 import EmptyState from '@/src/components/ui/EmptyState';
 import HTMLRenderer from '@/src/components/ui/HTMLRenderer';
 import { useAuth } from '@/src/context/AuthContext';
-import { useTheme } from '@/src/context/ThemeContext';
 import { useInfiniteServices, useService, useServiceMutations, useTechnician, useTechnicianLocation } from '@/src/hooks';
 import { useSavedService } from '@/src/hooks/useSavedService';
 import { showError, showSuccess } from '@/src/lib/toast';
@@ -21,7 +20,6 @@ const ServiceDetail = () => {
     const { id } = useLocalSearchParams<{ id: string }>();
     const { user } = useAuth();
     const { isSaved, saveLoading, toggleSave } = useSavedService(id ?? "");
-    const { isDark } = useTheme();
     const router = useRouter();
 
     const insets = useSafeAreaInsets();
@@ -103,7 +101,7 @@ const ServiceDetail = () => {
 
     if (loading) {
         return (
-            <View className="flex-1 items-center justify-center bg-bg dark:bg-bg-dark">
+            <View className="flex-1 items-center justify-center bg-bg-dark">
                 <ActivityIndicator size="large" color="#2563EB" />
             </View>
         );
@@ -112,16 +110,16 @@ const ServiceDetail = () => {
 
     if (error) {
         return (
-            <SafeAreaView edges={["top", "left", "right"]} className="flex-1 bg-bg dark:bg-bg-dark">
+            <SafeAreaView edges={["top", "left", "right"]} className="flex-1 bg-bg-dark">
                 <View className="flex-1 items-center justify-center px-4">
                     <Ionicons name="alert-circle-outline" size={60} color="#EF4444" />
                     <Text className="text-danger-text text-lg font-bold mt-4">Something went wrong</Text>
-                    <Text className="text-text-secondary dark:text-text-darkSecondary text-sm text-center mt-2">{error.message}</Text>
+                    <Text className="text-text-darkSecondary text-sm text-center mt-2">{error.message}</Text>
                     <TouchableOpacity
                         className="mt-6 bg-primary px-6 py-3 rounded-xl"
                         onPress={() => refetchService()}
                     >
-                        <Text className="text-text dark:text-text-dark font-semibold">Try Again</Text>
+                        <Text className="text-text-dark font-semibold">Try Again</Text>
                     </TouchableOpacity>
                 </View>
             </SafeAreaView>
@@ -130,8 +128,8 @@ const ServiceDetail = () => {
 
     if (!service) {
         return (
-            <View className="flex-1 items-center justify-center bg-bg dark:bg-bg-dark">
-                <Text className="text-text-secondary dark:text-text-darkSecondary">Service not found</Text>
+            <View className="flex-1 items-center justify-center bg-bg-dark">
+                <Text className="text-text-darkSecondary">Service not found</Text>
             </View>
         );
     }
@@ -146,7 +144,7 @@ const ServiceDetail = () => {
     const renderHeader = () => {
         return (
             <View className={`px-4 py-3 items-start`}>
-                <Text className="text-lg text-text dark:text-text-dark font-manrope-semibold">Related Services</Text>
+                <Text className="text-lg text-text-dark font-manrope-semibold">Related Services</Text>
             </View>
         );
     };
@@ -192,7 +190,7 @@ const ServiceDetail = () => {
     return (
         <View
             style={{ flex: 1, paddingBottom: insets.bottom }}
-            className="flex-1 bg-bg dark:bg-bg-dark"
+            className="flex-1 bg-bg-dark"
         >
             <View>
                 <View >
@@ -244,16 +242,16 @@ const ServiceDetail = () => {
                     <View className="flex-row items-center justify-between px-4 pt-2">
                         <TouchableOpacity
                             onPress={() => { router.back() }}
-                            className="w-10 h-10 items-center justify-center rounded-2xl bg-bg dark:bg-bg-dark border border-border dark:border-border-dark"
+                            className="w-10 h-10 items-center justify-center rounded-2xl bg-bg-dark border border-border-dark"
                         >
-                            <Ionicons name="arrow-back" size={20} color={isDark ? "#F8FAFC" : "#171A2B"} />
+                            <Ionicons name="arrow-back" size={20} color="#F8FAFC"  />
                         </TouchableOpacity>
                         <TouchableOpacity
                             onPress={() => toggleSave()}
                             disabled={saveLoading}
-                            className="absolute top-2 right-2 bg-bg dark:bg-bg-dark rounded-full p-2 items-center justify-center"
+                            className="absolute top-2 right-2 bg-bg-dark rounded-full p-2 items-center justify-center"
                         >
-                            <Ionicons name={isSaved ? "heart" : "heart-outline"} size={20} color={isSaved ? "#EF4444" : isDark ? "#ffffff" : "#000000"} />
+                            <Ionicons name={isSaved ? "heart" : "heart-outline"} size={20} color={isSaved ? "#EF4444" : "#ffffff"} />
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -261,7 +259,7 @@ const ServiceDetail = () => {
 
             <ScrollView showsVerticalScrollIndicator={false}>
                 <View className='flex-col gap-5 mt-5 pb-32 px-5'>
-                    <View className="w-full px-5 pt-5 pb-6 bg-card dark:bg-card-dark rounded-xl shadow-xs">
+                    <View className="w-full px-5 pt-5 pb-6 bg-card-dark rounded-xl shadow-xs">
 
                         <View className="flex-row items-center justify-between mb-4">
                             <View className="flex-row items-center gap-1">
@@ -270,19 +268,19 @@ const ServiceDetail = () => {
                                     size={15}
                                     color="#5B3DF5"
                                 />
-                                <Text className="text-xs text-text-secondary dark:text-text-darkSecondary font-manrope-medium">
+                                <Text className="text-xs text-text-darkSecondary font-manrope-medium">
                                     {technician?.city}
                                 </Text>
                             </View>
-                            <View className="px-3 py-1 bg-bg/70 dark:bg-bg-dark/70 rounded-xl">
-                                <Text className="text-xs text-text dark:text-text-dark font-manrope-medium">
+                            <View className="px-3 py-1 bg-bg-dark/70 rounded-xl">
+                                <Text className="text-xs text-text-dark font-manrope-medium">
                                     Service
                                 </Text>
                             </View>
 
                         </View>
                         <Text
-                            className="text-xl text-text dark:text-text-dark font-manrope-bold mb-2"
+                            className="text-xl text-text-dark font-manrope-bold mb-2"
                             numberOfLines={2}
                         >
                             {service?.title}
@@ -344,14 +342,14 @@ const ServiceDetail = () => {
                         )}
                     </View>
 
-                    <View className="w-full px-5 py-5 bg-card dark:bg-card-dark rounded-xl shadow-xs">
-                        <Text className="text-lg text-text dark:text-text-dark font-manrope-bold mb-4">
+                    <View className="w-full px-5 py-5 bg-card-dark rounded-xl shadow-xs">
+                        <Text className="text-lg text-text-dark font-manrope-bold mb-4">
                             Details
                         </Text>
                         <View className="flex-row flex-wrap justify-between gap-y-5">
 
                             <View className="w-[48%]">
-                                <Text className="text-base text-text dark:text-text-dark font-manrope-semibold">
+                                <Text className="text-base text-text-dark font-manrope-semibold">
                                     {service?.platform?.name || "N/A"}
                                 </Text>
                                 <Text className="text-xs text-gray-500 font-manrope">
@@ -361,7 +359,7 @@ const ServiceDetail = () => {
 
                             {/* Category */}
                             <View className="w-[48%]">
-                                <Text className="text-base text-text dark:text-text-dark font-manrope-semibold">
+                                <Text className="text-base text-text-dark font-manrope-semibold">
                                     {service?.category?.name || "N/A"}
                                 </Text>
                                 <Text className="text-xs text-gray-500 font-manrope">
@@ -372,7 +370,7 @@ const ServiceDetail = () => {
 
                             {/* Condition */}
                             <View className="w-[48%]">
-                                <Text className="text-base text-text dark:text-text-dark font-manrope-semibold">
+                                <Text className="text-base text-text-dark font-manrope-semibold">
                                     Service
                                 </Text>
                                 <Text className="text-xs text-gray-500 font-manrope">
@@ -413,8 +411,8 @@ const ServiceDetail = () => {
 
 
                     {service?.description && (
-                        <View className="w-full px-5 pt-5 pb-6 bg-card dark:bg-card-dark rounded-xl shadow-xs">
-                            <Text className="text-lg text-text dark:text-text-dark font-manrope-bold mb-4">
+                        <View className="w-full px-5 pt-5 pb-6 bg-card-dark rounded-xl shadow-xs">
+                            <Text className="text-lg text-text-dark font-manrope-bold mb-4">
                                 Description
                             </Text>
 
@@ -434,7 +432,7 @@ const ServiceDetail = () => {
                         </View>
                     )}
 
-                    <View className="w-full px-5 pt-5 pb-6 bg-card dark:bg-card-dark rounded-xl shadow-xs">
+                    <View className="w-full px-5 pt-5 pb-6 bg-card-dark rounded-xl shadow-xs">
                         <View className="w-full flex-row items-center justify-center gap-3">
                             <Ionicons
                                 name={service?.is_negotiable ? "checkmark-circle" : "close-circle"}
@@ -447,19 +445,19 @@ const ServiceDetail = () => {
                         </View>
                     </View>
 
-                    <View className="w-full px-5 pt-5 pb-6 bg-card dark:bg-card-dark rounded-xl shadow-xs">
+                    <View className="w-full px-5 pt-5 pb-6 bg-card-dark rounded-xl shadow-xs">
                         <View className="flex-row items-center justify-between">
                             <TouchableOpacity className='flex-1 items-center justify-center'>
                                 <Text className="text-base text-red-500 font-manrope">Report</Text>
                             </TouchableOpacity>
-                            <View className='h-full w-[1px] bg-gray-300 dark:bg-gray-700' />
+                            <View className='h-full w-[1px] bg-gray-700' />
                             <TouchableOpacity className='flex-1 items-center justify-center'>
                                 <Text className="text-base text-emerald-500 font-manrope"> Not Interested</Text>
                             </TouchableOpacity>
                         </View>
                     </View>
 
-                    <View className='flex-row w-full px-5 pt-5 pb-6 bg-card dark:bg-card-dark rounded-xl shadow-xs gap-3'>
+                    <View className='flex-row w-full px-5 pt-5 pb-6 bg-card-dark rounded-xl shadow-xs gap-3'>
                         <View className='self-start overflow-hidden'>
                             <Image
                                 source={
@@ -534,7 +532,7 @@ const ServiceDetail = () => {
                     </View>
                 </View>
 
-                <View className='bg-card/30 dark:bg-card-dark/30'>
+                <View className='bg-card-dark/30'>
                     <FlashList
                         data={visibleRelatedServices}
                         keyExtractor={(item) => item.id}

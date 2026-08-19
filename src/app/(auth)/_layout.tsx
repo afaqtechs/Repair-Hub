@@ -1,5 +1,4 @@
 import { useAuth } from "@/src/context/AuthContext";
-import { ThemeProvider } from "@/src/context/ThemeContext";
 import { Redirect, Stack } from "expo-router";
 
 export default function AuthRoutesLayout() {
@@ -12,12 +11,10 @@ export default function AuthRoutesLayout() {
   }
 
   return (
-    <ThemeProvider>
-      <Stack
-        screenOptions={{
-          headerShown: false,
-        }}
-      />
-    </ThemeProvider>
+    <Stack
+      screenOptions={{
+        headerShown: false,
+      }}
+    />
   );
 }

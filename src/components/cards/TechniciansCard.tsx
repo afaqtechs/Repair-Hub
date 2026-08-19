@@ -39,12 +39,12 @@ const TechniciansCard = ({ techncicians }: TechniciansCardProps) => {
     const isOnline = isUserOnline(id)
     return (
         <View
-            className="w-[200px] h-[285px] flex-col justify-between mr-3 rounded-xl border border-border dark:border-border-dark bg-card/50 dark:bg-card-dark/50 p-3"
+            className="w-[200px] h-[285px] flex-col justify-between mr-3 rounded-xl border border-border-dark bg-card-dark/50 p-3"
         >
             {/* Profile Image */}
             <View className="flex-col gap-3">
                 <View className="relative flex-row items-center justify-center">
-                    <View className="w-[120px] h-[120px] rounded-full overflow-hidden bg-bg dark:bg-bg-dark border border-border dark:border-border-dark">
+                    <View className="w-[120px] h-[120px] rounded-full overflow-hidden bg-bg-dark border border-border-dark">
                         <Image
                             source={
                                 profile_image_url
@@ -65,7 +65,7 @@ const TechniciansCard = ({ techncicians }: TechniciansCardProps) => {
                     <View className="flex-row justify-between items-center">
                         <Text
                         numberOfLines={1}
-                        className="flex-1 text-[12px] font-manrope-bold text-text dark:text-text-dark"
+                        className="flex-1 text-[12px] font-manrope-bold text-text-dark"
                     >
                         {fullName || "Technician"}
                     </Text>
@@ -98,7 +98,7 @@ const TechniciansCard = ({ techncicians }: TechniciansCardProps) => {
                             color="#F59E0B"
                         />
 
-                        <Text className="ml-1 text-[11px] font-manrope-bold text-text dark:text-text-dark">
+                        <Text className="ml-1 text-[11px] font-manrope-bold text-text-dark">
                             {Number(rating_avg ?? 0).toFixed(1)}
                         </Text>
                     </View>
@@ -111,7 +111,7 @@ const TechniciansCard = ({ techncicians }: TechniciansCardProps) => {
                         />
 
                         {distance !== null && distance !== undefined && (
-                            <Text className="ml-0.5 text-[11px] font-manrope-medium text-text dark:text-text-dark">
+                            <Text className="ml-0.5 text-[11px] font-manrope-medium text-text-dark">
                                 {distance < 1
                                     ? `${Math.round(distance * 1000)} m`
                                     : `${distance.toFixed(1)} km away`}
@@ -123,7 +123,7 @@ const TechniciansCard = ({ techncicians }: TechniciansCardProps) => {
                 {/* View Profile */}
                 <TouchableOpacity
                     activeOpacity={0.8}
-                    className="mt-auto w-full p-3 rounded-md bg-primary dark:bg-primary/50 items-center justify-center"
+                    className="mt-auto w-full p-3 rounded-md bg-primary/50 items-center justify-center"
                     onPress={() =>
                         router.push({
                             pathname: "/(pages)/technician/[id]",

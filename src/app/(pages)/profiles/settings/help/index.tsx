@@ -1,4 +1,4 @@
-import { useTheme } from "@/src/context/ThemeContext";
+
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import { useState } from "react";
@@ -14,7 +14,6 @@ interface FAQItem {
 
 const HelpCenter = () => {
   const router = useRouter();
-  const { isDark } = useTheme();
   const insets = useSafeAreaInsets();
 
   const [expandedFAQ, setExpandedFAQ] = useState<string | null>(null);
@@ -168,19 +167,19 @@ const HelpCenter = () => {
   return (
     <View
       style={{ flex: 1, paddingTop: insets.top, paddingBottom: insets.bottom }}
-      className="flex-1 bg-bg dark:bg-bg-dark"
+      className="flex-1 bg-bg-dark"
     >
       {/* Header */}
-      <View className="px-4 pt-2 pb-5 bg-bg dark:bg-bg-dark">
+      <View className="px-4 pt-2 pb-5 bg-bg-dark">
         <View className="flex-row items-center">
           <TouchableOpacity
             onPress={() => router.back()}
             activeOpacity={0.7}
-            className="w-10 h-10 items-center justify-center rounded-2xl bg-card dark:bg-card-dark border border-border dark:border-border-dark"
+            className="w-10 h-10 items-center justify-center rounded-2xl bg-card-dark border border-border-dark"
           >
-            <Ionicons name="arrow-back" size={20} color={isDark ? "#F8FAFC" : "#171A2B"} />
+            <Ionicons name="arrow-back" size={20} color="#F8FAFC" />
           </TouchableOpacity>
-          <Text className="ml-2 text-[20px] font-manrope-semibold text-text dark:text-text-dark">
+          <Text className="ml-2 text-[20px] font-manrope-semibold text-text-dark">
             Help Center
           </Text>
         </View>
@@ -202,27 +201,27 @@ const HelpCenter = () => {
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
-            className="flex-1 flex-row items-center justify-center gap-2 py-3.5 bg-card dark:bg-card-dark rounded-xl border border-border dark:border-border-dark"
+            className="flex-1 flex-row items-center justify-center gap-2 py-3.5 bg-card-dark rounded-xl border border-border-dark"
             onPress={handleVisitCommunity}
           >
-            <Ionicons name="people-outline" size={20} color={isDark ? "#F8FAFC" : "#171A2B"} />
-            <Text className="text-text dark:text-text-dark font-manrope-semibold text-sm">
+            <Ionicons name="people-outline" size={20} color="#F8FAFC" />
+            <Text className="text-text-dark font-manrope-semibold text-sm">
               Community
             </Text>
           </TouchableOpacity>
         </View>
 
         {/* Search/Intro */}
-        <View className="mb-6 px-4 py-4 bg-card dark:bg-card-dark rounded-xl border border-border dark:border-border-dark">
+        <View className="mb-6 px-4 py-4 bg-card-dark rounded-xl border border-border-dark">
           <View className="flex-row items-center gap-3">
-            <View className="w-12 h-12 bg-primary/10 dark:bg-primary/20 rounded-full items-center justify-center">
+            <View className="w-12 h-12 bg-primary/20 rounded-full items-center justify-center">
               <Ionicons name="help-circle" size={24} color="#6366F1" />
             </View>
             <View className="flex-1">
-              <Text className="text-base font-manrope-semibold text-text dark:text-text-dark">
+              <Text className="text-base font-manrope-semibold text-text-dark">
                 How can we help you?
               </Text>
-              <Text className="text-sm text-text-muted dark:text-text-darkMuted font-manrope-light">
+              <Text className="text-sm text-text-darkMuted font-manrope-light">
                 Find answers to common questions and learn how to use Repair Hub
               </Text>
             </View>
@@ -242,31 +241,31 @@ const HelpCenter = () => {
                   size={16}
                   color={getCategoryColor(category)}
                 />
-                <Text className="text-xs font-manrope-bold uppercase tracking-wider text-text-muted dark:text-text-darkMuted">
+                <Text className="text-xs font-manrope-bold uppercase tracking-wider text-text-darkMuted">
                   {getCategoryTitle(category)}
                 </Text>
               </View>
 
-              <View className="bg-card dark:bg-card-dark border border-border dark:border-border-dark rounded-lg overflow-hidden">
+              <View className="bg-card-dark border border-border-dark rounded-lg overflow-hidden">
                 {categoryFAQs.map((faq, index) => (
                   <TouchableOpacity
                     key={faq.id}
                     activeOpacity={0.7}
                     onPress={() => toggleFAQ(faq.id)}
-                    className={`px-4 py-3 ${index !== categoryFAQs.length - 1 ? 'border-b border-border/50 dark:border-border-dark/50' : ''}`}
+                    className={`px-4 py-3 ${index !== categoryFAQs.length - 1 ? 'border-b border-border-dark/50' : ''}`}
                   >
                     <View className="flex-row items-center justify-between">
-                      <Text className="flex-1 text-sm font-manrope-semibold text-text dark:text-text-dark mr-2">
+                      <Text className="flex-1 text-sm font-manrope-semibold text-text-dark mr-2">
                         {faq.question}
                       </Text>
                       <Ionicons
                         name={expandedFAQ === faq.id ? "chevron-up" : "chevron-down"}
                         size={20}
-                        color={isDark ? "#94A3B8" : "#64748B"}
+                        color="#94A3B8"
                       />
                     </View>
                     {expandedFAQ === faq.id && (
-                      <Text className="mt-2 text-sm font-manrope-light text-text-muted dark:text-text-darkMuted leading-5">
+                      <Text className="mt-2 text-sm font-manrope-light text-text-darkMuted leading-5">
                         {faq.answer}
                       </Text>
                     )}
@@ -279,45 +278,45 @@ const HelpCenter = () => {
 
         {/* How It Works */}
         <View className="mb-6">
-          <Text className="mb-1 px-3 text-xs font-manrope-bold uppercase tracking-wider text-text-muted dark:text-text-darkMuted">
+          <Text className="mb-1 px-3 text-xs font-manrope-bold uppercase tracking-wider text-text-darkMuted">
             How Repair Hub Works
           </Text>
-          <View className="bg-card dark:bg-card-dark px-5 py-4 border border-border dark:border-border-dark rounded-lg">
-            <View className="flex-row items-start gap-3 py-2 border-b border-border/50 dark:border-border-dark/50">
+          <View className="bg-card-dark px-5 py-4 border border-border-dark rounded-lg">
+            <View className="flex-row items-start gap-3 py-2 border-b border-border-dark/50">
               <View className="w-8 h-8 bg-primary/10 rounded-full items-center justify-center">
                 <Text className="text-primary font-manrope-bold text-sm">1</Text>
               </View>
               <View className="flex-1">
-                <Text className="text-sm font-manrope-semibold text-text dark:text-text-dark">
+                <Text className="text-sm font-manrope-semibold text-text-dark">
                   Create Your Profile
                 </Text>
-                <Text className="text-xs text-text-muted dark:text-text-darkMuted font-manrope-light">
+                <Text className="text-xs text-text-darkMuted font-manrope-light">
                   Sign up as a technician, complete your profile with skills and experience
                 </Text>
               </View>
             </View>
-            <View className="flex-row items-start gap-3 py-2 border-b border-border/50 dark:border-border-dark/50">
+            <View className="flex-row items-start gap-3 py-2 border-b border-border-dark/50">
               <View className="w-8 h-8 bg-primary/10 rounded-full items-center justify-center">
                 <Text className="text-primary font-manrope-bold text-sm">2</Text>
               </View>
               <View className="flex-1">
-                <Text className="text-sm font-manrope-semibold text-text dark:text-text-dark">
+                <Text className="text-sm font-manrope-semibold text-text-dark">
                   Explore & Connect
                 </Text>
-                <Text className="text-xs text-text-muted dark:text-text-darkMuted font-manrope-light">
+                <Text className="text-xs text-text-darkMuted font-manrope-light">
                   Browse spare parts, repair requests, and services from other technicians
                 </Text>
               </View>
             </View>
-            <View className="flex-row items-start gap-3 py-2 border-b border-border/50 dark:border-border-dark/50">
+            <View className="flex-row items-start gap-3 py-2 border-b border-border-dark/50">
               <View className="w-8 h-8 bg-primary/10 rounded-full items-center justify-center">
                 <Text className="text-primary font-manrope-bold text-sm">3</Text>
               </View>
               <View className="flex-1">
-                <Text className="text-sm font-manrope-semibold text-text dark:text-text-dark">
+                <Text className="text-sm font-manrope-semibold text-text-dark">
                   Share & Collaborate
                 </Text>
-                <Text className="text-xs text-text-muted dark:text-text-darkMuted font-manrope-light">
+                <Text className="text-xs text-text-darkMuted font-manrope-light">
                   Upload your own parts, services, or requests and collaborate with peers
                 </Text>
               </View>
@@ -327,10 +326,10 @@ const HelpCenter = () => {
                 <Text className="text-primary font-manrope-bold text-sm">4</Text>
               </View>
               <View className="flex-1">
-                <Text className="text-sm font-manrope-semibold text-text dark:text-text-dark">
+                <Text className="text-sm font-manrope-semibold text-text-dark">
                   Build Your Network
                 </Text>
-                <Text className="text-xs text-text-muted dark:text-text-darkMuted font-manrope-light">
+                <Text className="text-xs text-text-darkMuted font-manrope-light">
                   Connect with technicians, grow your professional network, and expand your business
                 </Text>
               </View>
@@ -339,16 +338,16 @@ const HelpCenter = () => {
         </View>
 
         {/* Contact Support Card */}
-        <View className="mb-6 px-4 py-4 bg-primary/5 dark:bg-primary/10 rounded-xl border border-primary/20">
+        <View className="mb-6 px-4 py-4 bg-primary/10 rounded-xl border border-primary/20">
           <View className="flex-row items-center gap-3">
             <View className="w-10 h-10 bg-primary/20 rounded-full items-center justify-center">
               <Ionicons name="chatbubbles-outline" size={20} color="#6366F1" />
             </View>
             <View className="flex-1">
-              <Text className="text-sm font-manrope-semibold text-text dark:text-text-dark">
+              <Text className="text-sm font-manrope-semibold text-text-dark">
                 Still need help?
               </Text>
-              <Text className="text-xs text-text-muted dark:text-text-darkMuted font-manrope-light">
+              <Text className="text-xs text-text-darkMuted font-manrope-light">
                 Contact our support team for personalized assistance
               </Text>
             </View>
@@ -364,10 +363,10 @@ const HelpCenter = () => {
         </View>
 
         {/* Footer */}
-        <View className="mt-2 px-4 py-3 bg-input dark:bg-input-dark rounded-xl">
+        <View className="mt-2 px-4 py-3 bg-input-dark rounded-xl">
           <View className="flex-row items-center justify-center gap-2">
-            <Ionicons name="information-circle-outline" size={16} color={isDark ? "#94A3B8" : "#64748B"} />
-            <Text className="text-xs text-text-muted dark:text-text-darkMuted font-manrope-light text-center">
+            <Ionicons name="information-circle-outline" size={16} color="#94A3B8" />
+            <Text className="text-xs text-text-darkMuted font-manrope-light text-center">
               Can&apos;t find what you&apos;re looking for? Contact our support team.
             </Text>
           </View>

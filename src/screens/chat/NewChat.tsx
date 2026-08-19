@@ -13,7 +13,6 @@ import {
 
 import AppRefreshControl from "@/src/components/ui/AppRefreshControl";
 import { useAuth } from "@/src/context/AuthContext";
-import { useTheme } from "@/src/context/ThemeContext";
 import { useTechnicians } from "@/src/hooks";
 import { useConversations } from "@/src/hooks/chat/useConversations";
 import { showError } from "@/src/lib/toast";
@@ -30,7 +29,6 @@ const NewChat = ({
     onBack,
     onConversationCreated,
 }: NewChatProps) => {
-    const { isDark } = useTheme();
     const insets = useSafeAreaInsets();
     const { user } = useAuth();
 
@@ -125,7 +123,7 @@ const NewChat = ({
 
     if (isLoading) {
         return (
-            <View className="flex-1 items-center justify-center bg-bg dark:bg-bg-dark">
+            <View className="flex-1 items-center justify-center bg-bg-dark">
                 <ActivityIndicator
                     size="large"
                     color="#2563EB"
@@ -137,39 +135,35 @@ const NewChat = ({
     return (
         <View
             style={{ flex: 1, paddingBottom: insets.bottom }}
-            className="flex-1 bg-bg dark:bg-bg-dark"
+            className="flex-1 bg-bg-dark"
         >
             {/* Header */}
-            <View className="border-b border-border px-5 pb-4 pt-3 dark:border-border-dark">
+            <View className="border-b px-5 pb-4 pt-3 border-border-dark">
                 <View className="flex-row gap-3 items-center">
                     <TouchableOpacity
                         onPress={onBack}
                         activeOpacity={0.7}
-                        className="h-10 w-10 items-center justify-center rounded-2xl border border-border bg-bg dark:border-border-dark dark:bg-bg-dark"
+                        className="h-10 w-10 items-center justify-center rounded-2xl border border-border-dark bg-bg-dark"
                     >
                         <Ionicons
                             name="arrow-back"
                             size={20}
-                            color={
-                                isDark
-                                    ? "#F8FAFC"
-                                    : "#171A2B"
-                            }
+                            color="#F8FAFC"
                         />
                     </TouchableOpacity>
                     <View>
-                        <Text className="font-manrope-bold text-2xl text-text dark:text-text-dark">
+                        <Text className="font-manrope-bold text-2xl text-text-dark">
                             New Chat
                         </Text>
 
-                        <Text className="mt-1 font-manrope text-sm text-gray-500 dark:text-gray-400">
+                        <Text className="mt-1 font-manrope text-sm text-gray-400">
                             Select a technician to start a conversation.
                         </Text>
                     </View>
                 </View>
 
                 {/* Search */}
-                <View className="mt-4 flex-row items-center rounded-2xl bg-card px-3 dark:bg-card-dark">
+                <View className="mt-4 flex-row items-center rounded-2xl px-3 bg-card-dark">
                     <Ionicons
                         name="search-outline"
                         size={20}
@@ -181,7 +175,7 @@ const NewChat = ({
                         onChangeText={setSearch}
                         placeholder="Search technicians..."
                         placeholderTextColor="#9CA3AF"
-                        className="ml-2 flex-1 py-3 font-manrope text-sm text-text dark:text-text-dark"
+                        className="ml-2 flex-1 py-3 font-manrope text-sm text-text-dark"
                     />
 
                     {search.length > 0 && (
@@ -251,7 +245,7 @@ const NewChat = ({
                                     item.is_available,
                                     item.last_seen_at
                                 ) && (
-                                        <View className="absolute bottom-0 right-0 h-4 w-4 rounded-full border-2 border-white bg-green-500 dark:border-gray-900" />
+                                        <View className="absolute bottom-0 right-0 h-4 w-4 rounded-full border-2 bg-green-500 :border-gray-900" />
                                     )}
                             </View>
 
@@ -259,7 +253,7 @@ const NewChat = ({
                             <View className="flex-1">
                                 <Text
                                     numberOfLines={1}
-                                    className="font-manrope-semibold text-[15px] text-text dark:text-text-dark"
+                                    className="font-manrope-semibold text-[15px] text-text-dark"
                                 >
                                     {name}
                                 </Text>
@@ -267,7 +261,7 @@ const NewChat = ({
                                 {item.city ? (
                                     <Text
                                         numberOfLines={1}
-                                        className="mt-1 font-manrope text-sm text-gray-500 dark:text-gray-400"
+                                        className="mt-1 font-manrope text-sm text-gray-400"
                                     >
                                         {item.city}
                                     </Text>
@@ -298,7 +292,7 @@ const NewChat = ({
                     );
                 }}
                 ItemSeparatorComponent={() => (
-                    <View className="ml-[86px] h-px bg-gray-100 dark:bg-gray-800" />
+                    <View className="ml-[86px] h-px bg-gray-800" />
                 )}
                 ListEmptyComponent={
                     <View className="flex-1 items-center justify-center px-8">
@@ -312,7 +306,7 @@ const NewChat = ({
                             color="#9CA3AF"
                         />
 
-                        <Text className="mt-4 text-center font-manrope-semibold text-base text-gray-700 dark:text-gray-300">
+                        <Text className="mt-4 text-center font-manrope-semibold text-base text-gray-300">
                             {search
                                 ? "No technicians found"
                                 : "No technicians available"}

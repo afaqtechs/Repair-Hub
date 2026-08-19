@@ -114,7 +114,7 @@ const ConversationCard = memo(({
       onPress={handlePress}
       onLongPress={handleLongPress}
       delayLongPress={500}
-      className={`flex-row items-center px-4 py-3 ${selected ? "bg-primary/10 dark:bg-primary/20" : ""
+      className={`flex-row items-center px-4 py-3 ${selected ? "bg-primary/20" : ""
         }`}
     >
       {selected && (
@@ -138,7 +138,7 @@ const ConversationCard = memo(({
         )}
 
         {isOnline && (
-          <View className="absolute bottom-0 right-0 h-4 w-4 rounded-full border-2 border-white bg-green-500 dark:border-gray-900" />
+          <View className="absolute bottom-0 right-0 h-4 w-4 rounded-full border-2 bg-green-500 border-gray-900" />
         )}
       </View>
 
@@ -147,8 +147,8 @@ const ConversationCard = memo(({
           <Text
             numberOfLines={1}
             className={`mr-2 flex-1 font-manrope-semibold text-[15px] ${unreadCount > 0
-                ? "text-gray-950 dark:text-white"
-                : "text-gray-900 dark:text-white"
+                ? "text-white"
+                : "text-white"
               }`}
           >
             {name}
@@ -179,8 +179,8 @@ const ConversationCard = memo(({
           <Text
             numberOfLines={1}
             className={`flex-1 font-manrope text-sm ${unreadCount > 0
-                ? "font-manrope-semibold text-text-muted dark:text-text-darkMuted"
-                : "text-gray-500 dark:text-gray-400"
+                ? "font-manrope-semibold text-text-darkMuted"
+                : "text-gray-400"
               }`}
           >
             {getMessagePreview(conversation)}

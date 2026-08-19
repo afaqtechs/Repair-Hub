@@ -1,5 +1,4 @@
 import { useAuth } from "@/src/context/AuthContext";
-import { useTheme } from "@/src/context/ThemeContext";
 import {
     useNotificationSettings,
     useUpdateNotificationSetting,
@@ -104,7 +103,6 @@ const CATEGORIES = [
 
 const Notifications = () => {
     const router = useRouter();
-    const { isDark } = useTheme();
     const insets = useSafeAreaInsets();
 
     const { user } = useAuth();
@@ -234,7 +232,7 @@ const Notifications = () => {
             <View
                 key={setting.type}
                 className={`flex-row items-center justify-between py-3.5 ${index !== length - 1
-                    ? "border-b border-border/50 dark:border-border-dark/50"
+                    ? "border-b border-border-dark/50"
                     : ""
                     }`}
             >
@@ -245,18 +243,16 @@ const Notifications = () => {
                         color={
                             enabled
                                 ? "#6366F1"
-                                : isDark
-                                    ? "#64748B"
-                                    : "#94A3B8"
+                                :  "#64748B"
                         }
                     />
 
                     <View className="ml-4 flex-1">
-                        <Text className="text-[15px] font-manrope-semibold text-text dark:text-text-dark">
+                        <Text className="text-[15px] font-manrope-semibold text-text-dark">
                             {setting.title}
                         </Text>
 
-                        <Text className="text-xs font-manrope-light text-text-muted dark:text-text-darkMuted">
+                        <Text className="text-xs font-manrope-light text-text-darkMuted">
                             {setting.description}
                         </Text>
                     </View>
@@ -269,17 +265,11 @@ const Notifications = () => {
                         toggleSetting(setting.type)
                     }
                     trackColor={{
-                        false: isDark
-                            ? "#2D3A4F"
-                            : "#E2E8F0",
+                        false: "#2D3A4F",
                         true: "#6366F1",
                     }}
                     thumbColor="#FFFFFF"
-                    ios_backgroundColor={
-                        isDark
-                            ? "#2D3A4F"
-                            : "#E2E8F0"
-                    }
+                    ios_backgroundColor="#2D3A4F"
                 />
             </View>
         );
@@ -292,28 +282,24 @@ const Notifications = () => {
                 paddingTop: insets.top,
                 paddingBottom: insets.bottom,
             }}
-            className="flex-1 bg-bg dark:bg-bg-dark"
+            className="flex-1 bg-bg-dark"
         >
             {/* Header */}
-            <View className="px-4 pt-2 pb-5 bg-bg dark:bg-bg-dark">
+            <View className="px-4 pt-2 pb-5 bg-bg-dark">
                 <View className="flex-row items-center">
                     <TouchableOpacity
                         onPress={() => router.back()}
                         activeOpacity={0.7}
-                        className="w-10 h-10 items-center justify-center rounded-2xl bg-card dark:bg-card-dark border border-border dark:border-border-dark"
+                        className="w-10 h-10 items-center justify-center rounded-2xl bg-card-dark border border-border-dark"
                     >
                         <Ionicons
                             name="arrow-back"
                             size={20}
-                            color={
-                                isDark
-                                    ? "#F8FAFC"
-                                    : "#171A2B"
-                            }
+                            color= "#F8FAFC"
                         />
                     </TouchableOpacity>
 
-                    <Text className="ml-2 text-[20px] font-manrope-semibold text-text dark:text-text-dark">
+                    <Text className="ml-2 text-[20px] font-manrope-semibold text-text-dark">
                         Notifications
                     </Text>
                 </View>
@@ -328,14 +314,14 @@ const Notifications = () => {
                 }}
             >
                 {/* Summary Card */}
-                <View className="mb-6 px-4 py-4 bg-card dark:bg-card-dark rounded-xl">
+                <View className="mb-6 px-4 py-4 bg-card-dark rounded-xl">
                     <View className="flex-row items-center justify-between">
                         <View className="flex-1">
-                            <Text className="text-base font-manrope-semibold text-text dark:text-text-dark">
+                            <Text className="text-base font-manrope-semibold text-text-dark">
                                 Notification Settings
                             </Text>
 
-                            <Text className="text-sm text-text-muted dark:text-text-darkMuted font-manrope-light">
+                            <Text className="text-sm text-text-darkMuted font-manrope-light">
                                 {isLoading
                                     ? "Loading notification settings..."
                                     : `${enabledCount} of ${totalCount} notifications enabled`}
@@ -343,7 +329,7 @@ const Notifications = () => {
                         </View>
 
                         {!isLoading && (
-                            <View className="px-3 py-1.5 bg-primary/10 dark:bg-primary/20 rounded-full">
+                            <View className="px-3 py-1.5 bg-primary/20 rounded-full">
                                 <Text className="text-xs text-primary font-manrope-bold">
                                     {Math.round(
                                         (enabledCount /
@@ -366,7 +352,7 @@ const Notifications = () => {
                             updateSettingMutation.isPending
                         }
                         className={`flex-row items-center justify-center gap-2 py-3.5 rounded-xl ${allEnabled
-                            ? "bg-card dark:bg-card-dark border border-border dark:border-border-dark"
+                            ? "bg-card-dark border border-border-dark"
                             : "bg-primary"
                             }`}
                         onPress={() =>
@@ -384,16 +370,14 @@ const Notifications = () => {
                             size={21}
                             color={
                                 allEnabled
-                                    ? isDark
-                                        ? "#F8FAFC"
-                                        : "#171A2B"
+                                    ? "#F8FAFC"
                                     : "#22C55E"
                             }
                         />
 
                         <Text
                             className={`font-manrope-semibold text-base ${allEnabled
-                                ? "text-text dark:text-text-dark"
+                                ? "text-text-dark"
                                 : "text-white"
                                 }`}
                         >
@@ -407,7 +391,7 @@ const Notifications = () => {
                 {/* Settings */}
                 {isLoading ? (
                     <View className="py-10 items-center">
-                        <Text className="text-sm font-manrope-light text-text-muted dark:text-text-darkMuted">
+                        <Text className="text-sm font-manrope-light text-text-darkMuted">
                             Loading notification settings...
                         </Text>
                     </View>
@@ -431,13 +415,13 @@ const Notifications = () => {
                                 key={category}
                                 className="mb-6"
                             >
-                                <Text className="mb-1 px-3 text-xs font-manrope-bold uppercase tracking-wider text-text-muted dark:text-text-darkMuted">
+                                <Text className="mb-1 px-3 text-xs font-manrope-bold uppercase tracking-wider text-text-darkMuted">
                                     {getCategoryTitle(
                                         category
                                     )}
                                 </Text>
 
-                                <View className="bg-card dark:bg-card-dark px-5 rounded-lg">
+                                <View className="bg-card-dark px-5 rounded-lg">
                                     {categorySettings.map(
                                         (
                                             setting,
@@ -456,19 +440,15 @@ const Notifications = () => {
                 )}
 
                 {/* Footer */}
-                <View className="mt-2 px-4 py-3 bg-input dark:bg-input-dark/50 rounded-xl">
+                <View className="mt-2 px-4 py-3 bg-input-dark/50 rounded-xl">
                     <View className="flex-row items-center gap-2">
                         <Ionicons
                             name="information-circle-outline"
                             size={16}
-                            color={
-                                isDark
-                                    ? "#94A3B8"
-                                    : "#64748B"
-                            }
+                            color="#94A3B8"
                         />
 
-                        <Text className="text-xs text-text-muted dark:text-text-darkMuted font-manrope-light flex-1">
+                        <Text className="text-xs text-text-darkMuted font-manrope-light flex-1">
                             Push notifications may require
                             app permissions. Manage
                             preferences anytime.

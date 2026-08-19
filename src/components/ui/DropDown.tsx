@@ -12,7 +12,6 @@ interface AppDropdownProps {
     value: string | null;
     placeholder: string;
     onChange: (item: DropdownItem) => void;
-    isDark: boolean;
     search?: boolean;
 }
 
@@ -21,7 +20,6 @@ const AppDropdown = ({
     value,
     placeholder,
     onChange,
-    isDark,
     search = false,
 }: AppDropdownProps) => {
 
@@ -42,27 +40,19 @@ const AppDropdown = ({
                 height: 56,
                 borderRadius: 16,
                 paddingHorizontal: 16,
-                backgroundColor: isDark
-                    ? "#1E293B"
-                    : "#FFFFFF",
+                backgroundColor: "#1E293B",
                 borderWidth: 1,
-                borderColor: isDark
-                    ? "#334155"
-                    : "#E2E8F0",
+                borderColor: "#334155",
             }}
 
             placeholderStyle={{
-                color: isDark
-                    ? "#94A3B8"
-                    : "#9CA3AF",
+                color: "#94A3B8",
                 fontSize: 14,
                 fontFamily: "Manrope",
             }}
 
             selectedTextStyle={{
-                color: isDark
-                    ? "#F8FAFC"
-                    : "#171A2B",
+                color: "#F8FAFC",
                 fontSize: 14,
                 fontFamily: "Manrope",
             }}
@@ -72,23 +62,15 @@ const AppDropdown = ({
                 marginTop: 5,
                 borderRadius: 16,
                 overflow: "hidden",
-                backgroundColor: isDark
-                    ? "#1E293B"
-                    : "#FFFFFF",
+                backgroundColor: "#1E293B",
                 borderWidth: 1,
-                borderColor: isDark
-                    ? "#334155"
-                    : "#E2E8F0",
+                borderColor: "#334155",
                 elevation: 5,
                 shadowOpacity: 0.15,
             }}
 
             // Selected item background
-            activeColor={
-                isDark
-                    ? "#334155"
-                    : "#ECFDF5"
-            }
+            activeColor="#334155"
 
             // Selected item text
             // activeTextColor={
@@ -98,9 +80,7 @@ const AppDropdown = ({
             // }
 
             itemTextStyle={{
-                color: isDark
-                    ? "#F8FAFC"
-                    : "#171A2B",
+                color: "#F8FAFC",
                 fontFamily: "Manrope",
                 fontSize: 14,
             }}
@@ -109,11 +89,7 @@ const AppDropdown = ({
                 <Ionicons
                     name="chevron-down"
                     size={18}
-                    color={
-                        isDark
-                            ? "#94A3B8"
-                            : "#64748B"
-                    }
+                    color="#94A3B8"
                 />
             )}
         />

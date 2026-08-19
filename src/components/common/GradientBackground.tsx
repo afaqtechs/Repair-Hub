@@ -1,4 +1,4 @@
-import { useTheme } from "@/src/context/ThemeContext";
+
 import React from "react";
 import {
     ImageBackground,
@@ -16,11 +16,8 @@ const EnhancedGradientBackground = ({
     style,
     ...props
 }: EnhancedGradientBackgroundProps) => {
-    const { isDark } = useTheme();
 
-    const backgroundImage = isDark
-        ? require("@/assets/ui/background/dark_background.jpg")
-        : require("@/assets/ui/background/light_background.jpg");
+    const backgroundImage = require("@/assets/ui/background/dark_background.jpg");
 
     return (
         <View

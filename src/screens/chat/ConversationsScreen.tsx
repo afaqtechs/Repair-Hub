@@ -16,7 +16,6 @@ import ConversationCard from "@/src/components/chat/ConversationCard";
 import AppRefreshControl from "@/src/components/ui/AppRefreshControl";
 
 import { useAuth } from "@/src/context/AuthContext";
-import { useTheme } from "@/src/context/ThemeContext";
 import { useConversations } from "@/src/hooks/chat/useConversations";
 
 import {
@@ -37,7 +36,6 @@ const ConversationsScreen = ({
   onOpenConversation,
   onCreateConversation,
 }: ConversationsScreenProps) => {
-  const { isDark } = useTheme();
   const { user } = useAuth();
 
   const {
@@ -283,7 +281,7 @@ const ConversationsScreen = ({
    */
   if (isLoading) {
     return (
-      <View className="flex-1 items-center justify-center bg-bg dark:bg-bg-dark">
+      <View className="flex-1 items-center justify-center bg-bg-dark">
         <ActivityIndicator
           size="large"
           color="#2563EB"
@@ -297,12 +295,9 @@ const ConversationsScreen = ({
    */
   if (isError) {
     return (
-      <View className="flex-1 items-center justify-center bg-bg px-6 dark:bg-bg-dark">
+      <View className="flex-1 items-center justify-center px-6 bg-bg-dark">
         <Text
-          className={`mb-4 text-center font-manrope ${isDark
-            ? "text-text-dark"
-            : "text-text"
-            }`}
+          className={`mb-4 text-center font-manrope text-text-dark`}
         >
           Failed to load conversations.
         </Text>
@@ -321,9 +316,9 @@ const ConversationsScreen = ({
   }
 
   return (
-    <View className="flex-1 bg-bg dark:bg-bg-dark">
+    <View className="flex-1 bg-bg-dark">
       {/* Header */}
-      <View className="mb-2 flex-row items-center justify-between border-b border-border px-5 py-4 dark:border-border-dark/50">
+      <View className="mb-2 flex-row items-center justify-between border-b px-5 py-4 border-border-dark/50">
         {selectionMode ? (
           <View className="flex-row items-center justify-between">
             <View className="flex-1 flex-row items-center">
@@ -336,15 +331,11 @@ const ConversationsScreen = ({
                 <Ionicons
                   name="close"
                   size={25}
-                  color={
-                    isDark
-                      ? "#F8FAFC"
-                      : "#171A2B"
-                  }
+                  color="#F8FAFC"
                 />
               </TouchableOpacity>
 
-              <Text className="font-manrope-bold text-xl text-text dark:text-text-dark">
+              <Text className="font-manrope-bold text-xl text-text-dark">
                 {selectedConversationIds.length} selected
               </Text>
             </View>
@@ -390,7 +381,7 @@ const ConversationsScreen = ({
           </View>
         ) : (
           <>
-            <Text className="font-manrope-bold text-2xl text-text dark:text-text-dark">
+            <Text className="font-manrope-bold text-2xl text-text-dark">
               Messages
             </Text>
 
@@ -401,11 +392,7 @@ const ConversationsScreen = ({
               <Ionicons
                 name="search-outline"
                 size={25}
-                color={
-                  isDark
-                    ? "#F8FAFC"
-                    : "#171A2B"
-                }
+                color="#F8FAFC"
               />
             </TouchableOpacity>
           </>
@@ -446,19 +433,13 @@ const ConversationsScreen = ({
             </View>
 
             <Text
-              className={`mt-5 font-manrope-semibold text-lg ${isDark
-                ? "text-text-dark"
-                : "text-text"
-                }`}
+              className={`mt-5 font-manrope-semibold text-lg text-text-dark`}
             >
               No conversations
             </Text>
 
             <Text
-              className={`mt-2 text-center font-manrope text-sm ${isDark
-                ? "text-text-darkMuted"
-                : "text-text-secondary"
-                }`}
+              className={`mt-2 text-center font-manrope text-sm text-text-darkMuted`}
             >
               Start a conversation
               with a technician

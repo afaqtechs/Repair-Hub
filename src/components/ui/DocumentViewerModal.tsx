@@ -3,7 +3,6 @@ import { Ionicons } from "@expo/vector-icons";
 import React, { useState } from "react";
 import {
     ActivityIndicator,
-    Alert,
     Image,
     Modal,
     Text,
@@ -17,7 +16,6 @@ type Props = {
     url: string | null;
     onClose: () => void;
     isImage?: boolean;
-    isDark?: boolean;
 };
 
 const DocumentViewerModal = ({
@@ -25,7 +23,6 @@ const DocumentViewerModal = ({
     url,
     onClose,
     isImage = false,
-    isDark,
 }: Props) => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(false);
@@ -57,26 +54,26 @@ const DocumentViewerModal = ({
             transparent={false}
             onRequestClose={onClose}
         >
-            <View className="flex-1 bg-bg dark:bg-bg-dark">
+            <View className="flex-1 bg-bg-dark">
                 {/* Header */}
-                <View className="flex-row items-center justify-between px-4 py-4 border-b border-border dark:border-border-dark">
-                    <Text className="text-lg font-manrope-semibold text-text dark:text-text-dark">
+                <View className="flex-row items-center justify-between px-4 py-4 border-b border-border-dark">
+                    <Text className="text-lg font-manrope-semibold text-text-dark">
                         Document Preview
                     </Text>
                     <View className="flex-row items-center gap-2">
                         <TouchableOpacity
                             // onPress={handleDownload}
-                            className="w-10 h-10 items-center justify-center rounded-full bg-card dark:bg-card-dark"
+                            className="w-10 h-10 items-center justify-center rounded-full bg-card-dark"
                         >
                             <Ionicons
                                 name="download-outline"
                                 size={22}
-                                color={isDark ? "#F8FAFC" : "#171A2B"}
+                                color="#F8FAFC"
                             />
                         </TouchableOpacity>
                         <TouchableOpacity
                             onPress={onClose}
-                            className="w-10 h-10 items-center justify-center rounded-full bg-card dark:bg-card-dark"
+                            className="w-10 h-10 items-center justify-center rounded-full bg-card-dark"
                         >
                             <Ionicons
                                 name="close"
@@ -110,7 +107,7 @@ const DocumentViewerModal = ({
                             {error && (
                                 <View className="absolute inset-0 items-center justify-center px-6">
                                     <Ionicons name="image-outline" size={48} color="#94A3B8" />
-                                    <Text className="mt-3 text-center font-manrope-medium text-text-muted dark:text-text-darkMuted">
+                                    <Text className="mt-3 text-center font-manrope-medium text-text-darkMuted">
                                         Could not load image
                                     </Text>
                                     <TouchableOpacity
@@ -134,7 +131,7 @@ const DocumentViewerModal = ({
                             renderLoading={() => (
                                 <View className="flex-1 items-center justify-center">
                                     <ActivityIndicator size="large" color="#6366F1" />
-                                    <Text className="mt-3 text-sm font-manrope-medium text-text-muted dark:text-text-darkMuted">
+                                    <Text className="mt-3 text-sm font-manrope-medium text-text-darkMuted">
                                         Loading document...
                                     </Text>
                                 </View>
@@ -151,12 +148,12 @@ const DocumentViewerModal = ({
                     )}
 
                     {error && !isImage && (
-                        <View className="absolute inset-0 items-center justify-center px-6 bg-bg dark:bg-bg-dark">
+                        <View className="absolute inset-0 items-center justify-center px-6 bg-bg-dark">
                             <Ionicons name="document-text-outline" size={48} color="#94A3B8" />
-                            <Text className="mt-3 text-center font-manrope-medium text-text-muted dark:text-text-darkMuted">
+                            <Text className="mt-3 text-center font-manrope-medium text-text-darkMuted">
                                 Could not load document
                             </Text>
-                            <Text className="mt-1 text-xs font-manrope-light text-text-muted dark:text-text-darkMuted text-center">
+                            <Text className="mt-1 text-xs font-manrope-light text-text-darkMuted text-center">
                                 The document may be private or unavailable
                             </Text>
                             <TouchableOpacity

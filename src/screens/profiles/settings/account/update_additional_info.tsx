@@ -1,4 +1,4 @@
-import { useTheme } from '@/src/context/ThemeContext';
+
 import { useProfileMutations } from '@/src/hooks';
 import { showError, showSuccess } from '@/src/lib/toast';
 import { useProfileStore } from '@/store/useProfileStore';
@@ -13,7 +13,6 @@ type Props = {
 };
 
 const UpdateAdditionalInfo = ({ setEditingAdditionalInfo, technician }: Props) => {
-    const { isDark } = useTheme();
     const {
         form,
         errors,
@@ -65,25 +64,22 @@ const UpdateAdditionalInfo = ({ setEditingAdditionalInfo, technician }: Props) =
         placeholder,
         onChangeText,
         keyboardType,
-        isDark,
     }: any) => (
-        <View className="mt-2 bg-input dark:bg-input-dark/30 border border-border dark:border-border-dark rounded-xl flex-row items-center px-4 flex-1">
+        <View className="mt-2 bg-input-dark/30 border border-border-dark rounded-xl flex-row items-center px-4 flex-1">
 
             <Ionicons
                 name={icon}
                 size={20}
-                color={isDark ? "#94A3B8" : "#9CA3AF"}
+                color="#94A3B8"
             />
 
             <TextInput
                 value={value?.toString() ?? ""}
                 onChangeText={onChangeText}
                 keyboardType={keyboardType}
-                className="flex-1 py-3.5 ml-2 text-text dark:text-text-dark"
+                className="flex-1 py-3.5 ml-2 text-text-dark"
                 placeholder={placeholder}
-                placeholderTextColor={
-                    isDark ? "#94A3B8" : "#9CA3AF"
-                }
+                placeholderTextColor="#94A3B8"
             />
 
         </View>
@@ -93,19 +89,19 @@ const UpdateAdditionalInfo = ({ setEditingAdditionalInfo, technician }: Props) =
     return (
         <View className="mb-6">
             <View className="flex-row items-center justify-between mb-1 px-3">
-                <Text className="text-xs font-manrope-bold uppercase tracking-wider text-text-muted dark:text-text-darkMuted">
+                <Text className="text-xs font-manrope-bold uppercase tracking-wider text-text-darkMuted">
                     Update Additional Info
                 </Text>
                 <TouchableOpacity
                     onPress={() => setEditingAdditionalInfo(false)}
                     activeOpacity={0.7}
-                    className="flex-row items-center gap-1 px-2 py-1 rounded-lg bg-primary/10 dark:bg-primary/20"
+                    className="flex-row items-center gap-1 px-2 py-1 rounded-lg bg-primary/20"
                 >
                     <Ionicons name="arrow-back" size={14} color="#6366F1" />
                     <Text className="text-xs font-manrope-medium text-primary">Back</Text>
                 </TouchableOpacity>
             </View>
-            <View className="bg-card dark:bg-card-dark px-5 py-4 flex-col gap-3 rounded-lg">
+            <View className="bg-card-dark px-5 py-4 flex-col gap-3 rounded-lg">
                 <Input
                     icon="location-outline"
                     value={form.address}
@@ -113,7 +109,6 @@ const UpdateAdditionalInfo = ({ setEditingAdditionalInfo, technician }: Props) =
                     onChangeText={(value: any) =>
                         setField("address", value)
                     }
-                    isDark={isDark}
                 />
                 {errors.address && (
                     <Text className="text-red-500 text-xs mt-1">
@@ -128,7 +123,6 @@ const UpdateAdditionalInfo = ({ setEditingAdditionalInfo, technician }: Props) =
                     onChangeText={(value: any) =>
                         setField("city", value)
                     }
-                    isDark={isDark}
                 />
                 {errors.city && (
                     <Text className="text-red-500 text-xs mt-1">
@@ -147,7 +141,6 @@ const UpdateAdditionalInfo = ({ setEditingAdditionalInfo, technician }: Props) =
                             value === "" ? 0 : (Number.parseInt(value.replace(/[^0-9]/g, ""), 10) || 0)
                         )
                     }
-                    isDark={isDark}
                 />
                 {errors.experience_years && (
                     <Text className="text-red-500 text-xs mt-1">

@@ -3,7 +3,6 @@ import ServiceCard from '@/src/components/cards/ServiceCard';
 import AppRefreshControl from '@/src/components/ui/AppRefreshControl';
 import EmptyState from '@/src/components/ui/EmptyState';
 import SortModal from '@/src/components/ui/SortModal';
-import { useTheme } from '@/src/context/ThemeContext';
 import { useCategory, usePartsByCategory, useServicesByCategory } from '@/src/hooks';
 import { Ionicons } from '@expo/vector-icons';
 import { FlashList } from '@shopify/flash-list';
@@ -18,7 +17,6 @@ const CategoryDetail = () => {
     const { id } = useLocalSearchParams<{ id: string }>();
     const router = useRouter();
     const insets = useSafeAreaInsets();
-    const { isDark } = useTheme();
 
     const [listView, setListView] = useState(false);
     const [activeTab, setActiveTab] = useState<string>("parts");
@@ -93,7 +91,7 @@ const CategoryDetail = () => {
 
     if (loading) {
         return (
-            <View className="flex-1 items-center justify-center bg-bg dark:bg-bg-dark">
+            <View className="flex-1 items-center justify-center bg-bg-dark">
                 <ActivityIndicator size="large" color="#2563EB" />
             </View>
         );
@@ -101,7 +99,7 @@ const CategoryDetail = () => {
 
     if (error) {
         return (
-            <SafeAreaView edges={["top", "left", "right"]} className="flex-1 bg-bg dark:bg-bg-dark">
+            <SafeAreaView edges={["top", "left", "right"]} className="flex-1 bg-bg-dark">
                 <View className="flex-1 items-center justify-center px-4">
                     <Ionicons name="alert-circle-outline" size={60} color="#EF4444" />
                     <Text className="text-red-500 text-lg font-bold mt-4">Something went wrong</Text>
@@ -110,7 +108,7 @@ const CategoryDetail = () => {
                         refetchParts();
                         refetchServices();
                     }}>
-                        <Text className="text-text dark:text-text-dark font-semibold">Try Again</Text>
+                        <Text className="text-text-dark font-semibold">Try Again</Text>
                     </TouchableOpacity>
                 </View>
             </SafeAreaView>
@@ -123,18 +121,18 @@ const CategoryDetail = () => {
     return (
         <View
             style={{ flex: 1, paddingTop: insets.top, paddingBottom: insets.bottom }}
-            className="flex-1 bg-bg dark:bg-bg-dark"
+            className="flex-1 bg-bg-dark"
         >
             <View className="px-5 pt-2 pb-5">
                 <View className="flex-row items-center">
                     <TouchableOpacity
                         onPress={() => router.back()}
                         activeOpacity={0.7}
-                        className="w-10 h-10 items-center justify-center rounded-2xl bg-card dark:bg-card-dark border border-border dark:border-border-dark"
+                        className="w-10 h-10 items-center justify-center rounded-2xl bg-card-dark border border-border-dark"
                     >
-                        <Ionicons name="arrow-back" size={20} color={isDark ? "#F8FAFC" : "#171A2B"} />
+                        <Ionicons name="arrow-back" size={20} color="#F8FAFC" />
                     </TouchableOpacity>
-                    <Text className="ml-2 text-[20px] font-manrope-semibold text-text dark:text-text-dark">
+                    <Text className="ml-2 text-[20px] font-manrope-semibold text-text-dark">
                         {category?.name}
                     </Text>
                 </View>
@@ -161,9 +159,9 @@ const CategoryDetail = () => {
                 </View>
             </View>
 
-            <View className="px-5 pb-3 border-b border-border dark:border-border-dark">
+            <View className="px-5 pb-3 border-b border-border-dark">
                 <View className="flex-row items-center justify-between">
-                    <Text className="text-text-muted dark:text-text-darkMuted text-base font-medium">
+                    <Text className="text-text-darkMuted text-base font-medium">
                         Found <Text className="font-bold text-primary">
                             ({sortedResults.length})
                         </Text>
@@ -172,23 +170,23 @@ const CategoryDetail = () => {
                     <View className="flex-row items-center gap-2">
                         <TouchableOpacity
                             onPress={() => setSortModalVisible(true)}
-                            className="w-10 h-10 rounded-md border border-border dark:border-border-dark bg-card dark:bg-card-dark items-center justify-center"
+                            className="w-10 h-10 rounded-md border border-border-dark bg-card-dark items-center justify-center"
                         >
                             <Ionicons
                                 name="swap-vertical-outline"
                                 size={20}
-                                color={isDark ? '#94A3B8' : '#667085'}
+                                color="#94A3B8"
                             />
                         </TouchableOpacity>
 
                         <TouchableOpacity
                             onPress={() => setListView(!listView)}
-                            className="w-10 h-10 rounded-md border border-border dark:border-border-dark bg-card dark:bg-card-dark items-center justify-center"
+                            className="w-10 h-10 rounded-md border border-border-dark bg-card-dark items-center justify-center"
                         >
                             <Ionicons
                                 name={listView ? 'grid-outline' : 'list-outline'}
                                 size={20}
-                                color={isDark ? '#94A3B8' : '#667085'}
+                                color="#94A3B8"
                             />
                         </TouchableOpacity>
                     </View>

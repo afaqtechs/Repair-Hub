@@ -22,7 +22,6 @@ type MenuItem = {
 type SimpleDropdownMenuProps = {
     items: MenuItem[];
     onSelect: (value: string) => void;
-    isDark?: boolean;
     triggerIcon?: string;
     triggerSize?: number;
 };
@@ -30,7 +29,6 @@ type SimpleDropdownMenuProps = {
 const SimpleDropdownMenu = ({
     items,
     onSelect,
-    isDark = false,
     triggerIcon = 'ellipsis-vertical',
     triggerSize = 18,
 }: SimpleDropdownMenuProps) => {
@@ -127,10 +125,10 @@ const SimpleDropdownMenu = ({
         hideMenu();
     };
 
-    const backgroundColor = isDark ? '#172033' : '#FFFFFF';
-    const borderColor = isDark ? '#374151' : '#E5E7EB';
-    const textColor = isDark ? '#E5E7EB' : '#374151';
-    const hoverColor = isDark ? '#374151' : '#F3F4F6';
+    const backgroundColor = "#172033";
+    const borderColor = '#374151';
+    const textColor = "#E5E7EB";
+    const hoverColor = "#374151";
 
     return (
         <>
@@ -141,15 +139,13 @@ const SimpleDropdownMenu = ({
                 activeOpacity={0.7}
                 className="w-8 h-8 items-center justify-center rounded-full"
                 style={{
-                    backgroundColor: isDark
-                        ? '#0B1120'
-                        : '#F8F7FC',
+                    backgroundColor: "#0B1120"
                 }}
             >
                 <Ionicons
                     name={triggerIcon as any}
                     size={triggerSize}
-                    color={isDark ? '#FFFFFF' : '#374151'}
+                    color="#FFFFFF"
                 />
             </TouchableOpacity>
 

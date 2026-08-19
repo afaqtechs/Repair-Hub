@@ -1,3 +1,4 @@
+
 import {
     useCategories,
     useConditions,
@@ -17,6 +18,7 @@ import {
     TouchableOpacity,
     View,
 } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 type Props = {
     visible: boolean;
@@ -94,7 +96,7 @@ const FilterDropdown = ({
     iconName?: keyof typeof Ionicons.glyphMap;
 }) => {
     return (
-        <View className="mb-3 rounded-xl border border-border bg-bg/50 dark:border-border-dark dark:bg-card-dark/50">
+        <View className="mb-3 rounded-xl border border-border-dark bg-card-dark/50">
             <TouchableOpacity
                 onPress={onToggle}
                 className="flex-row items-center justify-between px-4 py-3.5"
@@ -109,7 +111,7 @@ const FilterDropdown = ({
                             style={{ marginRight: 12 }}
                         />
                     )}
-                    <Text className="text-base font-semibold text-text dark:text-text-dark">
+                    <Text className="text-base font-semibold text-text-dark">
                         {title}
                     </Text>
                     {activeCount > 0 && (
@@ -131,7 +133,7 @@ const FilterDropdown = ({
             </TouchableOpacity>
 
             {isOpen && (
-                <View className="border-t border-border px-4 py-3 dark:border-border-dark">
+                <View className="border-t px-4 py-3 border-border-dark">
                     <View className="flex-row flex-wrap gap-2">
                         {children}
                     </View>
@@ -159,14 +161,14 @@ const FilterChip = ({
             activeOpacity={0.7}
             className={`flex-row items-center rounded-full border px-3 py-2 ${selected
                 ? 'border-primary bg-primary/30'
-                : 'border-border bg-card dark:border-border-dark dark:bg-card-dark/50'
+                : '  border-border-dark bg-card-dark/50'
                 }`}
         >
             <Text
                 className={
                     selected
                         ? 'text-white'
-                        : 'text-text dark:text-text-dark'
+                        : 'text-text-dark'
                 }
             >
                 {label}
@@ -193,6 +195,7 @@ const Filters = ({
 }: Props) => {
     const [draftFilters, setDraftFilters] =
         useState<FilterValues>(filters);
+    const insets = useSafeAreaInsets();
 
     useEffect(() => {
         if (visible) {
@@ -296,7 +299,7 @@ const Filters = ({
         serviceMinPrice,
         serviceMaxPrice,
         5,
-        '€'
+        'Br.'
     );
 
     /*
@@ -419,11 +422,11 @@ const Filters = ({
             onRequestClose={onClose}
         >
             <View className="flex-1 justify-end bg-black/50">
-                <View className="max-h-[92%] rounded-t-3xl bg-bg dark:bg-bg-dark">
+                <View className="max-h-[92%] rounded-t-3xl bg-bg-dark">
                     {/* Header */}
-                    <View className="flex-row items-center justify-between border-b border-border px-5 py-4 dark:border-border-dark">
+                    <View className="flex-row items-center justify-between border-b px-5 py-4 border-border-dark">
                         <View className="flex-row items-center">
-                            <Text className="text-xl font-bold text-text dark:text-text-dark">
+                            <Text className="text-xl font-bold text-text-dark">
                                 Filters
                             </Text>
                             {activeFilterCount > 0 && (
@@ -437,7 +440,7 @@ const Filters = ({
 
                         <TouchableOpacity
                             onPress={onClose}
-                            className="h-10 w-10 items-center justify-center rounded-full bg-gray-100 dark:bg-gray-800"
+                            className="h-10 w-10 items-center justify-center rounded-full bg-gray-800"
                         >
                             <Ionicons name="close" size={24} color="#6B7280" />
                         </TouchableOpacity>
@@ -621,7 +624,11 @@ const Filters = ({
                     </ScrollView>
 
                     {/* Bottom actions */}
-                    <View className="absolute bottom-0 left-0 right-0 flex-row gap-3 border-t border-border bg-white px-4 py-4 dark:border-border-dark dark:bg-bg-dark">
+                    <View
+                        style={{
+                            paddingBottom: Math.max(insets.bottom, 16),
+                        }}
+                        className="absolute bottom-0 left-0 right-0 flex-row gap-3 border-t px-4 py-4 border-border-dark bg-bg-dark">
                         <TouchableOpacity
                             onPress={() => clearFilters()}
                             className="flex-1 items-center rounded-xl bg-danger border border-danger py-3.5"

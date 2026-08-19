@@ -1,6 +1,5 @@
 import { AuthProvider, useAuth } from "@/src/context/AuthContext";
 import { PresenceProvider } from "@/src/context/PresenceContext";
-import { ThemeProvider } from "@/src/context/ThemeContext";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useFonts } from "expo-font";
@@ -9,9 +8,17 @@ import { Slot, useRouter } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
 import Toast from "react-native-toast-message";
-import "../../global.css";
-import { registerPushToken, setupNotificationHandler } from "../lib/notifications/registerPushNotifications";
 
+import "../../global.css";
+
+import {
+  registerPushToken,
+  setupNotificationHandler,
+} from "../lib/notifications/registerPushNotifications";
+import { handleNotification } from "../lib/notifications/notificationHandler";
+
+// Keep the native splash screen visible
+// until fonts and the initial app shell are ready.
 SplashScreen.preventAutoHideAsync();
 
 const queryClient = new QueryClient({
@@ -30,42 +37,77 @@ function AppContent() {
   useEffect(() => {
     setupNotificationHandler();
 
-    // Notification received while app is open.
     const receivedSubscription =
       Notifications.addNotificationReceivedListener(
         (notification) => {
-          console.log(
-            "Notification received:",
-            notification
-          );
+          const content =
+            notification.request.content;
+
+          const data = content.data;
+
+          console.log("Notification received:", {
+            title: content.title,
+            body: content.body,
+            data,
+          });
+
+          // You can later use this to show
+          // an in-app notification/toast.
         }
       );
 
-    // User taps notification.
     const responseSubscription =
       Notifications.addNotificationResponseReceivedListener(
         (response) => {
-          const data =
-            response.notification.request.content
-              .data;
+          const content =
+            response.notification.request.content;
 
-          console.log(
-            "Notification tapped:",
-            data
-          );
+          const data = content.data;
 
-          if (data?.type === "new_request") {
-            const requestId =
-              data?.request_id;
+          console.log("Notification tapped:", {
+            title: content.title,
+            body: content.body,
+            data,
+          });
 
-            if (requestId) {
-              // router.push(
-              //   `/requests/${requestId}`
-              // );
-            }
-          }
+          handleNotification(router, data);
         }
       );
+
+    const handleInitialNotification =
+      async () => {
+        try {
+          const response =
+            await Notifications.getLastNotificationResponseAsync();
+
+          if (!response) {
+            return;
+          }
+
+          const content =
+            response.notification.request.content;
+
+          const data = content.data;
+
+          console.log(
+            "App opened from notification:",
+            {
+              title: content.title,
+              body: content.body,
+              data,
+            }
+          );
+
+          handleNotification(router, data);
+        } catch (error) {
+          console.warn(
+            "Failed to handle initial notification:",
+            error
+          );
+        }
+      };
+
+    handleInitialNotification();
 
     return () => {
       receivedSubscription.remove();
@@ -74,7 +116,9 @@ function AppContent() {
   }, [router]);
 
   useEffect(() => {
-    if (!user?.id) return;
+    if (!user?.id) {
+      return;
+    }
 
     registerPushToken(user.id);
   }, [user?.id]);
@@ -89,10 +133,7 @@ function AppContent() {
   }
 
   return (
-    <PresenceProvider
-      userId={user.id}
-    >
-
+    <PresenceProvider userId={user.id}>
       <Slot />
       <Toast />
     </PresenceProvider>
@@ -100,7 +141,7 @@ function AppContent() {
 }
 
 export default function RootLayout() {
-  const [fontsLoaded, error] = useFonts({
+  const [fontsLoaded, fontError] = useFonts({
     "manrope-regular": require("../../assets/fonts/manrope-regular.otf"),
     "manrope-medium": require("../../assets/fonts/manrope-medium.otf"),
     "manrope-semiBold": require("../../assets/fonts/manrope-semibold.otf"),
@@ -109,23 +150,29 @@ export default function RootLayout() {
     "manrope-thin": require("../../assets/fonts/manrope-thin.otf"),
   });
 
+  /**
+   * Hide the native splash screen only after
+   * fonts have finished loading.
+   */
   useEffect(() => {
-    if (fontsLoaded || error) {
+    if (fontsLoaded || fontError) {
       SplashScreen.hideAsync();
     }
-  }, [fontsLoaded, error]);
+  }, [fontsLoaded, fontError]);
 
-  if (!fontsLoaded && !error) {
+  /**
+   * Keep showing the native splash screen
+   * while fonts are loading.
+   */
+  if (!fontsLoaded && !fontError) {
     return null;
   }
 
   return (
     <QueryClientProvider client={queryClient}>
-      <ThemeProvider>
-        <AuthProvider>
-          <AppContent />
-        </AuthProvider>
-      </ThemeProvider>
+      <AuthProvider>
+        <AppContent />
+      </AuthProvider>
     </QueryClientProvider>
   );
 }

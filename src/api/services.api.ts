@@ -1,6 +1,7 @@
 import { supabase } from '@/src/lib/supabase';
 import { CreateServiceDto, Service, UpdateServiceDto } from '@/types/services';
 import { deleteServiceImages } from './storage.api';
+import { sendNotification } from './notifications/send-notifications.api';
 
 export interface GetAllServicesParams {
   page?: number;
@@ -348,6 +349,23 @@ export const serviceApi = {
 
         return null;
       }
+
+      if (!payload?.technician_id) {
+        logApiError('Error', 'No technician_id. Notification skipped.');
+
+        return data as Service;
+      }
+
+      await sendNotification({
+        userId: payload.technician_id,
+        senderId:payload.technician_id,
+        type: 'new_services',
+        title: 'New Service',
+        body: payload.title || 'New service is add. tab here to explore.',
+        data: {
+          request_id: data.id,
+        },
+      });
 
       return data as Service;
     } catch (error) {

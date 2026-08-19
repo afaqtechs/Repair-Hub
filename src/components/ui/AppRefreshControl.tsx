@@ -1,4 +1,4 @@
-import { useTheme } from "@/src/context/ThemeContext";
+
 import React from "react";
 import { RefreshControl, RefreshControlProps } from "react-native";
 
@@ -10,7 +10,6 @@ type Props = Omit<
 const AppRefreshControl = ({
     ...props
 }: Props) => {
-    const { isDark } = useTheme();
 
     return (
         <RefreshControl
@@ -21,14 +20,10 @@ const AppRefreshControl = ({
 
             // Text color
             title="Pull to refresh"
-            titleColor={
-                isDark ? "#94A3B8" : "#6B7280"
-            }
+            titleColor="#94A3B8"
 
             // Android spinner background
-            progressBackgroundColor={
-                isDark ? "#1E1B2E" : "#FFFFFF"
-            }
+            progressBackgroundColor="#1E1B2E"
         />
     );
 };

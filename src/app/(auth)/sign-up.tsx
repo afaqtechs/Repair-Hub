@@ -58,7 +58,7 @@ export default function SignUpScreen() {
   };
 
   return (
-    <View style={{ flex: 1, paddingTop: insets.top ,paddingBottom: insets.bottom}} className="flex-1 bg-bg dark:bg-bg-dark">
+    <View style={{ flex: 1, paddingTop: insets.top ,paddingBottom: insets.bottom}} className="flex-1 bg-bg-dark">
       <ScrollView
         contentContainerStyle={{
           flexGrow: 1
@@ -71,7 +71,7 @@ export default function SignUpScreen() {
           <View className=" h-max px-6 py-16">
             <View className="flex-row items-center">
 
-              <View className="w-14 h-14 rounded-full  bg-card dark:bg-card-dark items-center justify-center">
+              <View className="w-14 h-14 rounded-full  bg-card-dark items-center justify-center">
 
                 <Image
                   source={require("@/assets/ui/logo.png")}
@@ -84,7 +84,7 @@ export default function SignUpScreen() {
                 />
               </View>
 
-              <Text className=" text-text dark:text-text-dark text-2xl font-bold ml-3">
+              <Text className=" text-text-dark text-2xl font-bold ml-3">
 
                 Repair
                 <Text className="text-violet-500">
@@ -98,7 +98,7 @@ export default function SignUpScreen() {
 
             <View className="mt-0 relative justify-between gap-3 ">
               <View className="flex-1 w-[200px]">
-                <Text className=" text-text dark:text-text-dark  text-2xl  font-bold  mt-5 ">
+                <Text className=" text-text-dark  text-2xl  font-bold  mt-5 ">
                   Create your account
                 </Text>
 
@@ -109,7 +109,7 @@ export default function SignUpScreen() {
               </View>
               <Image
                 source={require("@/assets/ui/technician.png")}
-                className="rounded-full z-10 bg-card dark:bg-card-dark p-5 flex-1 absolute -right-5 -bottom-10 w-40 h-40"
+                className="rounded-full z-10 bg-card-dark p-5 flex-1 absolute -right-5 -bottom-10 w-40 h-40"
                 resizeMode="contain"
               />
 
@@ -119,11 +119,11 @@ export default function SignUpScreen() {
 
           {/* FORM */}
 
-          <View className="  bg-card dark:bg-card-dark -mt-10 rounded-3xl  px-5 py-10  shadow-sm">
+          <View className="  bg-card-dark -mt-10 rounded-3xl  px-5 py-10  shadow-sm">
 
             <View className="flex-row gap-3 mb-4">
 
-              <View className=" flex-1 bg-input dark:bg-input-dark border border-border dark:border-border-dark rounded-xl flex-row items-center px-3">
+              <View className=" flex-1 bg-input-dark border border-border-dark rounded-xl flex-row items-center px-3">
 
                 <Ionicons
                   name="person-outline"
@@ -131,7 +131,7 @@ export default function SignUpScreen() {
                   color="#9CA3AF"
                 />
                 <TextInput
-                  className="flex-1 py-4 ml-2 text-text dark:text-text-dark"
+                  className="flex-1 py-4 ml-2 text-text-dark"
                   placeholder="First name"
                   placeholderTextColor="#9CA3AF"
 
@@ -141,7 +141,7 @@ export default function SignUpScreen() {
                 />
               </View>
 
-              <View className=" flex-1 bg-input dark:bg-input-dark border border-border dark:border-border-dark rounded-xl flex-row items-center  px-3">
+              <View className=" flex-1 bg-input-dark border border-border-dark rounded-xl flex-row items-center  px-3">
 
                 <Ionicons
                   name="person-outline"
@@ -150,7 +150,7 @@ export default function SignUpScreen() {
                 />
                 <TextInput
 
-                  className="flex-1 py-4 ml-2 text-text dark:text-text-dark"
+                  className="flex-1 py-4 ml-2 text-text-dark"
 
                   placeholder="Last name"
                   placeholderTextColor="#9CA3AF"
@@ -162,7 +162,7 @@ export default function SignUpScreen() {
               </View>
             </View>
 
-            <View className="bg-input dark:bg-input-dark border border-border dark:border-border-dark rounded-xl flex-row items-center px-3 mb-4 ">
+            <View className="bg-input-dark border border-border-dark rounded-xl flex-row items-center px-3 mb-4 ">
 
               <Ionicons
                 name="mail-outline"
@@ -171,7 +171,7 @@ export default function SignUpScreen() {
               />
               <TextInput
 
-                className="flex-1 py-4 ml-2 text-text dark:text-text-dark"
+                className="flex-1 py-4 ml-2 text-text-dark"
 
                 placeholder="Enter your email address"
                 placeholderTextColor="#9CA3AF"
@@ -185,7 +185,7 @@ export default function SignUpScreen() {
               />
             </View>
 
-            <View className="bg-input dark:bg-input-dark border border-border dark:border-border-dark rounded-xl flex-row items-center px-3">
+            <View className="bg-input-dark border border-border-dark rounded-xl flex-row items-center px-3">
 
               <Ionicons
                 name="lock-closed-outline"
@@ -196,7 +196,7 @@ export default function SignUpScreen() {
 
               <TextInput
 
-                className="flex-1 py-4 ml-2 text-text dark:text-text-dark"
+                className="flex-1 py-4 ml-2 text-text-dark"
 
                 placeholder="Create a password"
                 placeholderTextColor="#9CA3AF"
@@ -288,7 +288,7 @@ export default function SignUpScreen() {
               }
             </TouchableOpacity>
 
-            <View className=" bg-bg dark:bg-bg-dark rounded-2xl p-4 flex-row items-center">
+            <View className=" bg-bg-dark rounded-2xl p-4 flex-row items-center">
               <Image
                 source={require("@/assets/ui/security-badge.png")}
                 className=" w-12 h-12 mr-3"

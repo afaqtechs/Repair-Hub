@@ -29,7 +29,7 @@ const ListCategory = ({
         >
             {/* Category square */}
             <View
-                className="w-[94px] h-[94px] rounded-[14px] items-center justify-center bg-bg/50 dark:bg-bg-dark/50 border border-border dark:border-border-dark overflow-hidden"
+                className="w-[94px] h-[94px] rounded-[14px] items-center justify-center bg-bg-dark/50 border border-border-dark overflow-hidden"
             >
                 <Image
                     source={require("@/assets/ui/background/category_image.jpg")}
@@ -49,7 +49,7 @@ const ListCategory = ({
             {/* Category name */}
             <Text
                 numberOfLines={2}
-                className="text-[11px] leading-[14px] font-manrope-medium text-center w-[72px] mt-[6px] text-text-secondary dark:text-text-darkSecondary"
+                className="text-[11px] leading-[14px] font-manrope-medium text-center w-[72px] mt-[6px] text-text-darkSecondary"
             >
                 {category.name}
             </Text>

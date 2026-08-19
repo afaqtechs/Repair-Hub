@@ -11,7 +11,7 @@ import {
 } from "react-native";
 
 import { signIn } from "@/src/api";
-import { showSuccess } from "@/src/lib/toast";
+import { showError, showSuccess } from "@/src/lib/toast";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
@@ -31,12 +31,17 @@ export default function SignInScreen() {
         setError("");
         setLoading(true);
         try {
+            if (email.trim() === '' || password.trim() === '') {
+                showError("Failed", "Email or Password required");
+                return;
+            }
+
             await signIn(
                 email,
                 password
             );
-            showSuccess("Login", "Logged in successfully")
             router.replace("/");
+            showSuccess("Login", "Logged in successfully")
 
         } catch (error: any) {
             setError(
@@ -49,7 +54,7 @@ export default function SignInScreen() {
     };
 
     return (
-        <View style={{ flex: 1, paddingTop: insets.top, paddingBottom: insets.bottom }} className="flex-1 bg-bg dark:bg-bg-dark">
+        <View style={{ flex: 1, paddingTop: insets.top, paddingBottom: insets.bottom }} className="flex-1 bg-bg-dark">
             <ScrollView
                 keyboardShouldPersistTaps="handled"
                 contentContainerStyle={{
@@ -64,7 +69,7 @@ export default function SignInScreen() {
 
                         <View className="flex-row items-center">
 
-                            <View className="w-14 h-14 rounded-full  bg-card dark:bg-card-dark items-center justify-center">
+                            <View className="w-14 h-14 rounded-full  bg-card-dark items-center justify-center">
 
                                 <Image
                                     source={require("@/assets/ui/logo.png")}
@@ -78,7 +83,7 @@ export default function SignInScreen() {
                             </View>
 
 
-                            <Text className=" text-text dark:text-text-dark  text-2xl  font-bold  ml-3">
+                            <Text className=" text-text-dark  text-2xl  font-bold  ml-3">
                                 Repair
                                 <Text className="text-violet-500">
                                     Hub
@@ -87,7 +92,7 @@ export default function SignInScreen() {
 
                         </View>
 
-                        <Text className="text-text dark:text-text-dark text-2xl font-bold mt-5">
+                        <Text className="text-text-dark text-2xl font-bold mt-5">
                             Welcome back!
                         </Text>
 
@@ -99,12 +104,12 @@ export default function SignInScreen() {
 
 
                     <View className="rounded-3xl px-5 py-7 ">
-                        <Text className="text-text dark:text-text-dark font-semibold mb-2">
+                        <Text className="text-text-dark font-semibold mb-2">
                             Email
                         </Text>
 
 
-                        <View className=" bg-input dark:bg-input-dark border border-border dark:border-border-dark rounded-xl flex-row items-center px-4 mb-5">
+                        <View className=" bg-input-dark border border-border-dark rounded-xl flex-row items-center px-4 mb-5">
                             {/* Email Icon Placeholder */}
                             <Ionicons
                                 name="mail-outline"
@@ -113,7 +118,7 @@ export default function SignInScreen() {
                             />
                             <TextInput
 
-                                className="flex-1 py-4 ml-2 text-text dark:text-text-dark"
+                                className="flex-1 py-4 ml-2 text-text-dark"
 
                                 placeholder="Enter your email address"
                                 placeholderTextColor="#9CA3AF"
@@ -128,11 +133,11 @@ export default function SignInScreen() {
 
                         </View>
 
-                        <Text className="text-text dark:text-text-dark font-semibold mb-2">
+                        <Text className="text-text-dark font-semibold mb-2">
                             Password
                         </Text>
 
-                        <View className="bg-input dark:bg-input-dark border border-border dark:border-border-dark rounded-xl flex-row items-center px-4 ">
+                        <View className="bg-input-dark border border-border-dark rounded-xl flex-row items-center px-4 ">
                             <Ionicons
                                 name="lock-closed-outline"
                                 size={20}
@@ -140,7 +145,7 @@ export default function SignInScreen() {
                             />
 
                             <TextInput
-                                className=" flex-1 py-4 ml-2 text-text dark:text-text-dark"
+                                className=" flex-1 py-4 ml-2 text-text-dark"
 
                                 placeholder="Enter your password"
                                 placeholderTextColor="#9CA3AF"
@@ -218,25 +223,25 @@ export default function SignInScreen() {
 
                         <View className=" flex-row items-center mb-5">
 
-                            <View className="flex-1 h-px bg-card dark:bg-card-dark" />
+                            <View className="flex-1 h-px bg-card-dark" />
 
                             <Text className="mx-3 text-gray-400">
                                 continue with
                             </Text>
 
-                            <View className="flex-1 h-px bg-card dark:bg-card-dark" />
+                            <View className="flex-1 h-px bg-card-dark" />
                         </View>
 
                         <TouchableOpacity
-                            className="bg-card dark:bg-card-dark border border-border dark:border-border-dark rounded-xl py-3 flex-1 mx-1 items-center"
+                            className="bg-card-dark border border-border-dark rounded-xl py-3 flex-1 mx-1 items-center"
 
                         >
-                            <Text className="text-text dark:text-text-dark font-semibold">
+                            <Text className="text-text-dark font-semibold">
                                 Google
                             </Text>
                         </TouchableOpacity>
 
-                        <View className=" bg-card dark:bg-card-dark rounded-2xl p-4 mt-6">
+                        <View className=" bg-card-dark rounded-2xl p-4 mt-6">
                             <View className="flex-row items-center">
 
                                 <Image

@@ -15,7 +15,6 @@ import {
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { useTheme } from '@/src/context/ThemeContext';
 import { CHAT_KEYS } from '@/src/hooks/chat/chatKeys';
 import { useChatRealtime } from '@/src/hooks/chat/useChatRealtime';
 import { useConversations } from '@/src/hooks/chat/useConversations';
@@ -132,7 +131,6 @@ interface MessageItemProps {
   showDate: boolean;
   currentUserId: string;
   otherUserLastReadAt?: string | null;
-  isDark: boolean;
   chatSelected: Set<string>;
   isSelectionMode: boolean;
   onLongPress: (id: string) => void;
@@ -145,7 +143,6 @@ const MessageItem = memo(
     showDate,
     currentUserId,
     otherUserLastReadAt,
-    isDark,
     chatSelected,
     isSelectionMode,
     onLongPress,
@@ -168,8 +165,8 @@ const MessageItem = memo(
       >
         {showDate && (
           <View className="my-4 items-center">
-            <View className="rounded-full bg-card px-3 py-1 dark:bg-card-dark">
-              <Text className="font-manrope text-[10px] text-gray-500 dark:text-gray-400">
+            <View className="rounded-full px-3 py-1 bg-card-dark">
+              <Text className="font-manrope text-[10px] text-gray-400">
                 {formatDateLabel(item.created_at)}
               </Text>
             </View>
@@ -195,7 +192,7 @@ const MessageItem = memo(
 
               <View className="flex-shrink">
                 <Text
-                  className={`font-manrope text-[11px] leading-5 ${isMine ? 'text-white' : 'text-text dark:text-text-dark'
+                  className={`font-manrope text-[11px] leading-5 ${isMine ? 'text-white' : 'text-text-dark'
                     }`}
                   style={{
                     flexWrap: 'wrap',
@@ -220,7 +217,7 @@ const MessageItem = memo(
                 <Ionicons
                   name="time-outline"
                   size={11}
-                  color={isDark ? '#CBD5E1' : '#E5E7EB'}
+                  color="#CBD5E1"
                 />
               )}
 
@@ -250,7 +247,6 @@ export default function ChatScreen({
   isOnline = false,
   onBack,
 }: ChatScreenProps) {
-  const { isDark } = useTheme();
   const insets = useSafeAreaInsets();
 
   const [text, setText] = useState('');
@@ -689,7 +685,6 @@ export default function ChatScreen({
           showDate={showDate}
           currentUserId={currentUserId}
           otherUserLastReadAt={remoteLastReadAt}
-          isDark={isDark}
           chatSelected={chatSelected}
           isSelectionMode={isSelectionMode}
           onLongPress={handleLongPressChats}
@@ -701,7 +696,6 @@ export default function ChatScreen({
       messages,
       currentUserId,
       remoteLastReadAt,
-      isDark,
       chatSelected,
       isSelectionMode,
       handleLongPressChats,
@@ -711,13 +705,13 @@ export default function ChatScreen({
 
   return (
     <View
-      className="flex-1 bg-bg dark:bg-bg-dark"
+      className="flex-1 bg-bg-dark"
       style={{
         paddingBottom: insets.bottom,
       }}
     >
       <View className="flex-1">
-        <View className="flex-row items-center justify-between border-b border-border px-4 py-3 dark:border-border-dark">
+        <View className="flex-row items-center justify-between border-b px-4 py-3 border-border-dark">
           {isSelectionMode ? (
             <>
               <View className="flex-row items-center gap-3">
@@ -729,11 +723,11 @@ export default function ChatScreen({
                   <Ionicons
                     name="close"
                     size={22}
-                    color={isDark ? '#F8FAFC' : '#171A2B'}
+                    color="#F8FAFC"
                   />
                 </TouchableOpacity>
 
-                <Text className="font-manrope-semibold text-base text-text dark:text-text-dark">
+                <Text className="font-manrope-semibold text-base text-text-dark">
                   {chatSelected.size} selected
                 </Text>
               </View>
@@ -747,7 +741,7 @@ export default function ChatScreen({
                   <Ionicons
                     name="checkmark-done-outline"
                     size={21}
-                    color={isDark ? '#F8FAFC' : '#171A2B'}
+                    color="#F8FAFC"
                   />
                 </TouchableOpacity>
 
@@ -765,12 +759,12 @@ export default function ChatScreen({
               <TouchableOpacity
                 onPress={onBack}
                 activeOpacity={0.7}
-                className="h-10 w-10 items-center justify-center rounded-2xl border border-border bg-bg dark:border-border-dark dark:bg-bg-dark"
+                className="h-10 w-10 items-center justify-center rounded-2xl border border-border-dark bg-bg-dark"
               >
                 <Ionicons
                   name="arrow-back"
                   size={20}
-                  color={isDark ? '#F8FAFC' : '#171A2B'}
+                  color="#F8FAFC"
                 />
               </TouchableOpacity>
 
@@ -792,7 +786,7 @@ export default function ChatScreen({
               <View className="flex-1">
                 <Text
                   numberOfLines={1}
-                  className="font-manrope-semibold text-base text-text dark:text-text-dark"
+                  className="font-manrope-semibold text-base text-text-dark"
                 >
                   {otherUserName}
                 </Text>
@@ -851,7 +845,7 @@ export default function ChatScreen({
                   color="#9CA3AF"
                 />
 
-                <Text className="mt-4 font-manrope-semibold text-base text-text dark:text-text-dark">
+                <Text className="mt-4 font-manrope-semibold text-base text-text-dark">
                   Unable to load messages
                 </Text>
 
@@ -867,7 +861,7 @@ export default function ChatScreen({
                   color="#9CA3AF"
                 />
 
-                <Text className="mt-4 font-manrope-semibold text-base text-text dark:text-text-dark">
+                <Text className="mt-4 font-manrope-semibold text-base text-text-dark">
                   Start the conversation
                 </Text>
 
@@ -884,8 +878,8 @@ export default function ChatScreen({
             behavior="padding"
             keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 48}
           >
-            <View className="border-t border-border bg-bg px-3 pt-2 dark:border-border-dark dark:bg-bg-dark">
-              <View className="flex-row items-end rounded-3xl bg-card px-2 py-1.5 dark:bg-card-dark">
+            <View className="border-t px-3 pt-2 border-border-dark bg-bg-dark">
+              <View className="flex-row items-end rounded-3xl px-2 py-1.5 bg-card-dark">
                 <TouchableOpacity
                   activeOpacity={0.7}
                   className="h-10 w-10 items-center justify-center"
@@ -895,7 +889,7 @@ export default function ChatScreen({
                   <Ionicons
                     name="add"
                     size={24}
-                    color={isDark ? '#9CA3AF' : '#6B7280'}
+                    color="#9CA3AF"
                   />
                 </TouchableOpacity>
 
@@ -907,14 +901,14 @@ export default function ChatScreen({
                   multiline
                   maxLength={5000}
                   textAlignVertical="center"
-                  className="max-h-28 min-h-10 flex-1 px-2 py-2.5 font-manrope text-[14px] text-text dark:text-text-dark"
+                  className="max-h-28 min-h-10 flex-1 px-2 py-2.5 font-manrope text-[14px] text-text-dark"
                 />
 
                 <TouchableOpacity
                   activeOpacity={0.7}
                   onPress={handleSend}
                   disabled={!text.trim()}
-                  className={`h-10 w-10 items-center justify-center rounded-full ${text.trim() ? 'bg-primary' : 'bg-gray-300 dark:bg-gray-700'
+                  className={`h-10 w-10 items-center justify-center rounded-full ${text.trim() ? 'bg-primary' : 'bg-gray-700'
                     }`}
                 >
                   <Ionicons name="send" size={17} color="#FFFFFF" />

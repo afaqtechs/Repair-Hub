@@ -2,6 +2,7 @@
 import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
 import { Modal, Text, TouchableOpacity } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 type SortOption<T extends string> = {
     value: T;
@@ -23,6 +24,8 @@ const SortModal = <T extends string>({
     sortValue,
     setSortValue,
 }: SortModalProps<T>) => {
+    const insets = useSafeAreaInsets();
+
     return (
         <Modal
             visible={sortModalVisible}
@@ -38,9 +41,12 @@ const SortModal = <T extends string>({
                 <TouchableOpacity
                     activeOpacity={1}
                     onPress={() => { }}
-                    className="bg-card dark:bg-card-dark rounded-t-xl px-5 pt-4 pb-8"
+                    className="bg-card-dark rounded-t-xl px-5 pt-4 pb-8"
+                    style={{
+                        paddingBottom: Math.max(insets.bottom, 16),
+                    }}
                 >
-                    <Text className="text-lg font-semibold text-text dark:text-text-dark mb-4">
+                    <Text className="text-lg font-semibold text-text-dark mb-4">
                         Sort By
                     </Text>
 
@@ -51,9 +57,9 @@ const SortModal = <T extends string>({
                                 setSortValue(item.value);
                                 setSortModalVisible(false);
                             }}
-                            className="flex-row justify-between items-center py-4 border-b border-border/30 dark:border-border-dark/30"
+                            className="flex-row justify-between items-center py-4 border-b border-border-dark/30"
                         >
-                            <Text className="text-base text-text dark:text-text-dark">
+                            <Text className="text-base text-text-dark">
                                 {item.label}
                             </Text>
 

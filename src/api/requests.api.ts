@@ -1,6 +1,7 @@
 import { supabase } from '@/src/lib/supabase';
 import { CreateRequestDto, Request, UpdateRequestDto } from '@/types/requests';
 import { deleteRequestImages } from './storage.api';
+import { sendNotification } from './notifications/send-notifications.api';
 
 // ─────────────────────────────────────────────
 // Types
@@ -222,12 +223,12 @@ export const requestApi = {
     }
   },
 
-  // ==========================================
-  // CREATE
-  // ==========================================
-
   async create(payload: CreateRequestDto): Promise<Request | null> {
     try {
+      // ==========================================
+      // CREATE REQUEST
+      // ==========================================
+
       const { data, error } = await supabase
         .from('requests')
         .insert({
@@ -246,36 +247,25 @@ export const requestApi = {
       // SEND NOTIFICATION
       // ==========================================
 
-      if (payload?.technician_id) {
-        try {
-          const { error: notificationError } = await supabase.functions.invoke(
-            'send-notification',
-            {
-              body: {
-                userid: payload.technician_id,
+      if (!payload?.technician_id) {
+        logApiError('Error', 'No technician_id. Notification skipped.');
 
-                type: 'new_requests',
-
-                title: 'New Repair Request',
-
-                body:
-                  payload.title ?? 'You have received a new repair request.',
-
-                data: {
-                  type: 'new_request',
-                  // request_id: payload.id,
-                },
-              },
-            }
-          );
-
-          if (notificationError) {
-            logApiError('create.notification', notificationError);
-          }
-        } catch (notificationError) {
-          logApiError('create.notification', notificationError);
-        }
+        return data as Request;
       }
+
+      const priority = payload.priority;
+      const isUrgent = priority === 'urgent' ? true : false;
+
+      await sendNotification({
+        userId: payload.technician_id,
+        senderId:payload.technician_id,
+        type: isUrgent ? 'urgent_requests' : 'new_requests',
+        title: isUrgent ? 'Urgent repair request' : 'New repair request',
+        body: payload.title || 'You have received a new repair request.',
+        data: {
+          request_id: data.id,
+        },
+      });
 
       return data as Request;
     } catch (error) {

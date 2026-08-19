@@ -73,7 +73,7 @@ const Inbox = () => {
                 flex: 1,
                 paddingTop: insets.top,
             }}
-            className="bg-bg dark:bg-bg-dark"
+            className="bg-bg-dark"
         >
             {screen === "inbox" && (
                 <ConversationsScreen

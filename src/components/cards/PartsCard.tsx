@@ -1,5 +1,4 @@
 import { useAuth } from '@/src/context/AuthContext';
-import { useTheme } from '@/src/context/ThemeContext';
 import { usePartsMutations, useTechnicianLocation } from '@/src/hooks';
 import { useSavedPart } from '@/src/hooks/useSavedPart';
 import { showError, showSuccess } from '@/src/lib/toast';
@@ -30,7 +29,6 @@ const PartsCard = ({
     allowEdit = false,
 }: PartsCardProps) => {
     const router = useRouter();
-    const { isDark } = useTheme();
     const { user } = useAuth();
     const loggedInUserId = user?.id;
     const technicianId = part?.technician_id;
@@ -96,7 +94,7 @@ const PartsCard = ({
 
     return (
         <View
-            className={`m-1 ${isListView ? "w-full flex-row items-center" : "flex-col"} bg-card/50 dark:bg-card-dark p-2 border border-border dark:border-border-dark overflow-hidden rounded-md`}
+            className={`m-1 ${isListView ? "w-full flex-row items-center" : "flex-col"} bg-card-dark p-2 border border-border-dark overflow-hidden rounded-md`}
             style={{ elevation: 0 }}
         >
             <TouchableOpacity
@@ -109,12 +107,12 @@ const PartsCard = ({
                     <TouchableOpacity
                         onPress={() => toggleSave()}
                         disabled={saveLoading}
-                        className="absolute top-2 right-2 bg-bg dark:bg-bg-dark rounded-full p-2 items-center justify-center"
+                        className="absolute top-2 right-2 bg-bg-dark rounded-full p-2 items-center justify-center"
                     >
                         <Ionicons
                             name={isSaved ? "heart" : "heart-outline"}
                             size={20}
-                            color={isSaved ? "#EF4444" : isDark ? "#ffffff" : "#000000"}
+                            color={isSaved ? "#EF4444" : "#ffffff"}
                         />
                     </TouchableOpacity>
                 )}
@@ -149,7 +147,7 @@ const PartsCard = ({
                     >
                         <Text
                             numberOfLines={2}
-                            className="text-sm font-manrope-semibold text-text dark:text-text-dark leading-5 min-h-[40px] hover:opacity-70"
+                            className="text-sm font-manrope-semibold text-text-dark leading-5 min-h-[40px] hover:opacity-70"
                             style={Platform.select({
                                 web: {
                                     cursor: 'pointer',
@@ -163,7 +161,7 @@ const PartsCard = ({
 
                     <View className="flex-row items-center mt-1">
                         <Ionicons name="business-outline" size={12} color="#9CA3AF" />
-                        <Text numberOfLines={1} className="text-xs text-text-muted dark:text-text-darkMuted ml-1 flex-1">
+                        <Text numberOfLines={1} className="text-xs text-text-darkMuted ml-1 flex-1">
                             {part.brand ?? "Unknown Brand"}
                             {part.model ? ` • ${part.model}` : ""}
                         </Text>
@@ -172,14 +170,14 @@ const PartsCard = ({
                     {part?.technician?.city && (
                         <View className="flex-row items-center mt-0.5">
                             <Ionicons name="location-outline" size={12} color="#9CA3AF" />
-                            <Text numberOfLines={1} className="text-xs text-text-muted dark:text-text-darkMuted ml-1">
+                            <Text numberOfLines={1} className="text-xs text-text-darkMuted ml-1">
                                 {part.technician.city}
                             </Text>
                         </View>
                     )}
                 </View>
 
-                <View className="flex-row items-center justify-between mt-2 pt-2 border-t border-border/30 dark:border-border-dark/30">
+                <View className="flex-row items-center justify-between mt-2 pt-2 border-t bborder-border-dark/30">
                     <View className="flex-row items-center">
                         <View
                             className="w-6 h-6 rounded-full items-center justify-center"
@@ -189,7 +187,7 @@ const PartsCard = ({
                                 {part?.condition?.name?.[0]?.toUpperCase() || 'N'}
                             </Text>
                         </View>
-                        <Text className="text-[10px] text-gray-500 dark:text-gray-400 ml-1.5 font-manrope-medium">
+                        <Text className="text-[10px] text-gray-400 ml-1.5 font-manrope-medium">
                             {part?.condition?.name || 'New'}
                         </Text>
                     </View>
@@ -198,7 +196,6 @@ const PartsCard = ({
                         <SimpleDropdownMenu
                             items={menuItems}
                             onSelect={handleMenuAction}
-                            isDark={isDark}
                             triggerIcon="ellipsis-vertical"
                             triggerSize={18}
                         />
@@ -219,12 +216,12 @@ const PartsCard = ({
                 <TouchableOpacity
                     onPress={() => toggleSave()}
                     disabled={saveLoading}
-                    className="absolute top-2 right-2 bg-bg dark:bg-bg-dark rounded-full p-2 items-center justify-center"
+                    className="absolute top-2 right-2 bg-bg-dark rounded-full p-2 items-center justify-center"
                 >
                     <Ionicons
                         name={isSaved ? "heart" : "heart-outline"}
                         size={20}
-                        color={isSaved ? "#EF4444" : isDark ? "#ffffff" : "#000000"}
+                        color={isSaved ? "#EF4444" : "#ffffff"}
                     />
                 </TouchableOpacity>
             )}

@@ -1,6 +1,7 @@
 import { supabase } from '@/src/lib/supabase';
 import { CreatePartDto, Part, UpdatePartDto } from '@/types/parts';
 import { deletePartImages } from './storage.api';
+import { sendNotification } from './notifications/send-notifications.api';
 
 // ─────────────────────────────────────────────
 // Types
@@ -383,6 +384,23 @@ export const partApi = {
         logApiError('create', error);
         return null;
       }
+
+      if (!payload?.technician_id) {
+        logApiError('Error', 'No technician_id. Notification skipped.');
+
+        return data as Part;
+      }
+
+      await sendNotification({
+        userId: payload.technician_id,
+        senderId: payload.technician_id,
+        type: 'new_spare_parts',
+        title: 'New Spare Part',
+        body: payload.title || 'New spare part is add. tab here to explore',
+        data: {
+          request_id: data.id,
+        },
+      });
 
       return data as Part;
     } catch (error) {

@@ -1,7 +1,6 @@
 import { signOut } from "@/src/api";
 import HTMLRenderer from "@/src/components/ui/HTMLRenderer";
 import { useAuth } from "@/src/context/AuthContext";
-import { useTheme } from "@/src/context/ThemeContext";
 import { useProfileMutations, useTechnician } from "@/src/hooks";
 import { requestMediaLibraryPermission } from "@/src/lib/requestMediaLibraryPermission";
 import { supabase } from "@/src/lib/supabase";
@@ -29,7 +28,6 @@ type IconName = React.ComponentProps<typeof Ionicons>["name"];
 const ProfileScreen = () => {
     const { user: loggedInUser } = useAuth();
     const router = useRouter();
-    const { isDark } = useTheme();
 
     const technicianId = String(loggedInUser?.id);
     const [activePopover, setActivePopover] = useState<number | null>(null);
@@ -219,7 +217,7 @@ const ProfileScreen = () => {
 
     if (loadingTechnician) {
         return (
-            <View className="flex-1 items-center justify-center bg-bg dark:bg-bg-dark">
+            <View className="flex-1 items-center justify-center bg-bg-dark">
                 <ActivityIndicator size="large" color="#2563EB" />
             </View>
         );
@@ -227,13 +225,13 @@ const ProfileScreen = () => {
 
     if (technicianError) {
         return (
-            <SafeAreaView edges={["top", "left", "right"]} className="flex-1 bg-bg dark:bg-bg-dark">
+            <SafeAreaView edges={["top", "left", "right"]} className="flex-1 bg-bg-dark">
                 <View className="flex-1 items-center justify-center px-4">
                     <Ionicons name="alert-circle-outline" size={60} color="#EF4444" />
                     <Text className="text-red-500 text-lg font-bold mt-4">Something went wrong</Text>
                     <Text className="text-gray-500 text-sm text-center mt-2">{technicianError.message}</Text>
                     <TouchableOpacity className="mt-6 bg-[#5B3DF5] px-6 py-3 rounded-xl" onPress={() => fetchTechnician()}>
-                        <Text className="text-text dark:text-text-dark font-semibold">Try Again</Text>
+                        <Text className="text-text-dark font-semibold">Try Again</Text>
                     </TouchableOpacity>
                 </View>
             </SafeAreaView>
@@ -242,7 +240,7 @@ const ProfileScreen = () => {
 
     if (!technician) {
         return (
-            <View className="flex-1 items-center justify-center bg-bg dark:bg-bg-dark">
+            <View className="flex-1 items-center justify-center bg-bg-dark">
                 <Text className="text-gray-500">User not found</Text>
             </View>
         );
@@ -280,9 +278,9 @@ const ProfileScreen = () => {
 
     return (
         <>
-            <View className="relative bg-bg dark:bg-bg-dark h-[250px] px-5 pt-12 pb-8">
+            <View className="relative bg-bg-dark h-[250px] px-5 pt-12 pb-8">
                 <View className="flex-row justify-between items-center">
-                    <Text className="text-text dark:text-text-dark text-2xl font-bold">
+                    <Text className="text-text-dark text-2xl font-bold">
                         Profile
                     </Text>
                     {technician?.role === "admin" ? (
@@ -319,12 +317,12 @@ const ProfileScreen = () => {
                         <TouchableOpacity
                             onPress={handlePickImages}
                             disabled={uploadingImages}
-                            className="absolute bottom-1 right-1 w-11 h-11 rounded-2xl bg-card dark:bg-card-dark items-center justify-center"
+                            className="absolute bottom-1 right-1 w-11 h-11 rounded-2xl bg-card-dark items-center justify-center"
                         >
                             <Ionicons
                                 name="camera-outline"
                                 size={20}
-                                color={isDark ? "#94A3B8" : "#667085"}
+                                color="#94A3B8"
                             />
                         </TouchableOpacity>
                         {uploadingImages && (
@@ -339,10 +337,10 @@ const ProfileScreen = () => {
             <ScrollView showsVerticalScrollIndicator={false}>
                 <View className="flex-1 px-5 pb-10">
                     {/* Profile Card */}
-                    <View className="-mt-6 bg-card dark:bg-card-dark pt-20 px-5 pb-6 shadow-gray-200/40 rounded-xl">
+                    <View className="-mt-6 bg-card-dark pt-20 px-5 pb-6 shadow-gray-200/40 rounded-xl">
                         <View className="flex-row justify-between items-start">
                             <View className="flex-1 pr-2">
-                                <Text className="text-2xl font-bold text-text dark:text-text-dark">
+                                <Text className="text-2xl font-bold text-text-dark">
                                     {technician?.first_name}  {technician?.last_name}
                                 </Text>
                                 <View className="flex-row items-center">
@@ -382,57 +380,57 @@ const ProfileScreen = () => {
                             )}
                         </View>
 
-                        <View className="flex-row justify-between mt-5 pt-5 border-t border-border dark:border-border-dark">
+                        <View className="flex-row justify-between mt-5 pt-5 border-t border-border-dark">
                             <View className="items-center flex-1">
-                                <View className="bg-blue-50 dark:bg-bg-dark px-2.5 py-0.5 rounded-xl mb-1">
-                                    <Text className="text-text-secondary dark:text-text-darkSecondary text-[8px] font-bold uppercase tracking-wider">
+                                <View className="bg-bg-dark px-2.5 py-0.5 rounded-xl mb-1">
+                                    <Text className="text-text-darkSecondary text-[8px] font-bold uppercase tracking-wider">
                                         Rat.
                                     </Text>
                                 </View>
-                                <Text className="font-bold text-xl text-text dark:text-text-dark">
+                                <Text className="font-bold text-xl text-text-dark">
                                     {technician?.rating_count}+
                                 </Text>
-                                <Text className="text-text-muted dark:text-text-darkMuted text-[10px] mt-0.5">
+                                <Text className="text-text-darkMuted text-[10px] mt-0.5">
                                     Ratings Count.
                                 </Text>
                             </View>
                             <View className="w-px h-12 bg-gradient-to-b from-transparent via-gray-500 to-transparent self-center" />
                             <View className="items-center flex-1">
-                                <View className="bg-blue-50 dark:bg-bg-dark px-2.5 py-0.5 rounded-xl mb-1">
-                                    <Text className="text-text-secondary dark:text-text-darkSecondary text-[8px] font-bold uppercase tracking-wider">
+                                <View className="bg-bg-dark px-2.5 py-0.5 rounded-xl mb-1">
+                                    <Text className="text-text-darkSecondary text-[8px] font-bold uppercase tracking-wider">
                                         Rat.
                                     </Text>
                                 </View>
-                                <Text className="font-bold text-xl text-text dark:text-text-dark">
+                                <Text className="font-bold text-xl text-text-dark">
                                     {technician?.rating_avg}
                                 </Text>
-                                <Text className="text-text-muted dark:text-text-darkMuted text-[10px] mt-0.5">
+                                <Text className="text-text-darkMuted text-[10px] mt-0.5">
                                     Ratings
                                 </Text>
                             </View>
                             <View className="w-px h-12 bg-gradient-to-b from-transparent via-gray-200 to-transparent self-center" />
                             <View className="items-center flex-1">
-                                <View className="bg-blue-50 dark:bg-bg-dark px-2.5 py-0.5 rounded-xl mb-1">
-                                    <Text className="text-text-secondary dark:text-text-darkSecondary text-[8px] font-bold uppercase tracking-wider">
+                                <View className="bg-bg-dark px-2.5 py-0.5 rounded-xl mb-1">
+                                    <Text className="text-text-darkSecondary text-[8px] font-bold uppercase tracking-wider">
                                         Exp.
                                     </Text>
                                 </View>
-                                <Text className="font-bold text-xl text-text dark:text-text-dark">
+                                <Text className="font-bold text-xl text-text-dark">
                                     {technician?.experience_years}+
                                 </Text>
-                                <Text className="text-text-muted dark:text-text-darkMuted text-[10px] mt-0.5">
+                                <Text className="text-text-darkMuted text-[10px] mt-0.5">
                                     Years Exp.
                                 </Text>
                             </View>
                         </View>
                     </View>
 
-                    <View className="bg-card dark:bg-card-dark mt-5 p-5 shadow-sm rounded-xl">
-                        <Text className="text-xl font-manrope-bold text-text dark:text-text-dark">
+                    <View className="bg-card-dark mt-5 p-5 shadow-sm rounded-xl">
+                        <Text className="text-xl font-manrope-bold text-text-dark">
                             Quick Links
                         </Text>
 
-                        <Text className="text-sm font-manrope-medium text-text-muted dark:text-text-darkMuted mt-1">
+                        <Text className="text-sm font-manrope-medium text-text-darkMuted mt-1">
                             Access important options quickly
                         </Text>
 
@@ -445,15 +443,15 @@ const ProfileScreen = () => {
                                     className="relative flex-row items-center justify-between py-4"
                                 >
                                     <View className="flex-row items-center flex-1">
-                                        <View className="w-11 h-11 rounded-2xl bg-bg dark:bg-bg-dark items-center justify-center">
+                                        <View className="w-11 h-11 rounded-2xl bg-bg-dark items-center justify-center">
                                             <Ionicons
                                                 name={item.icon}
                                                 size={20}
-                                                color={isDark ? "#94A3B8" : "#667085"}
+                                                color="#94A3B8"
                                             />
                                         </View>
 
-                                        <Text className="ml-4 text-base font-manrope-semibold text-text dark:text-text-dark">
+                                        <Text className="ml-4 text-base font-manrope-semibold text-text-dark">
                                             {item.title}
                                         </Text>
                                     </View>
@@ -464,7 +462,7 @@ const ProfileScreen = () => {
                                             placement={PopoverPlacement.BOTTOM}
                                             onRequestClose={() => setActivePopover(null)}
                                             popoverStyle={{
-                                                backgroundColor: isDark ? "#1E293B" : "#FFFFFF",
+                                                backgroundColor: "#1E293B",
                                                 borderRadius: 16,
                                                 padding: 0,
                                                 shadowColor: "#000",
@@ -477,7 +475,7 @@ const ProfileScreen = () => {
                                                 <TouchableOpacity
                                                     onPress={() => setActivePopover(index)}
                                                     hitSlop={10}
-                                                    className="p-1 bg-bg dark:bg-bg-dark rounded-full"
+                                                    className="p-1 bg-bg-dark rounded-full"
                                                 >
                                                     <Ionicons
                                                         name="alert-outline"
@@ -491,7 +489,7 @@ const ProfileScreen = () => {
                                                 className="p-4 rounded-xl"
                                                 style={{
                                                     width: 260,
-                                                    backgroundColor: isDark ? "#1E293B" : "#FFF",
+                                                    backgroundColor: "#1E293B",
                                                 }}
                                             >
                                                 <View className="flex-row">
@@ -502,11 +500,11 @@ const ProfileScreen = () => {
                                                     />
 
                                                     <View className="ml-2 flex-1">
-                                                        <Text className="font-manrope-bold text-text dark:text-text-dark">
+                                                        <Text className="font-manrope-bold text-text-dark">
                                                             Document Required
                                                         </Text>
 
-                                                        <Text className="text-xs mt-1 text-text-muted dark:text-text-darkMuted">
+                                                        <Text className="text-xs mt-1 text-text-darkMuted">
                                                             Please upload your legal document to access more features.
                                                         </Text>
                                                     </View>
@@ -517,11 +515,11 @@ const ProfileScreen = () => {
                                     <Ionicons
                                         name="chevron-forward"
                                         size={18}
-                                        color={isDark ? "#94A3B8" : "#667085"}
+                                        color="#94A3B8"
                                     />
 
                                     {index !== menuItems.length - 1 && (
-                                        <View className="absolute bottom-0 left-[60px] right-0 h-[1px] bg-bg/50 dark:bg-bg-dark/50" />
+                                        <View className="absolute bottom-0 left-[60px] right-0 h-[1px] bg-bg-dark/50" />
                                     )}
                                 </TouchableOpacity>
                             ))}

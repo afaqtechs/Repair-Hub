@@ -4,7 +4,6 @@ import EmptyState from '@/src/components/ui/EmptyState';
 import HTMLRenderer from '@/src/components/ui/HTMLRenderer';
 import { useAuth } from '@/src/context/AuthContext';
 import { usePresenceStatus } from '@/src/context/PresenceContext';
-import { useTheme } from '@/src/context/ThemeContext';
 import { usePartByTechnician, useServicesByTechnician, useTechnician, useTechnicianLocation } from '@/src/hooks';
 import { getStatusColor, getStatusText } from '@/src/utils/statusStyles';
 import { Ionicons } from '@expo/vector-icons';
@@ -19,7 +18,6 @@ import WebView from 'react-native-webview';
 const TechnicianDetail = () => {
     const { id } = useLocalSearchParams<{ id: string }>();
     const router = useRouter();
-    const { isDark } = useTheme();
     const { user } = useAuth();
     const { isUserOnline } = usePresenceStatus();
 
@@ -92,7 +90,7 @@ const TechnicianDetail = () => {
 
     if (loadingTechnician) {
         return (
-            <View className="flex-1 items-center justify-center bg-bg dark:bg-bg-dark">
+            <View className="flex-1 items-center justify-center bg-bg-dark">
                 <ActivityIndicator size="large" color="#2563EB" />
             </View>
         );
@@ -100,13 +98,13 @@ const TechnicianDetail = () => {
 
     if (technicianError) {
         return (
-            <SafeAreaView edges={["top", "left", "right"]} className="flex-1 bg-bg dark:bg-bg-dark">
+            <SafeAreaView edges={["top", "left", "right"]} className="flex-1 bg-bg-dark">
                 <View className="flex-1 items-center justify-center px-4">
                     <Ionicons name="alert-circle-outline" size={60} color="#EF4444" />
                     <Text className="text-red-500 text-lg font-bold mt-4">Something went wrong</Text>
                     <Text className="text-gray-500 text-sm text-center mt-2">{technicianError.message}</Text>
                     <TouchableOpacity className="mt-6 bg-[#5B3DF5] px-6 py-3 rounded-xl" onPress={() => fetchTechnician()}>
-                        <Text className="text-text dark:text-text-dark font-semibold">Try Again</Text>
+                        <Text className="text-text-dark font-semibold">Try Again</Text>
                     </TouchableOpacity>
                 </View>
             </SafeAreaView>
@@ -114,8 +112,8 @@ const TechnicianDetail = () => {
     }
 
     return (
-        <View style={{ flex: 1, paddingBottom: insets.bottom }} className="flex-1 bg-bg dark:bg-bg-dark">
-            <View className="relative bg-bg dark:bg-bg-dark h-[250px] px-5 pt-12 pb-8">
+        <View style={{ flex: 1, paddingBottom: insets.bottom }} className="flex-1 bg-bg-dark">
+            <View className="relative bg-bg-dark h-[250px] px-5 pt-12 pb-8">
                 <View className="absolute -bottom-10 left-10 z-10 items-center mt-5">
                     <Image
                         source={
@@ -128,10 +126,10 @@ const TechnicianDetail = () => {
                 </View>
                 <TouchableOpacity
                     onPress={() => router.back()}
-                    className="w-10 h-10 bg-card dark:bg-card-dark rounded-full items-center justify-center"
+                    className="w-10 h-10 bg-card-dark rounded-full items-center justify-center"
                     style={{ elevation: 3 }}
                 >
-                    <Ionicons name="arrow-back" size={20} color={isDark ? "#F8FAFC" : "#171A2B"} />
+                    <Ionicons name="arrow-back" size={20} color= "#F8FAFC" />
                 </TouchableOpacity>
 
                 {isOnline && (
@@ -145,10 +143,10 @@ const TechnicianDetail = () => {
                 showsVerticalScrollIndicator={false}
             >
                 <View className='px-5'>
-                    <View className="-mt-6 bg-card dark:bg-card-dark pt-20 px-5 rounded-xl pb-6 shadow-sm">
+                    <View className="-mt-6 bg-card-dark pt-20 px-5 rounded-xl pb-6 shadow-sm">
                         <View className="flex-row justify-between items-start">
                             <View className="flex-1 pr-2">
-                                <Text className="text-2xl font-bold text-text dark:text-text-dark">
+                                <Text className="text-2xl font-bold text-text-dark">
                                     {technician?.first_name}  {technician?.last_name}
                                 </Text>
                                 <View className="flex-row items-center">
@@ -179,7 +177,7 @@ const TechnicianDetail = () => {
 
                             {/* Location */}
                             <View className="flex-row gap-2 items-center flex-1">
-                                <Text className="font-bold text-xl text-text dark:text-text-dark">
+                                <Text className="font-bold text-xl text-text-dark">
                                     {technician?.experience_years}+
                                 </Text>
                                 <Text className="text-gray-500 text-[10px] mt-0.5">
@@ -191,14 +189,14 @@ const TechnicianDetail = () => {
                     </View>
 
 
-                    <View className="w-full mt-5 p-5 bg-card dark:bg-card-dark rounded-xl shadow-xs">
-                        <Text className="text-lg text-text dark:text-text-dark font-manrope-bold mb-4">
+                    <View className="w-full mt-5 p-5 bg-card-dark rounded-xl shadow-xs">
+                        <Text className="text-lg text-text-dark font-manrope-bold mb-4">
                             Details
                         </Text>
                         <View className="flex-row flex-wrap justify-between gap-y-5">
 
                             <View className="w-[48%]">
-                                <Text className="text-base text-text dark:text-text-dark font-manrope-semibold">
+                                <Text className="text-base text-text-dark font-manrope-semibold">
                                     {technician?.phone || "N/A"}
                                 </Text>
                                 <Text className="text-xs text-gray-500 font-manrope">
@@ -208,7 +206,7 @@ const TechnicianDetail = () => {
 
                             {(distance !== null && distance !== undefined && !isOwner) && (
                                 <View className="w-[48%]">
-                                    <Text className="text-base text-text dark:text-text-dark font-manrope-semibold">
+                                    <Text className="text-base text-text-dark font-manrope-semibold">
                                         {distance} km away
                                     </Text>
                                     <Text className="text-xs text-gray-500 font-manrope">
@@ -238,8 +236,8 @@ const TechnicianDetail = () => {
                     </View>
 
                     {technician?.bio && (
-                        <View className="w-full mt-5 p-5 bg-card dark:bg-card-dark rounded-xl shadow-xs">
-                            <Text className="text-lg text-text dark:text-text-dark font-manrope-bold mb-3">
+                        <View className="w-full mt-5 p-5 bg-card-dark rounded-xl shadow-xs">
+                            <Text className="text-lg text-text-dark font-manrope-bold mb-3">
                                 Bio
                             </Text>
                             <HTMLRenderer
@@ -258,12 +256,12 @@ const TechnicianDetail = () => {
                                     <Text className="text-red-500 text-lg font-bold mt-4">Something went wrong</Text>
                                     <Text className="text-gray-500 text-sm text-center mt-2">{loadMapError.message}</Text>
                                     <TouchableOpacity className="mt-6 bg-[#5B3DF5] px-6 py-3 rounded-xl" onPress={() => loadMap()}>
-                                        <Text className="text-text dark:text-text-dark font-semibold">Try Again</Text>
+                                        <Text className="text-text-dark font-semibold">Try Again</Text>
                                     </TouchableOpacity>
                                 </View>
                             ) : (
-                                <View className="w-full mt-5 p-5 bg-card dark:bg-card-dark rounded-xl shadow-xs">
-                                    <Text className="text-lg text-text dark:text-text-dark font-manrope-bold">
+                                <View className="w-full mt-5 p-5 bg-card-dark rounded-xl shadow-xs">
+                                    <Text className="text-lg text-text-dark font-manrope-bold">
                                         Location
                                     </Text>
                                     <TouchableOpacity
@@ -288,7 +286,7 @@ const TechnicianDetail = () => {
                                             scrollEnabled={false}
                                             pointerEvents="none"
                                         />
-                                        <View className="absolute bottom-3 right-3 bg-card dark:bg-card-dark px-3 py-1 rounded-full flex-row items-center gap-1">
+                                        <View className="absolute bottom-3 right-3 bg-card-dark px-3 py-1 rounded-full flex-row items-center gap-1">
                                             <Ionicons name="expand-outline" size={12} color="#374151" />
                                             <Text className="text-gray-600 text-xs font-medium">
                                                 Tap to expand
@@ -300,7 +298,7 @@ const TechnicianDetail = () => {
 
                     )}
 
-                    <View className="w-full mt-5 p-5 bg-card dark:bg-card-dark rounded-xl items-center justify-center shadow-xs">
+                    <View className="w-full mt-5 p-5 bg-card-dark rounded-xl items-center justify-center shadow-xs">
                         {!isOwner && (
                             <View className="flex-row gap-3">
 
@@ -340,7 +338,7 @@ const TechnicianDetail = () => {
                         )}
                     </View>
                 </View>
-                <View className="w-full mt-5 bg-card dark:bg-card-dark shadow-xs">
+                <View className="w-full mt-5 bg-card-dark shadow-xs">
                     <View className="flex-row px-5 mt-6">
                         {tabs.map((tab) => (
                             <TouchableOpacity
@@ -373,7 +371,7 @@ const TechnicianDetail = () => {
                                         <Text className="text-red-500 text-lg font-bold mt-4">Something went wrong</Text>
                                         <Text className="text-gray-500 text-sm text-center mt-2">{partError.message}</Text>
                                         <TouchableOpacity className="mt-6 bg-[#5B3DF5] px-6 py-3 rounded-xl" onPress={() => fetchParts()}>
-                                            <Text className="text-text dark:text-text-dark font-semibold">Try Again</Text>
+                                            <Text className="text-text-dark font-semibold">Try Again</Text>
                                         </TouchableOpacity>
                                     </View>
                                 ) : (
@@ -406,7 +404,7 @@ const TechnicianDetail = () => {
                                         <Text className="text-red-500 text-lg font-bold mt-4">Something went wrong</Text>
                                         <Text className="text-gray-500 text-sm text-center mt-2">{serviceError.message}</Text>
                                         <TouchableOpacity className="mt-6 bg-[#5B3DF5] px-6 py-3 rounded-xl" onPress={() => fetchServices()}>
-                                            <Text className="text-text dark:text-text-dark font-semibold">Try Again</Text>
+                                            <Text className="text-text-dark font-semibold">Try Again</Text>
                                         </TouchableOpacity>
                                     </View>
                                 ) : (
