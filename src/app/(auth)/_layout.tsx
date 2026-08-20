@@ -1,5 +1,6 @@
 import { useAuth } from "@/src/context/AuthContext";
 import { Redirect, Stack } from "expo-router";
+import { StatusBar } from "expo-status-bar";
 
 export default function AuthRoutesLayout() {
   const { user, loading } = useAuth();
@@ -11,10 +12,18 @@ export default function AuthRoutesLayout() {
   }
 
   return (
-    <Stack
-      screenOptions={{
-        headerShown: false,
-      }}
-    />
+    <>
+      <StatusBar
+        style="dark"
+        translucent
+        backgroundColor="transparent"
+      />
+
+      <Stack
+        screenOptions={{
+          headerShown: false,
+        }}
+      />
+    </>
   );
 }

@@ -72,6 +72,8 @@ export const requestApi = {
           `,
           { count: 'exact' }
         )
+        .eq('technician.is_active', true)
+        .eq('is_approved', true)
         .order('created_at', {
           ascending: false,
         });
@@ -199,12 +201,14 @@ export const requestApi = {
         .select(
           `
             *,
-            technician:profiles(*),
+            technician:profiles!inner(*),
             category:categories(*),
             platform:platforms(*)
           `
         )
         .eq('technician_id', technicianId)
+        .eq('technician.is_active', true)
+        .eq('is_approved', true)
         .order('created_at', {
           ascending: false,
         });

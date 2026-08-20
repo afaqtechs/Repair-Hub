@@ -11,4 +11,5 @@ export * from "./services.api"
 export * from "./storage.api"
 export * from "./technicianLocation.api"
 export * from "./requests.api"
+export * from "./reviews.api";
 

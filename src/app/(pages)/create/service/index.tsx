@@ -13,18 +13,18 @@ const CreateService = () => {
     return (
         <View
             style={{ flex: 1, paddingTop: insets.top }}
-            className="flex-1 bg-bg-dark"
+            className="flex-1 bg-bg"
         >
-            <View className="px-5 pt-2 pb-5 border-b border-border-dark">
+            <View className="px-5 pt-2 pb-5 border-b border-border">
                 <View className="flex-row items-center">
                     <TouchableOpacity
                         onPress={() => router.push("/(root)/(tabs)/create")}
                         activeOpacity={0.7}
-                        className="w-10 h-10 items-center justify-center rounded-2xl bg-card-dark border border-border-dark"
+                        className="w-10 h-10 items-center justify-center rounded-2xl bg-card border border-border"
                     >
-                        <Ionicons name="arrow-back" size={20} color="#F8FAFC" />
+                        <Ionicons name="arrow-back" size={20} color="#1F2937" />
                     </TouchableOpacity>
-                    <Text className="ml-2 text-[20px] font-manrope-semibold text-text-dark">
+                    <Text className="ml-2 text-[20px] font-manrope-semibold text-text">
                         Add Service
                     </Text>
                 </View>

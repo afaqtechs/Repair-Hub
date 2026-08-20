@@ -1,4 +1,3 @@
-
 import { Ionicons } from '@expo/vector-icons';
 import { Modal, Text, TouchableOpacity } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -40,12 +39,12 @@ const SortModal = <T extends string>({
                 <TouchableOpacity
                     activeOpacity={1}
                     onPress={() => { }}
-                    className="bg-card-dark rounded-t-xl px-5 pt-4 pb-8"
+                    className="rounded-t-2xl bg-card px-5 pt-4"
                     style={{
-                        paddingBottom: Math.max(insets.bottom, 16),
+                        paddingBottom: insets.bottom,
                     }}
                 >
-                    <Text className="text-lg font-semibold text-text-dark mb-4">
+                    <Text className="mb-4 text-lg font-semibold text-text">
                         Sort By
                     </Text>
 
@@ -56,9 +55,9 @@ const SortModal = <T extends string>({
                                 setSortValue(item.value);
                                 setSortModalVisible(false);
                             }}
-                            className="flex-row justify-between items-center py-4 border-b border-border-dark/30"
+                            className="flex-row items-center justify-between border-b border-border/30 py-4"
                         >
-                            <Text className="text-base text-text-dark">
+                            <Text className="text-base text-text">
                                 {item.label}
                             </Text>
 

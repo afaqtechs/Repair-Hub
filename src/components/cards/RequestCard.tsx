@@ -37,7 +37,7 @@ const RequestCard = ({
 
     const imageSource = request?.images?.[0]
         ? { uri: request.images[0] }
-        : require("@/assets/ui/heroimage.png");
+        : require("@/assets/ui/background/request_image.jpg");
 
     const { data: technicianLocation } = useTechnicianLocation(technicianId);
     const { deleteRequest, updateRequestStatus } = useRequestMutations();
@@ -79,7 +79,7 @@ const RequestCard = ({
 
     return (
         <View
-            className={`m-1 ${isListView ? "w-full flex-row items-center" : "flex-col"} bg-card-dark/50 p-2 border border-border-dark overflow-hidden rounded-md`}
+            className={`m-1 ${isListView ? "w-full flex-row items-center" : "flex-col"} bg-card p-2 rounded-md`}
             style={{ elevation: 0 }}
         >
             <TouchableOpacity
@@ -124,7 +124,7 @@ const RequestCard = ({
                     >
                         <Text
                             numberOfLines={2}
-                            className="text-sm font-manrope-semibold text-text-dark leading-5 min-h-[40px] hover:opacity-70"
+                            className="text-sm font-manrope-semibold text-text leading-5 min-h-[40px] hover:opacity-70"
                             style={Platform.select({
                                 web: {
                                     cursor: 'pointer',
@@ -139,7 +139,7 @@ const RequestCard = ({
                     {request?.description && (
                         <Text
                             numberOfLines={2}
-                            className="text-xs text-text-darkSecondary mt-1 leading-4"
+                            className="text-xs text-text-secondary mt-1 leading-4"
                         >
                             {request.description.replace(/<[^>]*>/g, '').substring(0, 100)}
                             {request.description.replace(/<[^>]*>/g, '').length > 100 && '...'}
@@ -148,14 +148,14 @@ const RequestCard = ({
 
                     {request?.platform?.name && (
                         <View className="flex-row items-center mt-1">
-                            <Ionicons name="hardware-chip-outline" size={12} color="#94A3B8" />
-                            <Text className="text-xs text-text-darkSecondary ml-1">
+                            <Ionicons name="hardware-chip-outline" size={12} color="#1F2937" />
+                            <Text className="text-xs text-text-secondary ml-1">
                                 {request.platform.name}
                             </Text>
                         </View>
                     )}
 
-                    <View className="flex-row items-center justify-between mt-2 pt-2 border-t border-border-dark/30">
+                    <View className="flex-row items-center justify-between mt-2 pt-2 border-t border-border/30">
                         <Text className="text-xs text-gray-400">
                             {request?.category?.name || 'Uncategorized'}
                         </Text>

@@ -63,31 +63,31 @@ const Location = () => {
     return (
         <View
             style={{ flex: 1, paddingTop: insets.top, paddingBottom: insets.bottom }}
-            className="flex-1 bg-bg-dark"
+            className="flex-1 bg-bg"
         >
 
-            <View className="flex-row justify-between items-center px-4 pt-2 pb-5 bg-bg-dark border-b border-border-dark/50">
+            <View className="flex-row justify-between items-center px-4 pt-2 pb-5 bg-bg border-b border-border/50">
                 <View className="flex-row items-center">
                     <TouchableOpacity
                         onPress={() => router.back()}
                         activeOpacity={0.7}
-                        className="w-10 h-10 items-center justify-center rounded-2xl bg-card-dark border border-border-dark"
+                        className="w-10 h-10 items-center justify-center rounded-2xl bg-card border border-border"
                     >
-                        <Ionicons name="arrow-back" size={20} color="#F8FAFC"  />
+                        <Ionicons name="arrow-back" size={20} color="#1F2937"  />
                     </TouchableOpacity>
-                    <Text className="ml-2 text-[20px] font-manrope-semibold text-text-dark">
+                    <Text className="ml-2 text-[20px] font-manrope-semibold text-text">
                         My Location
                     </Text>
                 </View>
                 <TouchableOpacity
                     onPress={() => refetch()}
                     activeOpacity={0.7}
-                    className="w-10 h-10 items-center justify-center rounded-2xl bg-card-dark border border-border-dark"
+                    className="w-10 h-10 items-center justify-center rounded-2xl bg-card border border-border"
                 >
                     {isRefetching ? (
                         <ActivityIndicator size="small" color="#ffffff" />
                     ) : (
-                        <Ionicons name="refresh" size={20} color="#F8FAFC" />
+                        <Ionicons name="refresh" size={20} color="#1F2937" />
                     )}
                 </TouchableOpacity>
             </View>
@@ -98,21 +98,21 @@ const Location = () => {
 
                 <>
                     {loading ? (
-                        <View className="flex-1 items-center justify-center bg-bg-dark">
+                        <View className="flex-1 items-center justify-center bg-bg">
                             <ActivityIndicator size="large" color="#6366F1" />
-                            <Text className="mt-4 text-sm font-manrope-medium text-text-darkMuted">
+                            <Text className="mt-4 text-sm font-manrope-medium text-text-muted">
                                 Loading location...
                             </Text>
                         </View>
                     ) : error ? (
-                        <View className="flex-1 items-center justify-center px-6 bg-bg-dark">
+                        <View className="flex-1 items-center justify-center px-6 bg-bg">
                             <View className="w-20 h-20 bg-red-500/10 rounded-full items-center justify-center">
                                 <Ionicons name="location-outline" size={40} color="#EF4444" />
                             </View>
-                            <Text className="mt-4 text-lg font-manrope-semibold text-text-dark">
+                            <Text className="mt-4 text-lg font-manrope-semibold text-text">
                                 Location Unavailable
                             </Text>
-                            <Text className="mt-2 text-sm font-manrope-light text-text-darkMuted text-center max-w-xs">
+                            <Text className="mt-2 text-sm font-manrope-light text-text-muted text-center max-w-xs">
                                 {error?.message || "Could not fetch location"}
                             </Text>
                             <View className='mt-6 flex-row gap-3 items-center'>
@@ -128,10 +128,10 @@ const Location = () => {
                                 </TouchableOpacity>
                                 <TouchableOpacity
                                     onPress={() => setUpdatingLocation(true)}
-                                    className="flex-1 flex-row items-center justify-center gap-2 py-3.5 bg-card-dark rounded-xl border border-border-dark active:opacity-80"
+                                    className="flex-1 flex-row items-center justify-center gap-2 py-3.5 bg-card rounded-xl border border-border active:opacity-80"
                                 >
                                     <Ionicons name="add-outline" size={20} color="#F8FAFC"/>
-                                    <Text className="text-text-dark font-manrope-semibold text-sm">
+                                    <Text className="text-text font-manrope-semibold text-sm">
                                         Add Location
                                     </Text>
                                 </TouchableOpacity>
@@ -140,15 +140,15 @@ const Location = () => {
                     ) : location ? (
                         <View className="flex-1 p-4">
                             {/* Location Info Card */}
-                            <View className="mb-4 px-4 py-3 bg-card-dark rounded-xl flex-row items-center gap-3">
+                            <View className="mb-4 px-4 py-3 bg-card rounded-xl flex-row items-center gap-3">
                                 <View className="w-10 h-10 bg-primary/20 rounded-full items-center justify-center">
                                     <Ionicons name="location" size={20} color="#6366F1" />
                                 </View>
                                 <View className="flex-1">
-                                    <Text className="text-sm font-manrope-semibold text-text-dark">
+                                    <Text className="text-sm font-manrope-semibold text-text">
                                         {technician?.address || technician?.city || "Current Location"}
                                     </Text>
-                                    <Text className="text-xs font-manrope-light text-text-darkMuted">
+                                    <Text className="text-xs font-manrope-light text-text-muted">
                                         {location?.latitude?.toFixed(6)}, {location?.longitude?.toFixed(6)}
                                     </Text>
                                 </View>
@@ -161,7 +161,7 @@ const Location = () => {
 
                             {/* Map */}
                             {mapUrl && (
-                                <View className="flex-1 mb-4 bg-card-dark rounded-xl overflow-hidden">
+                                <View className="flex-1 mb-4 bg-card rounded-xl overflow-hidden">
                                     <TouchableOpacity
                                         onPress={() =>
                                             router.push({
@@ -188,25 +188,25 @@ const Location = () => {
                                             pointerEvents="none"
                                             startInLoadingState={true}
                                             renderLoading={() => (
-                                                <View className="absolute inset-0 items-center justify-center bg-card-dark">
+                                                <View className="absolute inset-0 items-center justify-center bg-card">
                                                     <ActivityIndicator size="small" color="#6366F1" />
-                                                    <Text className="mt-2 text-xs font-manrope-medium text-text-darkMuted">
+                                                    <Text className="mt-2 text-xs font-manrope-medium text-text-muted">
                                                         Loading map...
                                                     </Text>
                                                 </View>
                                             )}
                                             onError={() => (
-                                                <View className="absolute inset-0 items-center justify-center bg-card-dark">
+                                                <View className="absolute inset-0 items-center justify-center bg-card">
                                                     <Ionicons name="map-outline" size={32} color="#64748B" />
-                                                    <Text className="mt-2 text-xs font-manrope-medium text-text-darkMuted">
+                                                    <Text className="mt-2 text-xs font-manrope-medium text-text-muted">
                                                         Could not load map
                                                     </Text>
                                                 </View>
                                             )}
                                         />
-                                        <View className="absolute bottom-3 right-3 bg-dark-card/90 px-3 py-1.5 rounded-full flex-row items-center gap-1.5 shadow-sm">
+                                        <View className="absolute bottom-3 right-3 bg-card/90 px-3 py-1.5 rounded-full flex-row items-center gap-1.5 shadow-sm">
                                             <Ionicons name="expand-outline" size={14} color= "#94A3B8" />
-                                            <Text className="text-xs font-manrope-medium text-text-darkMuted">
+                                            <Text className="text-xs font-manrope-medium text-text-muted">
                                                 Tap to expand
                                             </Text>
                                         </View>
@@ -227,34 +227,34 @@ const Location = () => {
                                 </TouchableOpacity>
                                 <TouchableOpacity
                                     onPress={() => setUpdatingLocation(true)}
-                                    className="flex-1 flex-row items-center justify-center gap-2 py-3.5 bg-card-dark rounded-xl border border-border-dark active:opacity-80"
+                                    className="flex-1 flex-row items-center justify-center gap-2 py-3.5 bg-card rounded-xl border border-border active:opacity-80"
                                 >
                                     <Ionicons name="pencil-outline" size={20} color= "#F8FAFC" />
-                                    <Text className="text-text-dark font-manrope-semibold text-sm">
+                                    <Text className="text-text font-manrope-semibold text-sm">
                                         Update Location
                                     </Text>
                                 </TouchableOpacity>
                             </View>
 
                             {/* Location Note */}
-                            <View className="mt-4 px-4 py-2 bg-input-dark rounded-xl">
+                            <View className="mt-4 px-4 py-2 bg-input rounded-xl">
                                 <View className="flex-row items-center gap-2">
                                     <Ionicons name="information-circle-outline" size={14} color="#94A3B8" />
-                                    <Text className="text-xs font-manrope-light text-text-darkMuted flex-1">
+                                    <Text className="text-xs font-manrope-light text-text-muted flex-1">
                                         Your location helps other technicians find you and collaborate effectively.
                                     </Text>
                                 </View>
                             </View>
                         </View>
                     ) : (
-                        <View className="flex-1 items-center justify-center px-6 bg-bg-dark">
+                        <View className="flex-1 items-center justify-center px-6 bg-bg">
                             <View className="w-20 h-20 bg-gray-500/10 rounded-full items-center justify-center">
                                 <Ionicons name="location-outline" size={40} color="#64748B" />
                             </View>
-                            <Text className="mt-4 text-lg font-manrope-semibold text-text-dark">
+                            <Text className="mt-4 text-lg font-manrope-semibold text-text">
                                 No Location Found
                             </Text>
-                            <Text className="mt-2 text-sm font-manrope-light text-text-darkMuted text-center">
+                            <Text className="mt-2 text-sm font-manrope-light text-text-muted text-center">
                                 Please set your location in profile settings
                             </Text>
                             <View className="flex-row gap-3">
@@ -270,10 +270,10 @@ const Location = () => {
                             </TouchableOpacity>
                             <TouchableOpacity
                                 onPress={() => setUpdatingLocation(true)}
-                                className="flex-1 flex-row items-center justify-center gap-2 py-3.5 bg-card-dark rounded-xl border border-border-dark active:opacity-80"
+                                className="flex-1 flex-row items-center justify-center gap-2 py-3.5 bg-card rounded-xl border border-border active:opacity-80"
                             >
                                 <Ionicons name="pencil-outline" size={20} color="#F8FAFC"/>
-                                <Text className="text-text-dark font-manrope-semibold text-sm">
+                                <Text className="text-text font-manrope-semibold text-sm">
                                     Update Location
                                 </Text>
                             </TouchableOpacity>

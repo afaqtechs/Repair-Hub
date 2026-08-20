@@ -12,11 +12,10 @@ import { FlashList } from "@shopify/flash-list";
 import { useRouter } from 'expo-router';
 import { useMemo } from 'react';
 import { ActivityIndicator, ScrollView, Text, TouchableOpacity, View } from 'react-native';
-import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const HomeScreen = () => {
     const router = useRouter();
-    const insets = useSafeAreaInsets();
 
     const {
         data: categories = [],
@@ -69,7 +68,7 @@ const HomeScreen = () => {
 
     if (error) {
         return (
-            <SafeAreaView edges={["top", "left", "right"]} className="flex-1 bg-bg-dark">
+            <SafeAreaView edges={["top", "left", "right"]} className="flex-1 bg-bg">
                 <View className="flex-1 items-center justify-center px-4">
                     <Ionicons name="alert-circle-outline" size={60} color="#EF4444" />
                     <Text className="text-red-500 text-lg font-bold mt-4">Something went wrong</Text>
@@ -79,7 +78,7 @@ const HomeScreen = () => {
                         fetchParts();
                         refetchTechnicians();
                     }}>
-                        <Text className="text-text-dark font-semibold">Try Again</Text>
+                        <Text className="text-text font-semibold">Try Again</Text>
                     </TouchableOpacity>
                 </View>
             </SafeAreaView>
@@ -89,28 +88,32 @@ const HomeScreen = () => {
 
     if (loading) {
         return (
-            <View className="flex-1 items-center justify-center bg-bg-dark">
+            <View className="flex-1 items-center justify-center bg-bg">
                 <ActivityIndicator size="large" color="#2563EB" />
             </View>
         )
     }
     return (
-        <View style={{ flex: 1, paddingTop: insets.top }} >
+        <>
             <View className="flex-row justify-between items-center py-3 px-5">
                 <View>
-                    <Text className="text-text-dark text-2xl font-bold">
+                    <Text className="text-text text-2xl font-manrope-bold">
                         Repair<Text className="text-primary">Hub</Text>
                     </Text>
-                    <Text className="text-text-darkSecondary text-xs mt-0.5">
+                    <Text className="text-textSecondary font-manrope text-xs mt-0.5">
                         Find repair parts & experts
                     </Text>
                 </View>
                 <TouchableOpacity
                     activeOpacity={0.7}
-                    className="w-12 h-12 rounded-lg bg-bg-dark/50 border border-border-dark/30 items-center justify-center"
+                    onPress={() => router.push("/search")}
+                    className="w-12 h-12 rounded-lg bg-bg/50 border border-border/30 items-center justify-center"
                 >
-                    <Ionicons name="notifications-outline" size={22} color="#C4B5FD" />
-                    <View className="absolute top-1 right-1 w-2 h-2 rounded-full bg-danger" />
+                    <Ionicons
+                        name="search-outline"
+                        size={24}
+                        color="#000"
+                    />
                 </TouchableOpacity>
             </View>
             <ScrollView
@@ -134,7 +137,7 @@ const HomeScreen = () => {
                     {categories.length > 0 && (
                         <View className='mt-4'>
                             <View className='ml-1 flex-row justify-between items-center mb-1'>
-                                <Text className="text-base font-manrope-semibold text-text-dark">
+                                <Text className="text-base font-manrope-semibold text-text">
                                     Top Categories
                                 </Text>
                                 <TouchableOpacity onPress={() => router.push("/(pages)/categories")} className=''>
@@ -163,7 +166,7 @@ const HomeScreen = () => {
 
                     {techniciansWithDistance.length > 0 && (
                         <View className='mt-4'>
-                            <Text className="px-3 mb-1 text-base font-manrope-semibold text-text-dark">
+                            <Text className="px-3 mb-1 text-base font-manrope-semibold text-text">
                                 Nearby Technicians
                             </Text>
                             <FlashList
@@ -189,8 +192,8 @@ const HomeScreen = () => {
                 </View>
 
                 {parts.length > 0 && (
-                    <View className='mt-8 px-3 py-8 bg-card-dark'>
-                        <Text className="px-3 text-base font-manrope-semibold text-text-dark mb-1">
+                    <View className='mt-8 px-3 py-8 bg-slate-100'>
+                        <Text className="px-3 text-base font-manrope-semibold text-text mb-1">
                             Recommended for you
                         </Text>
                         <FlashList
@@ -211,7 +214,7 @@ const HomeScreen = () => {
                     </View>
                 )}
             </ScrollView>
-        </View>
+        </>
     );
 };
 

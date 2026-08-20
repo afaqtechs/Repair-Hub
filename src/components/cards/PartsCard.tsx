@@ -47,7 +47,7 @@ const PartsCard = ({
 
     const imageSource = part?.images?.[0]
         ? { uri: part.images[0] }
-        : require("@/assets/ui/heroimage.png");
+        : require("@/assets/ui/background/parts_image.jpg");
 
     const handleMenuAction = async (value: string) => {
         switch (value) {
@@ -94,7 +94,7 @@ const PartsCard = ({
 
     return (
         <View
-            className={`m-1 ${isListView ? "w-full flex-row items-center" : "flex-col"} bg-card-dark p-2 border border-border-dark overflow-hidden rounded-md`}
+            className={`m-1 ${isListView ? "w-full flex-row items-center" : "flex-col"} bg-card p-2 rounded-md`}
             style={{ elevation: 0 }}
         >
             <TouchableOpacity
@@ -107,12 +107,12 @@ const PartsCard = ({
                     <TouchableOpacity
                         onPress={() => toggleSave()}
                         disabled={saveLoading}
-                        className="absolute top-2 right-2 bg-bg-dark rounded-full p-2 items-center justify-center"
+                        className="absolute top-2 right-2 bg-bg rounded-full p-2 items-center justify-center"
                     >
                         <Ionicons
                             name={isSaved ? "heart" : "heart-outline"}
                             size={20}
-                            color={isSaved ? "#EF4444" : "#ffffff"}
+                            color={isSaved ? "#EF4444" : "#1F2937"}
                         />
                     </TouchableOpacity>
                 )}
@@ -147,7 +147,7 @@ const PartsCard = ({
                     >
                         <Text
                             numberOfLines={2}
-                            className="text-sm font-manrope-semibold text-text-dark leading-5 min-h-[40px] hover:opacity-70"
+                            className="text-sm font-manrope-semibold text-text leading-5 min-h-[40px] hover:opacity-70"
                             style={Platform.select({
                                 web: {
                                     cursor: 'pointer',
@@ -160,8 +160,8 @@ const PartsCard = ({
                     </TouchableOpacity>
 
                     <View className="flex-row items-center mt-1">
-                        <Ionicons name="business-outline" size={12} color="#9CA3AF" />
-                        <Text numberOfLines={1} className="text-xs text-text-darkMuted ml-1 flex-1">
+                        <Ionicons name="business-outline" size={12} color="#1F2937" />
+                        <Text numberOfLines={1} className="text-xs text-text-muted ml-1 flex-1">
                             {part.brand ?? "Unknown Brand"}
                             {part.model ? ` • ${part.model}` : ""}
                         </Text>
@@ -169,15 +169,15 @@ const PartsCard = ({
 
                     {part?.technician?.city && (
                         <View className="flex-row items-center mt-0.5">
-                            <Ionicons name="location-outline" size={12} color="#9CA3AF" />
-                            <Text numberOfLines={1} className="text-xs text-text-darkMuted ml-1">
+                            <Ionicons name="location-outline" size={12} color="#1F2937" />
+                            <Text numberOfLines={1} className="text-xs text-text-muted ml-1">
                                 {part.technician.city}
                             </Text>
                         </View>
                     )}
                 </View>
 
-                <View className="flex-row items-center justify-between mt-2 pt-2 border-t border-border-dark/30">
+                <View className="flex-row items-center justify-between mt-2 pt-2 border-t border-border/30">
                     <View className="flex-row items-center">
                         <View
                             className="w-6 h-6 rounded-full items-center justify-center"
@@ -216,12 +216,12 @@ const PartsCard = ({
                 <TouchableOpacity
                     onPress={() => toggleSave()}
                     disabled={saveLoading}
-                    className="absolute top-2 right-2 bg-bg-dark rounded-full p-2 items-center justify-center"
+                    className="absolute top-2 right-2 bg-bg rounded-full p-2 items-center justify-center"
                 >
                     <Ionicons
                         name={isSaved ? "heart" : "heart-outline"}
                         size={20}
-                        color={isSaved ? "#EF4444" : "#ffffff"}
+                        color={isSaved ? "#EF4444" : "#1F2937"}
                     />
                 </TouchableOpacity>
             )}

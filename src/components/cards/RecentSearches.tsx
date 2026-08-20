@@ -34,7 +34,7 @@ const RecentSearches = ({
                     activeOpacity={0.7}
                 >
                     <View className="flex-row items-center flex-1">
-                        <View className="w-8 h-8 rounded-full items-center justify-center overflow-hidden bg-input-dark">
+                        <View className="w-8 h-8 rounded-full items-center justify-center overflow-hidden bg-input">
                             <Image
                                 source={imageSource}
                                 className="w-8 h-8"
@@ -44,7 +44,7 @@ const RecentSearches = ({
 
                         <Text
                             numberOfLines={1}
-                            className="ml-3 text-text-dark font-medium flex-1"
+                            className="ml-3 text-text font-medium flex-1"
                         >
                             {item}
                         </Text>

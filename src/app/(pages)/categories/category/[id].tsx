@@ -3,7 +3,7 @@ import ServiceCard from '@/src/components/cards/ServiceCard';
 import AppRefreshControl from '@/src/components/ui/AppRefreshControl';
 import EmptyState from '@/src/components/ui/EmptyState';
 import SortModal from '@/src/components/ui/SortModal';
-import { useCategory, usePartsByCategory, useServicesByCategory } from '@/src/hooks';
+import { useCategory, usePartsByCategory, useRequestsByCategory, useServicesByCategory } from '@/src/hooks';
 import { Ionicons } from '@expo/vector-icons';
 import { FlashList } from '@shopify/flash-list';
 import { useLocalSearchParams, useRouter } from 'expo-router';
@@ -40,6 +40,13 @@ const CategoryDetail = () => {
         refetch: refetchServices,
     } = useServicesByCategory(id);
 
+    const {
+        data: requests,
+        isLoading: loadingRequests,
+        error: requestError,
+        refetch: refetchRequests,
+    } = useRequestsByCategory(id);
+
     const sortOptions = [
         { label: 'Recommended', value: 'recommended' },
         { label: 'Newest', value: 'newest' },
@@ -64,7 +71,7 @@ const CategoryDetail = () => {
         ]
 
     const sortedResults = React.useMemo(() => {
-        const sorts = (activeTab === "parts" || activeTab === "requests") ? parts : services;
+        const sorts = activeTab === "parts" ? parts : activeTab === "services" ? services : requests;
         const sorted = [...sorts ?? []];
 
         switch (sortValue) {
@@ -84,14 +91,14 @@ const CategoryDetail = () => {
             default:
                 return sorted;
         }
-    }, [services, sortValue, activeTab, parts]);
+    }, [services, sortValue, activeTab, parts,requests]);
 
-    const error = partsError || serviceError;
-    const loading = loadingParts || loadingServices
+    const error = partsError || serviceError || requestError;
+    const loading = loadingParts || loadingServices || loadingRequests;
 
     if (loading) {
         return (
-            <View className="flex-1 items-center justify-center bg-bg-dark">
+            <View className="flex-1 items-center justify-center bg-bg">
                 <ActivityIndicator size="large" color="#2563EB" />
             </View>
         );
@@ -99,7 +106,7 @@ const CategoryDetail = () => {
 
     if (error) {
         return (
-            <SafeAreaView edges={["top", "left", "right"]} className="flex-1 bg-bg-dark">
+            <SafeAreaView edges={["top", "left", "right"]} className="flex-1 bg-bg">
                 <View className="flex-1 items-center justify-center px-4">
                     <Ionicons name="alert-circle-outline" size={60} color="#EF4444" />
                     <Text className="text-red-500 text-lg font-bold mt-4">Something went wrong</Text>
@@ -108,7 +115,7 @@ const CategoryDetail = () => {
                         refetchParts();
                         refetchServices();
                     }}>
-                        <Text className="text-text-dark font-semibold">Try Again</Text>
+                        <Text className="text-text font-semibold">Try Again</Text>
                     </TouchableOpacity>
                 </View>
             </SafeAreaView>
@@ -121,18 +128,18 @@ const CategoryDetail = () => {
     return (
         <View
             style={{ flex: 1, paddingTop: insets.top, paddingBottom: insets.bottom }}
-            className="flex-1 bg-bg-dark"
+            className="flex-1 bg-bg"
         >
             <View className="px-5 pt-2 pb-5">
                 <View className="flex-row items-center">
                     <TouchableOpacity
                         onPress={() => router.back()}
                         activeOpacity={0.7}
-                        className="w-10 h-10 items-center justify-center rounded-2xl bg-card-dark border border-border-dark"
+                        className="w-10 h-10 items-center justify-center rounded-2xl bg-card border border-border"
                     >
-                        <Ionicons name="arrow-back" size={20} color="#F8FAFC" />
+                        <Ionicons name="arrow-back" size={20} color="#1F2937" />
                     </TouchableOpacity>
-                    <Text className="ml-2 text-[20px] font-manrope-semibold text-text-dark">
+                    <Text className="ml-2 text-[20px] font-manrope-semibold text-text">
                         {category?.name}
                     </Text>
                 </View>
@@ -159,9 +166,9 @@ const CategoryDetail = () => {
                 </View>
             </View>
 
-            <View className="px-5 pb-3 border-b border-border-dark">
+            <View className="px-5 pb-3 border-b border-border">
                 <View className="flex-row items-center justify-between">
-                    <Text className="text-text-darkMuted text-base font-medium">
+                    <Text className="text-text-muted text-base font-medium">
                         Found <Text className="font-bold text-primary">
                             ({sortedResults.length})
                         </Text>
@@ -170,23 +177,23 @@ const CategoryDetail = () => {
                     <View className="flex-row items-center gap-2">
                         <TouchableOpacity
                             onPress={() => setSortModalVisible(true)}
-                            className="w-10 h-10 rounded-md border border-border-dark bg-card-dark items-center justify-center"
+                            className="w-10 h-10 rounded-md border border-border bg-card items-center justify-center"
                         >
                             <Ionicons
                                 name="swap-vertical-outline"
                                 size={20}
-                                color="#94A3B8"
+                                color="#1F2937"
                             />
                         </TouchableOpacity>
 
                         <TouchableOpacity
                             onPress={() => setListView(!listView)}
-                            className="w-10 h-10 rounded-md border border-border-dark bg-card-dark items-center justify-center"
+                            className="w-10 h-10 rounded-md border border-border bg-card items-center justify-center"
                         >
                             <Ionicons
                                 name={listView ? 'grid-outline' : 'list-outline'}
                                 size={20}
-                                color="#94A3B8"
+                                color="#1F2937"
                             />
                         </TouchableOpacity>
                     </View>
@@ -194,7 +201,7 @@ const CategoryDetail = () => {
             </View>
 
             <View className="flex-1 mt-2">
-                {activeTab === "parts" || activeTab === "requests" ? (
+                {activeTab === "parts" ? (
 
                     <FlashList
                         data={sortedResults}
@@ -223,40 +230,77 @@ const CategoryDetail = () => {
                         )}
                         ListEmptyComponent={
                             <View className="flex-1 items-center justify-center py-24">
-                                <EmptyState title="No Saved Parts" description="No parts in this category" />
+                                <EmptyState title="No Parts" description="No parts in this category" />
                             </View>}
                     />
                 ) : (
-                    <FlashList
-                        data={sortedResults}
-                        keyExtractor={(item) => item.id}
-                        contentContainerStyle={{ padding: 10, paddingHorizontal: 10, paddingBottom: 100 }}
-                        showsVerticalScrollIndicator={false}
-                        numColumns={columns}
-                        masonry={isMasonry}
-                        refreshControl={
-                            <AppRefreshControl
-                                refreshing={loadingServices}
-                                onRefresh={() => {
-                                    refetchServices();
-                                }}
+                    <>
+                        {activeTab === "services" ? (
+
+                            <FlashList
+                                data={sortedResults}
+                                keyExtractor={(item) => item.id}
+                                contentContainerStyle={{ padding: 10, paddingHorizontal: 10, paddingBottom: 100 }}
+                                showsVerticalScrollIndicator={false}
+                                numColumns={columns}
+                                masonry={isMasonry}
+                                refreshControl={
+                                    <AppRefreshControl
+                                        refreshing={loadingServices}
+                                        onRefresh={() => {
+                                            refetchServices();
+                                        }}
+                                    />
+                                }
+                                ItemSeparatorComponent={() => <View style={{ width: 16 }} />}
+                                renderItem={({ item, index }) => (
+                                    <ServiceCard
+                                        service={item}
+                                        index={index}
+                                        showListView={listView}
+                                        showSave
+                                    />
+                                )}
+                                ListEmptyComponent={
+                                    <View className="flex-1 items-center justify-center py-24">
+                                        <EmptyState title="No Services" description="No services here" />
+                                    </View>
+                                }
                             />
-                        }
-                        ItemSeparatorComponent={() => <View style={{ width: 16 }} />}
-                        renderItem={({ item, index }) => (
-                            <ServiceCard
-                                service={item}
-                                index={index}
-                                showListView={listView}
-                                showSave
+                        ) : (
+
+                            <FlashList
+                                data={sortedResults}
+                                keyExtractor={(item) => item.id}
+                                contentContainerStyle={{ padding: 10, paddingHorizontal: 10, paddingBottom: 100 }}
+                                showsVerticalScrollIndicator={false}
+                                numColumns={columns}
+                                masonry={isMasonry}
+                                refreshControl={
+                                    <AppRefreshControl
+                                        refreshing={loadingRequests}
+                                        onRefresh={() => {
+                                            refetchRequests();
+                                        }}
+                                    />
+                                }
+                                ItemSeparatorComponent={() => <View style={{ width: 16 }} />}
+                                renderItem={({ item, index }) => (
+                                    <ServiceCard
+                                        service={item}
+                                        index={index}
+                                        showListView={listView}
+                                        showSave
+                                    />
+                                )}
+                                ListEmptyComponent={
+                                    <View className="flex-1 items-center justify-center py-24">
+                                        <EmptyState title="No Requests" description="No requests here" />
+                                    </View>
+                                }
                             />
                         )}
-                        ListEmptyComponent={
-                            <View className="flex-1 items-center justify-center py-24">
-                                <EmptyState title="No Saved Services" description="No saved services here" />
-                            </View>
-                        }
-                    />
+                    </>
                 )}
 
             </View>

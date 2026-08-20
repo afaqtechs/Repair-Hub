@@ -59,7 +59,8 @@ export default function MapScreen() {
                     <Text className="text-blue-600 text-xs font-semibold">
                         Google Maps
                     </Text>
-                </TouchableOpacity>            </View>
+                </TouchableOpacity>
+            </View>
 
             {/* Full Screen Map */}
             {hasValidCoordinates ? (

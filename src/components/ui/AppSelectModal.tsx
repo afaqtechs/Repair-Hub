@@ -1,6 +1,6 @@
 
 import { Ionicons } from "@expo/vector-icons";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import {
     ActivityIndicator,
     FlatList,
@@ -11,7 +11,6 @@ import {
     View,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import * as NavigationBar from "expo-navigation-bar";
 
 interface SelectItem {
     label: string;
@@ -47,11 +46,6 @@ const AppSelectModal = ({
     const insets = useSafeAreaInsets();
 
     const [addedItems, setAddedItems] = useState<SelectItem[]>([]);
-
-    useEffect(() => {
-        NavigationBar.setBackgroundColorAsync("#0B1120");
-        NavigationBar.setButtonStyleAsync("light");
-    }, []);
 
     const allItems = useMemo(() => {
         const merged = [...data, ...addedItems];
@@ -125,12 +119,12 @@ const AppSelectModal = ({
             <TouchableOpacity
                 onPress={() => setVisible(true)}
                 activeOpacity={0.8}
-                className={`h-14 px-4 rounded-lg flex-row items-center justify-between border bg-bg-dark/50 border-border-dark/50`}
+                className={`h-14 px-4 rounded-lg flex-row items-center justify-between border bg-bg/50 border-border/50`}
             >
                 <View className="flex-1 flex-row items-center">
                     <Text
                         className={`text-sm font-manrope ${selectedItem
-                            ? "text-text-dark"
+                            ? "text-text"
                             : "text-gray-400"
                             }`}
                         numberOfLines={1}
@@ -164,7 +158,7 @@ const AppSelectModal = ({
                     <TouchableOpacity
                         activeOpacity={1}
                         onPress={() => { }}
-                        className={`max-h-[90%] min-h-[60%] rounded-t-xl px-5 pt-4 pb-8 bg-card-dark`}
+                        className={`max-h-[90%] min-h-[60%] rounded-t-xl px-5 pt-4 pb-8 bg-card`}
                         style={{
                             paddingBottom: Math.max(insets.bottom, 16),
                         }}
@@ -177,7 +171,7 @@ const AppSelectModal = ({
                         {/* HEADER */}
                         <View className="flex-row items-center justify-between mb-4">
                             <Text
-                                className={`text-lg font-semibold text-text-dark`}
+                                className={`text-lg font-semibold text-text`}
                             >
                                 Select {title}
                             </Text>
@@ -185,7 +179,7 @@ const AppSelectModal = ({
                             <TouchableOpacity
                                 onPress={closeModal}
                                 activeOpacity={0.7}
-                                className="bg-bg-dark h-9 w-9 items-center justify-center rounded-full"
+                                className="bg-bg h-9 w-9 items-center justify-center rounded-full"
                             >
                                 <Ionicons
                                     name="close"
@@ -198,7 +192,7 @@ const AppSelectModal = ({
                         {/* SEARCH */}
                         {search && (
                             <View
-                                className={`h-12 rounded-xl px-4 flex-row items-center mb-3 border bg-input-dark/30 border-border-dark`}
+                                className={`h-12 rounded-xl px-4 flex-row items-center mb-3 border bg-input/30 border-border`}
                             >
                                 <Ionicons
                                     name="search-outline"
@@ -211,7 +205,7 @@ const AppSelectModal = ({
                                     onChangeText={setSearchText}
                                     placeholder="Search..."
                                     placeholderTextColor="#94A3B8"
-                                    className={`flex-1 ml-2 text-sm font-manrope text-text-dark`}
+                                    className={`flex-1 ml-2 text-sm font-manrope text-text`}
                                 />
 
                                 {searchText.length > 0 && (
@@ -296,12 +290,12 @@ const AppSelectModal = ({
                                                         item
                                                     )
                                                 }
-                                                className={`flex-row justify-between items-center py-4 border-b border-border-dark/30`}
+                                                className={`flex-row justify-between items-center py-4 border-b border-border/30`}
                                             >
                                                 <Text
                                                     className={`text-base font-manrope ${isSelected
                                                         ? "text-emerald-500"
-                                                        : "text-text-dark"
+                                                        : "text-text"
                                                         }`}
                                                 >
                                                     {
@@ -328,7 +322,7 @@ const AppSelectModal = ({
                                             />
 
                                             <Text
-                                                className={`mt-3 font-manrope-medium text-text-dark/50`}
+                                                className={`mt-3 font-manrope-medium text-text/50`}
                                             >
                                                 No items found
                                             </Text>

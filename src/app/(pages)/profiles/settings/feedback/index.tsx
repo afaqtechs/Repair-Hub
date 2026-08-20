@@ -54,19 +54,19 @@ const SubmitFeedback = () => {
         >
             <View
                 style={{ flex: 1, paddingTop: insets.top, paddingBottom: insets.bottom }}
-                className="flex-1 bg-bg-dark"
+                className="flex-1 bg-bg"
             >
                 {/* Header */}
-                <View className="px-4 pt-2 pb-5 bg-bg-dark">
+                <View className="px-4 pt-2 pb-5 bg-bg">
                     <View className="flex-row items-center">
                         <TouchableOpacity
                             onPress={() => router.back()}
                             activeOpacity={0.7}
-                            className="w-10 h-10 items-center justify-center rounded-2xl bg-card-dark border border-border-dark"
+                            className="w-10 h-10 items-center justify-center rounded-2xl bg-card border border-border"
                         >
-                            <Ionicons name="arrow-back" size={20} color="#F8FAFC" />
+                            <Ionicons name="arrow-back" size={20} color="#1F2937" />
                         </TouchableOpacity>
-                        <Text className="ml-2 text-[20px] font-manrope-semibold text-text-dark">
+                        <Text className="ml-2 text-[20px] font-manrope-semibold text-text">
                             Submit Feedback
                         </Text>
                     </View>
@@ -88,10 +88,10 @@ const SubmitFeedback = () => {
                                 <Ionicons name="bulb-outline" size={24} color="#6366F1" />
                             </View>
                             <View className="flex-1">
-                                <Text className="text-sm font-manrope-semibold text-text-dark">
+                                <Text className="text-sm font-manrope-semibold text-text">
                                     We value your feedback!
                                 </Text>
-                                <Text className="text-xs text-text-darkMuted font-manrope-light">
+                                <Text className="text-xs text-gray-500 font-manrope-light">
                                     Help us improve by sharing your thoughts, suggestions, or issues.
                                 </Text>
                             </View>
@@ -100,24 +100,24 @@ const SubmitFeedback = () => {
 
                     {/* Subject */}
                     <View className="mb-6">
-                        <Text className="mb-1 px-3 text-xs font-manrope-bold uppercase tracking-wider text-text-darkMuted">
+                        <Text className="mb-1 px-3 text-xs font-manrope-bold uppercase tracking-wider text-text-muted">
                             Subject <Text className="text-red-500">*</Text>
                         </Text>
-                        <View className="bg-card-dark rounded-lg overflow-hidden">
+                        <View className="bg-card rounded-lg overflow-hidden">
                             <TextInput
                                 keyboardType="default"
                                 placeholderTextColor="#94A3B8"
                                 placeholder="E.g., Feature Request, Bug Report, Suggestion"
                                 value={subject}
                                 onChangeText={setSubject}
-                                className="px-5 py-4 text-text-dark bg-card-dark"
+                                className="px-5 py-4 text-text bg-card"
                             />
                         </View>
                     </View>
 
                     {/* Quick Tags */}
                     <View className="mb-6">
-                        <Text className="mb-2 px-3 text-xs font-manrope-medium text-text-darkMuted">
+                        <Text className="mb-2 px-3 text-xs font-manrope-medium text-text-muted">
                             Quick tags:
                         </Text>
                         <View className="flex-row flex-wrap gap-2">
@@ -128,9 +128,9 @@ const SubmitFeedback = () => {
                                         const newSubject = subject ? `${subject} ${tag}` : tag;
                                         setSubject(newSubject);
                                     }}
-                                    className="px-3 py-1.5 bg-input-dark/50 rounded-full"
+                                    className="px-3 py-1.5 bg-input/50 rounded-full"
                                 >
-                                    <Text className="text-xs text-text-dark font-manrope-medium">
+                                    <Text className="text-xs text-text font-manrope-medium">
                                         #{tag}
                                     </Text>
                                 </TouchableOpacity>
@@ -141,16 +141,16 @@ const SubmitFeedback = () => {
                     {/* Comment */}
                     <View className="mb-6">
                         <View className="flex-row justify-between items-center mb-1 px-3">
-                            <Text className="text-xs font-manrope-bold uppercase tracking-wider text-text-darkMuted">
+                            <Text className="text-xs font-manrope-bold uppercase tracking-wider text-text-muted">
                                 Comment <Text className="text-red-500">*</Text>
                             </Text>
-                            <Text className={`text-xs font-manrope-light ${characterCount > MAX_CHARS ? 'text-red-500' : 'text-text-darkMuted'
+                            <Text className={`text-xs font-manrope-light ${characterCount > MAX_CHARS ? 'text-red-500' : 'text-text-muted'
                                 }`}>
                                 {characterCount}/{MAX_CHARS}
                             </Text>
                         </View>
 
-                        <View className="bg-card-dark border border-border-dark rounded-lg overflow-hidden">
+                        <View className="bg-card border border-border rounded-lg overflow-hidden">
                             <RichToolbar
                                 editor={descriptionRef}
                                 actions={[
@@ -166,11 +166,11 @@ const SubmitFeedback = () => {
                                     "redo",
                                 ]}
                                 style={{
-                                    backgroundColor: "#172033",
+                                    backgroundColor: "#F8F7FC",
                                     borderBottomWidth: 1,
-                                    borderBottomColor: "#2D3A4F",
+                                    borderBottomColor: "#F8F7FC",
                                 }}
-                                iconTint="#F8FAFC"
+                                iconTint="#25213A"
                                 selectedIconTint="#6366F1"
                             />
 
@@ -178,9 +178,9 @@ const SubmitFeedback = () => {
                                 ref={descriptionRef}
                                 onChange={handleContentChange}
                                 editorStyle={{
-                                    backgroundColor:"#111827",
-                                    color: "#F8FAFC",
-                                    placeholderColor: "#94A3B8",
+                                    backgroundColor:"#fff",
+                                    color: "#25213A",
+                                    placeholderColor: "#25213A",
                                     contentCSSText: `font-family: Manrope; font-size: 16px; padding: 12px; min-height: 150px;`,
                                 }}
                                 placeholder="Describe your feedback in detail... Be specific about what you'd like to see improved or what's working well."
@@ -219,10 +219,10 @@ const SubmitFeedback = () => {
                     </TouchableOpacity>
 
                     {/* Footer Note */}
-                    <View className="mt-6 px-4 py-3 bg-input-dark/50 rounded-xl">
+                    <View className="mt-6 px-4 py-3 bg-input/50 rounded-xl">
                         <View className="flex-row items-center gap-2">
                             <Ionicons name="information-circle-outline" size={16} color="#94A3B8" />
-                            <Text className="text-xs text-text-darkMuted font-manrope-light flex-1">
+                            <Text className="text-xs text-text-muted font-manrope-light flex-1">
                                 Your feedback helps us make the app better for everyone.
                             </Text>
                         </View>

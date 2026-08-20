@@ -1,15 +1,18 @@
-
-import EnhancedGradientBackground from '@/src/components/common/GradientBackground';
 import HomeScreen from '@/src/screens/home/HomeScreen';
 import React from 'react';
+import { View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const HomePage = () => {
-
+  const insets = useSafeAreaInsets();
   return (
-    <EnhancedGradientBackground>
+    <View
+      style={{ flex: 1, paddingTop: insets.top, paddingBottom: insets.bottom + 64 }}
+      className="flex-1 bg-bg"
+    >
       <HomeScreen />
-    </EnhancedGradientBackground>
+    </View>
   )
 }
 
-export default HomePage
+export default HomePage;

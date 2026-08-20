@@ -45,25 +45,25 @@ export default function MapScreen() {
     return (
         <View
             style={{ flex: 1, paddingTop: insets.top, paddingHorizontal: 10, paddingBottom: insets.bottom }}
-            className="flex-1 bg-bg-dark"
+            className="flex-1 bg-bg"
         >
             {/* Header */}
-            <View className="flex-row items-center px-4 pt-2 pb-5 border-b border-border-dark bg-bg-dark">
+            <View className="flex-row items-center px-4 pt-2 pb-5 border-b border-border bg-bg">
                 <TouchableOpacity
                     onPress={() => router.back()}
-                    className="w-10 h-10 items-center justify-center rounded-2xl bg-card-dark border border-border-dark"
+                    className="w-10 h-10 items-center justify-center rounded-2xl bg-card border border-border"
                 >
-                    <Ionicons name="arrow-back" size={20} color="#F8FAFC"/>
+                    <Ionicons name="arrow-back" size={20} color="#1F2937"/>
                 </TouchableOpacity>
 
                 <View className="flex-1 mx-2">
                     <Text
-                        className="text-text-dark font-manrope-semibold text-[16px]"
+                        className="text-text font-manrope-semibold text-[16px]"
                         numberOfLines={1}
                     >
                         {title || "Location"}
                     </Text>
-                    <Text className="text-text-darkMuted font-manrope-light text-xs" numberOfLines={1}>
+                    <Text className="text-text-muted font-manrope-light text-xs" numberOfLines={1}>
                         {address || "View location on map"}
                     </Text>
                 </View>
@@ -87,17 +87,17 @@ export default function MapScreen() {
                         style={{ flex: 1 }}
                         startInLoadingState={true}
                         renderLoading={() => (
-                            <View className="absolute inset-0 items-center justify-center bg-bg-dark">
+                            <View className="absolute inset-0 items-center justify-center bg-bg">
                                 <ActivityIndicator size="large" color="#6366F1" />
-                                <Text className="mt-4 text-sm font-manrope-medium text-text-darkMuted">
+                                <Text className="mt-4 text-sm font-manrope-medium text-text-muted">
                                     Loading map...
                                 </Text>
                             </View>
                         )}
                         onError={() => (
-                            <View className="absolute inset-0 items-center justify-center bg-bg-dark">
+                            <View className="absolute inset-0 items-center justify-center bg-bg">
                                 <Ionicons name="map-outline" size={48} color="#64748B" />
-                                <Text className="mt-3 text-center font-manrope-medium text-text-darkMuted">
+                                <Text className="mt-3 text-center font-manrope-medium text-text-muted">
                                     Could not load map
                                 </Text>
                                 <TouchableOpacity
@@ -115,11 +115,11 @@ export default function MapScreen() {
                     {/* Coordinates & Actions Overlay */}
                     <View className="absolute bottom-6 left-4 right-4">
                         {/* Coordinates Card */}
-                        <View className="mb-3 px-4 py-3 bg-card-dark/95 rounded-xl border border-border-dark">
+                        <View className="mb-3 px-4 py-3 bg-card/95 rounded-xl border border-border">
                             <View className="flex-row items-center justify-between">
                                 <View className="flex-row items-center gap-2">
                                     <Ionicons name="location" size={16} color="#6366F1" />
-                                    <Text className="text-xs font-manrope-medium text-text-darkMuted">
+                                    <Text className="text-xs font-manrope-medium text-text-muted">
                                         {lat?.toFixed(6)}, {lng?.toFixed(6)}
                                     </Text>
                                 </View>
@@ -127,9 +127,9 @@ export default function MapScreen() {
                                     onPress={() => {
                                         // Copy coordinates to clipboard
                                     }}
-                                    className="px-2 py-1 bg-bg-dark rounded"
+                                    className="px-2 py-1 bg-bg rounded"
                                 >
-                                    <Text className="text-[10px] font-manrope-medium text-text-darkMuted">
+                                    <Text className="text-[10px] font-manrope-medium text-text-muted">
                                         Copy
                                     </Text>
                                 </TouchableOpacity>
@@ -149,10 +149,10 @@ export default function MapScreen() {
                             </TouchableOpacity>
                             <TouchableOpacity
                                 onPress={handleOpenAppleMaps}
-                                className="flex-1 flex-row items-center justify-center gap-2 py-3.5 bg-card-dark rounded-xl border border-border-dark active:opacity-80"
+                                className="flex-1 flex-row items-center justify-center gap-2 py-3.5 bg-card rounded-xl border border-border active:opacity-80"
                             >
                                 <Ionicons name="map-outline" size={20} color="#F8FAFC" />
-                                <Text className="text-text-dark font-manrope-semibold text-sm">
+                                <Text className="text-text font-manrope-semibold text-sm">
                                     Apple Maps
                                 </Text>
                             </TouchableOpacity>
@@ -160,14 +160,14 @@ export default function MapScreen() {
                     </View>
                 </View>
             ) : (
-                <View className="flex-1 items-center justify-center px-6 bg-bg-dark">
+                <View className="flex-1 items-center justify-center px-6 bg-bg">
                     <View className="w-20 h-20 bg-gray-500/10 rounded-full items-center justify-center">
                         <Ionicons name="location-outline" size={40} color="#64748B" />
                     </View>
-                    <Text className="mt-4 text-lg font-manrope-semibold text-text-dark">
+                    <Text className="mt-4 text-lg font-manrope-semibold text-text">
                         Location Unavailable
                     </Text>
-                    <Text className="mt-2 text-center font-manrope-light text-text-darkMuted max-w-xs">
+                    <Text className="mt-2 text-center font-manrope-light text-text-muted max-w-xs">
                         Location data is unavailable for this technician.
                     </Text>
                     <TouchableOpacity

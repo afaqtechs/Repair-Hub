@@ -125,10 +125,10 @@ const SimpleDropdownMenu = ({
         hideMenu();
     };
 
-    const backgroundColor = "#172033";
-    const borderColor = '#374151';
-    const textColor = "#E5E7EB";
-    const hoverColor = "#374151";
+    const backgroundColor = "#ffffff";
+    const borderColor = '#F7F6FB';
+    const textColor = "#25213A";
+    const hoverColor = "#F7F6FB";
 
     return (
         <>
@@ -139,13 +139,13 @@ const SimpleDropdownMenu = ({
                 activeOpacity={0.7}
                 className="w-8 h-8 items-center justify-center rounded-full"
                 style={{
-                    backgroundColor: "#0B1120"
+                    backgroundColor: "#F8F7FC"
                 }}
             >
                 <Ionicons
                     name={triggerIcon as any}
                     size={triggerSize}
-                    color="#FFFFFF"
+                    color="#25213A"
                 />
             </TouchableOpacity>
 
@@ -250,7 +250,7 @@ const styles = StyleSheet.create({
     menuContainer: {
         borderRadius: 12,
         borderWidth: 1,
-        shadowColor: '#000',
+        shadowColor: '#fff',
         shadowOffset: {
             width: 0,
             height: 4,
@@ -262,7 +262,7 @@ const styles = StyleSheet.create({
 
         ...Platform.select({
             ios: {
-                shadowColor: '#000',
+                shadowColor: '#fff',
                 shadowOffset: {
                     width: 0,
                     height: 4,

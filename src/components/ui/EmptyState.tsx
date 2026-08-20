@@ -27,7 +27,7 @@ const EmptyState = ({
             {/* Title */}
             <Text
                 numberOfLines={2}
-                className="mt-4 text-[16px] font-manrope-bold text-text-dark text-center"
+                className="mt-4 text-[16px] font-manrope-bold text-text text-center"
             >
                 {title}
             </Text>
@@ -35,7 +35,7 @@ const EmptyState = ({
             {/* Description */}
             <Text
                 numberOfLines={3}
-                className="mt-1.5 max-w-[280px] text-[11px] leading-[17px] font-manrope-medium text-text-darkMuted text-center"
+                className="mt-1.5 max-w-[280px] text-[11px] leading-[17px] font-manrope-medium text-text-muted text-center"
             >
                 {description}
             </Text>

@@ -84,7 +84,7 @@ const EmptySearch = ({
                         />
                     </View>
 
-                    <Text className="text-text-dark text-lg font-semibold mt-5 text-center">
+                    <Text className="text-text text-lg font-semibold mt-5 text-center">
                         No results found
                     </Text>
 
@@ -98,7 +98,7 @@ const EmptySearch = ({
             )}
 
             <View className="w-full mt-6">
-                <Text className="text-xs font-semibold text-text-dark/60 mb-3">
+                <Text className="text-xs font-semibold text-text/60 mb-3">
                     Try searching for
                 </Text>
 
@@ -110,9 +110,9 @@ const EmptySearch = ({
                                 onSuggestionPress?.(suggestion)
                             }
                             activeOpacity={0.7}
-                            className="flex-row items-center rounded-full border border-primary bg-card-dark p-3"
+                            className="flex-row items-center rounded-full border border-primary bg-card p-3"
                         >
-                            <Text className="text-xs font-medium text-text-dark">
+                            <Text className="text-xs font-medium text-text">
                                 {suggestion}
                             </Text>
 

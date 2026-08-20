@@ -1,4 +1,4 @@
-import * as NavigationBar from "expo-navigation-bar";
+
 import {
     useCategories,
     useConditions,
@@ -96,7 +96,7 @@ const FilterDropdown = ({
     iconName?: keyof typeof Ionicons.glyphMap;
 }) => {
     return (
-        <View className="mb-3 rounded-xl border border-border-dark bg-card-dark/50">
+        <View className="mb-3 rounded-xl border border-border bg-card/50">
             <TouchableOpacity
                 onPress={onToggle}
                 className="flex-row items-center justify-between px-4 py-3.5"
@@ -111,7 +111,7 @@ const FilterDropdown = ({
                             style={{ marginRight: 12 }}
                         />
                     )}
-                    <Text className="text-base font-semibold text-text-dark">
+                    <Text className="text-base font-semibold text-text">
                         {title}
                     </Text>
                     {activeCount > 0 && (
@@ -133,7 +133,7 @@ const FilterDropdown = ({
             </TouchableOpacity>
 
             {isOpen && (
-                <View className="border-t px-4 py-3 border-border-dark">
+                <View className="border-t px-4 py-3 border-border">
                     <View className="flex-row flex-wrap gap-2">
                         {children}
                     </View>
@@ -160,15 +160,15 @@ const FilterChip = ({
             onPress={onPress}
             activeOpacity={0.7}
             className={`flex-row items-center rounded-full border px-3 py-2 ${selected
-                ? 'border-primary bg-primary/30'
-                : '  border-border-dark bg-card-dark/50'
+                ? 'border-primary bg-primary'
+                : '  border-border bg-card/50'
                 }`}
         >
             <Text
                 className={
                     selected
                         ? 'text-white'
-                        : 'text-text-dark'
+                        : 'text-text'
                 }
             >
                 {label}
@@ -196,11 +196,6 @@ const Filters = ({
     const [draftFilters, setDraftFilters] =
         useState<FilterValues>(filters);
     const insets = useSafeAreaInsets();
-
-    useEffect(() => {
-        NavigationBar.setBackgroundColorAsync("#0B1120");
-        NavigationBar.setButtonStyleAsync("light");
-    }, []);
 
     useEffect(() => {
         if (visible) {
@@ -427,11 +422,11 @@ const Filters = ({
             onRequestClose={onClose}
         >
             <View className="flex-1 justify-end bg-black/50">
-                <View className="max-h-[92%] rounded-t-3xl bg-bg-dark">
+                <View className="max-h-[92%] rounded-t-3xl bg-bg">
                     {/* Header */}
-                    <View className="flex-row items-center justify-between border-b px-5 py-4 border-border-dark">
+                    <View className="flex-row items-center justify-between border-b px-5 py-4 border-border">
                         <View className="flex-row items-center">
-                            <Text className="text-xl font-bold text-text-dark">
+                            <Text className="text-xl font-bold text-text">
                                 Filters
                             </Text>
                             {activeFilterCount > 0 && (
@@ -445,9 +440,9 @@ const Filters = ({
 
                         <TouchableOpacity
                             onPress={onClose}
-                            className="h-10 w-10 items-center justify-center rounded-full bg-gray-800"
+                            className="h-10 w-10 items-center justify-center rounded-full bg-card"
                         >
-                            <Ionicons name="close" size={24} color="#6B7280" />
+                            <Ionicons name="close" size={24} color="#EF4444" />
                         </TouchableOpacity>
                     </View>
 
@@ -633,7 +628,7 @@ const Filters = ({
                         style={{
                             paddingBottom: Math.max(insets.bottom, 16),
                         }}
-                        className="absolute bottom-0 left-0 right-0 flex-row gap-3 border-t px-4 py-4 border-border-dark bg-bg-dark">
+                        className="absolute bottom-0 left-0 right-0 flex-row gap-3 border-t px-4 py-4 border-border bg-bg">
                         <TouchableOpacity
                             onPress={() => clearFilters()}
                             className="flex-1 items-center rounded-xl bg-danger border border-danger py-3.5"

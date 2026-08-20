@@ -1,4 +1,3 @@
-
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import React from "react";
@@ -7,6 +6,8 @@ import {
     TouchableOpacity,
     View,
 } from "react-native";
+
+const PRIMARY = "#5B3DF5";
 
 const HeroCards = () => {
     const router = useRouter();
@@ -18,7 +19,6 @@ const HeroCards = () => {
             key: "parts",
             icon: "hardware-chip-outline",
             route: "/(pages)/parts",
-            color: "#3B82F6",
         },
         {
             label: "Services",
@@ -26,7 +26,6 @@ const HeroCards = () => {
             key: "services",
             icon: "construct-outline",
             route: "/(pages)/services",
-            color: "#3B82F6",
         },
         {
             label: "Requests",
@@ -34,7 +33,6 @@ const HeroCards = () => {
             key: "requests",
             icon: "document-text-outline",
             route: "/(pages)/requests",
-            color: "#3B82F6",
         },
     ];
 
@@ -42,7 +40,7 @@ const HeroCards = () => {
         <View className="mt-3">
             {/* Section Header */}
             <View className="flex-row items-center justify-between mb-3.5">
-                <Text className="text-base font-manrope-bold text-text-dark">
+                <Text className="text-base font-manrope-bold text-text">
                     Quick Actions
                 </Text>
             </View>
@@ -53,40 +51,39 @@ const HeroCards = () => {
                     <TouchableOpacity
                         key={item.key}
                         activeOpacity={0.85}
-                        onPress={() =>
-                            router.push(item.route as any)
-                        }
+                        onPress={() => router.push(item.route as any)}
                         className="flex-1"
                     >
-                        <View
-                            className={`h-[142px] rounded-2xl overflow-hidden border bg-card-dark/30 border-border-dark/50`}
-                        >
+                        <View className="h-[142px] rounded-2xl overflow-hidden border bg-card/30 border-border/50">
                             <View className="flex-1 p-3.5">
+
                                 {/* Icon + Arrow */}
                                 <View className="flex-row items-center justify-between">
                                     <View
                                         className="w-10 h-10 rounded-xl items-center justify-center"
                                         style={{
-                                            backgroundColor: "rgba(59, 130, 246, 0.12)",
+                                            backgroundColor:
+                                                "rgba(91, 61, 245, 0.12)",
                                         }}
                                     >
                                         <Ionicons
                                             name={item.icon as any}
                                             size={20}
-                                            color={item.color}
+                                            color={PRIMARY}
                                         />
                                     </View>
 
                                     <View
                                         className="w-6 h-6 rounded-full items-center justify-center"
                                         style={{
-                                            backgroundColor: "rgba(59, 130, 246, 0.10)",
+                                            backgroundColor:
+                                                "rgba(91, 61, 245, 0.10)",
                                         }}
                                     >
                                         <Ionicons
                                             name="arrow-forward"
                                             size={12}
-                                            color={item.color}
+                                            color={PRIMARY}
                                         />
                                     </View>
                                 </View>
@@ -95,14 +92,14 @@ const HeroCards = () => {
                                 <View className="mt-auto">
                                     <Text
                                         numberOfLines={1}
-                                        className="text-[12px] font-manrope-bold text-text-dark"
+                                        className="text-[12px] font-manrope-bold text-text"
                                     >
                                         {item.label}
                                     </Text>
 
                                     <Text
                                         numberOfLines={1}
-                                        className="mt-0.5 text-[9px] font-manrope-medium text-text-darkMuted"
+                                        className="mt-0.5 text-[9px] font-manrope-medium text-text-muted"
                                     >
                                         {item.description}
                                     </Text>
@@ -113,8 +110,8 @@ const HeroCards = () => {
                             <View
                                 className="h-[3px] w-full"
                                 style={{
-                                    backgroundColor: item.color,
-                                    opacity: 0.55,
+                                    backgroundColor: PRIMARY,
+                                    opacity: 0.85,
                                 }}
                             />
                         </View>

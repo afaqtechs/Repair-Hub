@@ -1,7 +1,5 @@
 import { supabase } from "@/src/lib/supabase";
 import { NotificationType } from "@/types/notifications";
-
-
 export interface SendNotificationParams {
   userId: string | string[];
   senderId?: string;
@@ -32,7 +30,7 @@ export async function sendNotification({
           (id) => id !== senderId
         )
       : recipients;
-
+      
     // Nothing to send to.
     if (filteredRecipients.length === 0) {
       console.log(
@@ -49,7 +47,7 @@ export async function sendNotification({
           "send-notification",
           {
             body: {
-              userid: recipientId,
+              userId: recipientId,
               type,
               title,
               body,

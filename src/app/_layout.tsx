@@ -1,6 +1,5 @@
 import { AuthProvider, useAuth } from "@/src/context/AuthContext";
 import { PresenceProvider } from "@/src/context/PresenceContext";
-import { NavigationBar } from 'expo-navigation-bar';
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useFonts } from "expo-font";
 import * as Notifications from "expo-notifications";
@@ -16,6 +15,7 @@ import {
   setupNotificationHandler,
 } from "../lib/notifications/registerPushNotifications";
 import { handleNotification } from "../lib/notifications/notificationHandler";
+import { StatusBar } from "expo-status-bar";
 
 // Keep the native splash screen visible
 // until fonts and the initial app shell are ready.
@@ -70,7 +70,9 @@ function AppContent() {
             data,
           });
 
-          handleNotification(router, data);
+          if (data) {
+            handleNotification(router, data);
+          }
         }
       );
 
@@ -98,7 +100,9 @@ function AppContent() {
             }
           );
 
-          handleNotification(router, data);
+          if (data) {
+            handleNotification(router, data);
+          }
         } catch (error) {
           console.warn(
             "Failed to handle initial notification:",
@@ -134,7 +138,11 @@ function AppContent() {
 
   return (
     <PresenceProvider userId={user.id}>
-       <NavigationBar style="dark" />
+      <StatusBar
+        style="dark"
+        translucent
+        backgroundColor="transparent"
+      />
       <Slot />
       <Toast />
     </PresenceProvider>

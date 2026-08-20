@@ -23,6 +23,7 @@ import {
   ConversationWithMember,
 } from "@/types/chat";
 import { showError } from "@/src/lib/toast";
+import { useTechnician } from "@/src/hooks";
 
 interface ConversationsScreenProps {
   onOpenConversation: (
@@ -37,6 +38,10 @@ const ConversationsScreen = ({
   onCreateConversation,
 }: ConversationsScreenProps) => {
   const { user } = useAuth();
+
+  const loggedInUserId = String(user?.id)
+
+  const { data: technician } = useTechnician(loggedInUserId);
 
   const {
     conversations = [],
@@ -281,7 +286,7 @@ const ConversationsScreen = ({
    */
   if (isLoading) {
     return (
-      <View className="flex-1 items-center justify-center bg-bg-dark">
+      <View className="flex-1 items-center justify-center bg-bg">
         <ActivityIndicator
           size="large"
           color="#2563EB"
@@ -295,9 +300,9 @@ const ConversationsScreen = ({
    */
   if (isError) {
     return (
-      <View className="flex-1 items-center justify-center px-6 bg-bg-dark">
+      <View className="flex-1 items-center justify-center px-6 bg-bg">
         <Text
-          className={`mb-4 text-center font-manrope text-text-dark`}
+          className={`mb-4 text-center font-manrope text-text`}
         >
           Failed to load conversations.
         </Text>
@@ -316,9 +321,9 @@ const ConversationsScreen = ({
   }
 
   return (
-    <View className="flex-1 bg-bg-dark">
+    <View className="relative flex-1 bg-bg">
       {/* Header */}
-      <View className="mb-2 flex-row items-center justify-between border-b px-5 py-4 border-border-dark/50">
+      <View className="mb-2 flex-row items-center justify-between border-b px-5 py-4 border-border/50">
         {selectionMode ? (
           <View className="flex-row items-center justify-between">
             <View className="flex-1 flex-row items-center">
@@ -331,11 +336,11 @@ const ConversationsScreen = ({
                 <Ionicons
                   name="close"
                   size={25}
-                  color="#F8FAFC"
+                  color="#1F2937"
                 />
               </TouchableOpacity>
 
-              <Text className="font-manrope-bold text-xl text-text-dark">
+              <Text className="font-manrope-bold text-xl text-text">
                 {selectedConversationIds.length} selected
               </Text>
             </View>
@@ -381,7 +386,7 @@ const ConversationsScreen = ({
           </View>
         ) : (
           <>
-            <Text className="font-manrope-bold text-2xl text-text-dark">
+            <Text className="font-manrope-bold text-2xl text-text">
               Messages
             </Text>
 
@@ -400,79 +405,93 @@ const ConversationsScreen = ({
       </View>
 
       {/* Conversations */}
-      <FlatList
-        data={conversationList}
-        keyExtractor={(item) => item.id}
-        renderItem={renderConversation}
-        refreshControl={
-          <AppRefreshControl
-            refreshing={isRefetching}
-            onRefresh={refetch}
-          />
-        }
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={
-          conversationList.length === 0
-            ? {
-              flexGrow: 1,
-            }
-            : undefined
-        }
-        extraData={{
-          selectedConversationIds,
-          selectionMode,
-        }}
-        ListEmptyComponent={
-          <View className="flex-1 items-center justify-center px-6 py-20">
-            <View className="h-16 w-16 items-center justify-center rounded-full bg-primary/10">
-              <Ionicons
-                name="chatbubbles-outline"
-                size={30}
-                color="#5B3DF5"
-              />
+      {technician?.verification_status === "verified" ? (
+        <FlatList
+          data={conversationList}
+          keyExtractor={(item) => item.id}
+          renderItem={renderConversation}
+          refreshControl={
+            <AppRefreshControl
+              refreshing={isRefetching}
+              onRefresh={refetch}
+            />
+          }
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={
+            conversationList.length === 0
+              ? {
+                flexGrow: 1,
+              }
+              : undefined
+          }
+          extraData={{
+            selectedConversationIds,
+            selectionMode,
+          }}
+          ListEmptyComponent={
+            <View className="flex-1 items-center justify-center px-6 py-20">
+
+
+              <View className="h-16 w-16 items-center justify-center rounded-full bg-primary/10">
+                <Ionicons
+                  name="chatbubbles-outline"
+                  size={30}
+                  color="#5B3DF5"
+                />
+              </View>
+
+              <Text
+                className={`mt-5 font-manrope-semibold text-lg text-text`}
+              >
+                No conversations
+              </Text>
+
+              <Text
+                className={`mt-2 text-center font-manrope text-sm text-text-muted`}
+              >
+                Start a conversation
+                with a technician
+                or admin.
+              </Text>
             </View>
+          }
+        />
+      ) : (
+        <View className="mt-3 mx-4 px-4 py-2.5 rounded-xl items-center bg-red-500/10">
+          <Text className="text-red-500 text-sm font-manrope-semibold text-center">
+            You can&apos;t start conversation unless you&apos;re verified.
+          </Text>
+        </View >
+      )}
 
-            <Text
-              className={`mt-5 font-manrope-semibold text-lg text-text-dark`}
-            >
-              No conversations
-            </Text>
-
-            <Text
-              className={`mt-2 text-center font-manrope text-sm text-text-darkMuted`}
-            >
-              Start a conversation
-              with a technician
-              or admin.
-            </Text>
-          </View>
-        }
-      />
 
       {/* New conversation button */}
-      {!selectionMode && (
-        <TouchableOpacity
-          activeOpacity={0.8}
-          onPress={onCreateConversation}
-          className="absolute bottom-6 right-6 h-14 w-14 items-center justify-center rounded-full bg-primary"
-          style={{
-            elevation: 5,
-            shadowOpacity: 0.2,
-            shadowRadius: 5,
-            shadowOffset: {
-              width: 0,
-              height: 3,
-            },
-          }}
-        >
-          <Ionicons
-            name="chatbubble-ellipses-sharp"
-            size={27}
-            color="#FFFFFF"
-          />
-        </TouchableOpacity>
-      )}
-    </View>
+      {
+        !selectionMode && (
+          <TouchableOpacity
+            activeOpacity={0.8}
+            onPress={onCreateConversation}
+            disabled={technician?.verification_status !== "verified"}
+            className="absolute bottom-16 right-6 h-14 w-14 items-center justify-center rounded-full bg-primary"
+            style={{
+              elevation: 5,
+              shadowOpacity: 0.2,
+              shadowRadius: 5,
+              shadowOffset: {
+                width: 0,
+                height: 3,
+              },
+            }}
+          >
+            <Ionicons
+              name="chatbubble-ellipses-sharp"
+              size={27}
+              color="#FFFFFF"
+            />
+          </TouchableOpacity>
+        )
+      }
+    </View >
   );
 };
 

@@ -21,7 +21,7 @@ const CategoryPage = () => {
 
   if (categoryError) {
     return (
-      <SafeAreaView edges={["top", "left", "right"]} className="flex-1 bg-bg-dark">
+      <SafeAreaView edges={["top", "left", "right"]} className="flex-1 bg-bg">
         <View className="flex-1 items-center justify-center px-4">
           <Ionicons name="alert-circle-outline" size={60} color="#EF4444" />
           <Text className="text-red-500 text-lg font-bold mt-4">Something went wrong</Text>
@@ -29,7 +29,7 @@ const CategoryPage = () => {
           <TouchableOpacity className="mt-6 bg-[#5B3DF5] px-6 py-3 rounded-xl" onPress={() => {
             fetchCategories();
           }}>
-            <Text className="text-text-dark font-semibold">Try Again</Text>
+            <Text className="text-text font-semibold">Try Again</Text>
           </TouchableOpacity>
         </View>
       </SafeAreaView>
@@ -84,25 +84,25 @@ const CategoryPage = () => {
   return (
     <View
       style={{ flex: 1, paddingTop: insets.top, paddingBottom: insets.bottom }}
-      className="flex-1 bg-bg-dark"
+      className="flex-1 bg-bg"
     >
-      <View className="px-5 pt-2 pb-5 border-b border-border-dark">
+      <View className="px-5 pt-2 pb-5 border-b border-border">
         <View className="flex-row items-center">
           <TouchableOpacity
             onPress={() => router.push("/(root)/(tabs)")}
             activeOpacity={0.7}
-            className={`w-10 h-10 items-center justify-center rounded-2xl bg-gray-800 border border-gray-700 `}
+            className={`w-10 h-10 items-center justify-center rounded-2xl bg-card border border-border `}
           >
-            <Ionicons name="arrow-back" size={20} color="#F8FAFC" />
+            <Ionicons name="arrow-back" size={20} color="#1F2937" />
           </TouchableOpacity>
-          <Text className={`ml-2 text-[20px] font-manrope-semibold text-white`}>
+          <Text className={`ml-2 text-[20px] font-manrope-semibold text-text`}>
             Categories
           </Text>
         </View>
       </View>
 
       {loadingCategory ? (
-        <View className="flex-1 items-center justify-center bg-bg-dark">
+        <View className="flex-1 items-center justify-center bg-bg">
           <ActivityIndicator size="large" color="#2563EB" />
         </View>
       ) : (
@@ -131,18 +131,18 @@ const CategoryPage = () => {
                 })
               }
               activeOpacity={0.7}
-              className="m-1 h-[120px] rounded-lg bg-card-dark items-center justify-between p-2 overflow-hidden"
+              className="m-1 h-[120px] rounded-xl bg-card items-center justify-between p-2 overflow-hidden"
             >
-              <View className="w-full h-[80px] items-center justify-center">
+              <View className="w-full h-[80px] items-center justify-center rounded-xl">
                 <Image
-                  source={item.icon_url ? { uri: item.icon_url } : require("@/assets/ui/heroimage.png")}
-                  resizeMode="contain"
-                  className="w-full h-full rounded-lg"
+                  source={item.icon_url ? { uri: item.icon_url } : require("@/assets/ui/background/category_image.jpg")}
+                  resizeMode="cover"
+                  className="w-full h-full rounded-xl"
                 />
               </View>
               <Text
                 numberOfLines={1}
-                className="text-[11px] font-manrope-semibold text-center w-full mt-1 text-text-darkSecondary"
+                className="text-[11px] font-manrope-semibold text-center px-5 py-1 bg-primary mt-1 text-white rounded-xl"
               >
                 {item.name}
               </Text>

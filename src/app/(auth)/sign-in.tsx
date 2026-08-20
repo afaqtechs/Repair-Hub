@@ -29,32 +29,40 @@ export default function SignInScreen() {
 
     const onSignInPress = async () => {
         setError("");
-        setLoading(true);
-        try {
-            if (email.trim() === '' || password.trim() === '') {
-                showError("Failed", "Email or Password required");
-                return;
-            }
 
-            await signIn(
-                email,
+        if (!email.trim() || !password.trim()) {
+            showError("Failed", "Email and password are required");
+            return;
+        }
+
+        setLoading(true);
+
+        try {
+            const result = await signIn(
+                email.trim(),
                 password
             );
-            router.replace("/");
-            showSuccess("Login", "Logged in successfully")
+
+            if (result?.user) {
+                showSuccess("Welcome back!", "Logged in successfully");
+                router.replace("/");
+            } else {
+                showError("Failed", "Failed to sign in please provide correct credentials.");
+            }
 
         } catch (error: any) {
-            setError(
-                error.message
-            );
+            const message =
+                error?.message || "Unable to sign in";
 
+            setError(message);
+            showError("Sign in failed", message);
         } finally {
             setLoading(false);
         }
     };
 
     return (
-        <View style={{ flex: 1, paddingTop: insets.top, paddingBottom: insets.bottom }} className="flex-1 bg-bg-dark">
+        <View style={{ flex: 1, paddingTop: insets.top, paddingBottom: insets.bottom }} className="flex-1 bg-bg">
             <ScrollView
                 keyboardShouldPersistTaps="handled"
                 contentContainerStyle={{
@@ -69,7 +77,7 @@ export default function SignInScreen() {
 
                         <View className="flex-row items-center">
 
-                            <View className="w-14 h-14 rounded-full  bg-card-dark items-center justify-center">
+                            <View className="w-14 h-14 rounded-full  bg-card items-center justify-center">
 
                                 <Image
                                     source={require("@/assets/ui/logo.png")}
@@ -83,7 +91,7 @@ export default function SignInScreen() {
                             </View>
 
 
-                            <Text className=" text-text-dark  text-2xl  font-bold  ml-3">
+                            <Text className=" text-text  text-2xl  font-bold  ml-3">
                                 Repair
                                 <Text className="text-violet-500">
                                     Hub
@@ -92,7 +100,7 @@ export default function SignInScreen() {
 
                         </View>
 
-                        <Text className="text-text-dark text-2xl font-bold mt-5">
+                        <Text className="text-text text-2xl font-bold mt-5">
                             Welcome back!
                         </Text>
 
@@ -104,12 +112,12 @@ export default function SignInScreen() {
 
 
                     <View className="rounded-3xl px-5 py-7 ">
-                        <Text className="text-text-dark font-semibold mb-2">
+                        <Text className="text-text font-semibold mb-2">
                             Email
                         </Text>
 
 
-                        <View className=" bg-input-dark border border-border-dark rounded-xl flex-row items-center px-4 mb-5">
+                        <View className=" bg-input border border-border rounded-xl flex-row items-center px-4 mb-5">
                             {/* Email Icon Placeholder */}
                             <Ionicons
                                 name="mail-outline"
@@ -118,7 +126,7 @@ export default function SignInScreen() {
                             />
                             <TextInput
 
-                                className="flex-1 py-4 ml-2 text-text-dark"
+                                className="flex-1 py-4 ml-2 text-text"
 
                                 placeholder="Enter your email address"
                                 placeholderTextColor="#9CA3AF"
@@ -133,11 +141,11 @@ export default function SignInScreen() {
 
                         </View>
 
-                        <Text className="text-text-dark font-semibold mb-2">
+                        <Text className="text-text font-semibold mb-2">
                             Password
                         </Text>
 
-                        <View className="bg-input-dark border border-border-dark rounded-xl flex-row items-center px-4 ">
+                        <View className="bg-input border border-border rounded-xl flex-row items-center px-4 ">
                             <Ionicons
                                 name="lock-closed-outline"
                                 size={20}
@@ -145,7 +153,7 @@ export default function SignInScreen() {
                             />
 
                             <TextInput
-                                className=" flex-1 py-4 ml-2 text-text-dark"
+                                className=" flex-1 py-4 ml-2 text-text"
 
                                 placeholder="Enter your password"
                                 placeholderTextColor="#9CA3AF"
@@ -223,25 +231,25 @@ export default function SignInScreen() {
 
                         <View className=" flex-row items-center mb-5">
 
-                            <View className="flex-1 h-px bg-card-dark" />
+                            <View className="flex-1 h-px bg-card" />
 
                             <Text className="mx-3 text-gray-400">
                                 continue with
                             </Text>
 
-                            <View className="flex-1 h-px bg-card-dark" />
+                            <View className="flex-1 h-px bg-card" />
                         </View>
 
                         <TouchableOpacity
-                            className="bg-card-dark border border-border-dark rounded-xl py-3 flex-1 mx-1 items-center"
+                            className="bg-card border border-border rounded-xl py-3 flex-1 mx-1 items-center"
 
                         >
-                            <Text className="text-text-dark font-semibold">
+                            <Text className="text-text font-semibold">
                                 Google
                             </Text>
                         </TouchableOpacity>
 
-                        <View className=" bg-card-dark rounded-2xl p-4 mt-6">
+                        <View className=" bg-card rounded-2xl p-4 mt-6">
                             <View className="flex-row items-center">
 
                                 <Image

@@ -28,8 +28,10 @@ import {
   TypingPayload,
 } from '@/types/chat';
 import { useQueryClient } from '@tanstack/react-query';
+import { useRouter } from 'expo-router';
 
 interface ChatScreenProps {
+  otherUserId?: string;
   conversationId: string;
   currentUserId: string;
   otherUserName: string;
@@ -165,7 +167,7 @@ const MessageItem = memo(
       >
         {showDate && (
           <View className="my-4 items-center">
-            <View className="rounded-full px-3 py-1 bg-card-dark">
+            <View className="rounded-full px-3 py-1 bg-card">
               <Text className="font-manrope text-[10px] text-gray-400">
                 {formatDateLabel(item.created_at)}
               </Text>
@@ -192,7 +194,7 @@ const MessageItem = memo(
 
               <View className="flex-shrink">
                 <Text
-                  className={`font-manrope text-[11px] leading-5 ${isMine ? 'text-white' : 'text-text-dark'
+                  className={`font-manrope text-[11px] leading-5 ${isMine ? 'text-white' : 'text-text'
                     }`}
                   style={{
                     flexWrap: 'wrap',
@@ -239,6 +241,7 @@ const MessageItem = memo(
 MessageItem.displayName = 'MessageItem';
 
 export default function ChatScreen({
+  otherUserId,
   conversationId,
   currentUserId,
   otherUserName,
@@ -248,6 +251,7 @@ export default function ChatScreen({
   onBack,
 }: ChatScreenProps) {
   const insets = useSafeAreaInsets();
+  const router = useRouter();
 
   const [text, setText] = useState('');
   const [isOtherUserTyping, setIsOtherUserTyping] = useState(false);
@@ -705,13 +709,13 @@ export default function ChatScreen({
 
   return (
     <View
-      className="flex-1 bg-bg-dark"
+      className="flex-1 bg-bg"
       style={{
         paddingBottom: insets.bottom,
       }}
     >
       <View className="flex-1">
-        <View className="flex-row items-center justify-between border-b px-4 py-3 border-border-dark">
+        <View className="flex-row items-center justify-between border-b px-4 py-3 border-border">
           {isSelectionMode ? (
             <>
               <View className="flex-row items-center gap-3">
@@ -723,11 +727,11 @@ export default function ChatScreen({
                   <Ionicons
                     name="close"
                     size={22}
-                    color="#F8FAFC"
+                    color="#1F2937"
                   />
                 </TouchableOpacity>
 
-                <Text className="font-manrope-semibold text-base text-text-dark">
+                <Text className="font-manrope-semibold text-base text-text">
                   {chatSelected.size} selected
                 </Text>
               </View>
@@ -741,7 +745,7 @@ export default function ChatScreen({
                   <Ionicons
                     name="checkmark-done-outline"
                     size={21}
-                    color="#F8FAFC"
+                    color="#1F2937"
                   />
                 </TouchableOpacity>
 
@@ -759,37 +763,58 @@ export default function ChatScreen({
               <TouchableOpacity
                 onPress={onBack}
                 activeOpacity={0.7}
-                className="h-10 w-10 items-center justify-center rounded-2xl border border-border-dark bg-bg-dark"
+                className="h-10 w-10 items-center justify-center rounded-2xl border border-border bg-bg"
               >
                 <Ionicons
                   name="arrow-back"
                   size={20}
-                  color="#F8FAFC"
+                  color="#1F2937"
                 />
               </TouchableOpacity>
 
               {otherUserImage ? (
-                <Image
-                  source={{
-                    uri: otherUserImage,
-                  }}
-                  className="h-11 w-11 rounded-full"
-                />
+                <TouchableOpacity onPress={() =>
+                  router.push({
+                    pathname: '/(pages)/technician/[id]',
+                    params: { id: String(otherUserId) },
+                  })
+                }>
+                  <Image
+                    source={{
+                      uri: otherUserImage,
+                    }}
+                    className="h-11 w-11 rounded-full"
+                  />
+                </TouchableOpacity>
               ) : (
-                <View className="h-11 w-11 items-center justify-center rounded-full bg-primary">
+                <TouchableOpacity
+                  onPress={() =>
+                    router.push({
+                      pathname: '/(pages)/technician/[id]',
+                      params: { id: String(otherUserId) },
+                    })
+                  }
+                  className="h-11 w-11 items-center justify-center rounded-full bg-primary">
                   <Text className="font-manrope-bold text-sm text-white">
                     {getInitials(otherUserName)}
                   </Text>
-                </View>
+                </TouchableOpacity>
               )}
 
               <View className="flex-1">
-                <Text
-                  numberOfLines={1}
-                  className="font-manrope-semibold text-base text-text-dark"
-                >
-                  {otherUserName}
-                </Text>
+                <TouchableOpacity onPress={() =>
+                  router.push({
+                    pathname: '/(pages)/technician/[id]',
+                    params: { id: String(otherUserId) },
+                  })
+                }>
+                  <Text
+                    numberOfLines={1}
+                    className="font-manrope-semibold text-base text-text"
+                  >
+                    {otherUserName}
+                  </Text>
+                </TouchableOpacity>
 
                 <View className="mt-0.5 flex-row items-center">
                   <View
@@ -845,7 +870,7 @@ export default function ChatScreen({
                   color="#9CA3AF"
                 />
 
-                <Text className="mt-4 font-manrope-semibold text-base text-text-dark">
+                <Text className="mt-4 font-manrope-semibold text-base text-text">
                   Unable to load messages
                 </Text>
 
@@ -861,7 +886,7 @@ export default function ChatScreen({
                   color="#9CA3AF"
                 />
 
-                <Text className="mt-4 font-manrope-semibold text-base text-text-dark">
+                <Text className="mt-4 font-manrope-semibold text-base text-text">
                   Start the conversation
                 </Text>
 
@@ -878,8 +903,8 @@ export default function ChatScreen({
             behavior="padding"
             keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 48}
           >
-            <View className="border-t px-3 pt-2 border-border-dark bg-bg-dark">
-              <View className="flex-row items-end rounded-3xl px-2 py-1.5 bg-card-dark">
+            <View className="border-t px-3 pt-2 border-border bg-bg">
+              <View className="flex-row items-end rounded-3xl px-2 py-1.5 bg-card">
                 <TouchableOpacity
                   activeOpacity={0.7}
                   className="h-10 w-10 items-center justify-center"
@@ -901,7 +926,7 @@ export default function ChatScreen({
                   multiline
                   maxLength={5000}
                   textAlignVertical="center"
-                  className="max-h-28 min-h-10 flex-1 px-2 py-2.5 font-manrope text-[14px] text-text-dark"
+                  className="max-h-28 min-h-10 flex-1 px-2 py-2.5 font-manrope text-[14px] text-text"
                 />
 
                 <TouchableOpacity

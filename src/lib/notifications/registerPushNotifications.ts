@@ -17,8 +17,6 @@ export function setupNotificationHandler() {
       shouldSetBadge: false,
     }),
   });
-
-  console.log("[Notifications] Handler configured");
 }
 
 /**
@@ -31,8 +29,7 @@ export function setupNotificationHandler() {
 export async function registerPushToken(
   userId: string
 ): Promise<string | null> {
-  console.log("[Notifications] Starting push token registration...");
-
+  
   try {
     // --------------------------------------------------
     // Validate user
@@ -45,7 +42,6 @@ export async function registerPushToken(
       return null;
     }
 
-    console.log("[Notifications] User ID:", userId);
 
     // --------------------------------------------------
     // Check physical device
@@ -58,7 +54,6 @@ export async function registerPushToken(
       return null;
     }
 
-    console.log("[Notifications] Physical device detected.");
 
     // --------------------------------------------------
     // Check notification permission
@@ -67,27 +62,16 @@ export async function registerPushToken(
     const { status: existingStatus } =
       await Notifications.getPermissionsAsync();
 
-    console.log(
-      "[Notifications] Existing permission:",
-      existingStatus
-    );
 
     let finalStatus = existingStatus;
 
     if (existingStatus !== "granted") {
-      console.log(
-        "[Notifications] Requesting notification permission..."
-      );
-
+    
       const { status } =
         await Notifications.requestPermissionsAsync();
 
       finalStatus = status;
 
-      console.log(
-        "[Notifications] Permission result:",
-        finalStatus
-      );
     }
 
     if (finalStatus !== "granted") {
@@ -97,17 +81,12 @@ export async function registerPushToken(
       return null;
     }
 
-    console.log("[Notifications] Permission granted.");
-
     // --------------------------------------------------
     // Android notification channel
     // --------------------------------------------------
 
     if (Platform.OS === "android") {
-      console.log(
-        "[Notifications] Creating Android notification channel..."
-      );
-
+     
       await Notifications.setNotificationChannelAsync(
         "default",
         {
@@ -118,9 +97,6 @@ export async function registerPushToken(
         }
       );
 
-      console.log(
-        "[Notifications] Android notification channel ready."
-      );
     }
 
     // --------------------------------------------------
@@ -138,18 +114,10 @@ export async function registerPushToken(
       return null;
     }
 
-    console.log(
-      "[Notifications] EAS project ID:",
-      projectId
-    );
-
     // --------------------------------------------------
     // Get Expo Push Token
     // --------------------------------------------------
 
-    console.log(
-      "[Notifications] Requesting Expo Push Token..."
-    );
 
     const { data: expoPushToken } =
       await Notifications.getExpoPushTokenAsync({
@@ -163,18 +131,9 @@ export async function registerPushToken(
       return null;
     }
 
-    console.log(
-      "[Notifications] Expo Push Token received:",
-      expoPushToken
-    );
-
     // --------------------------------------------------
     // Save token to Supabase
     // --------------------------------------------------
-
-    console.log(
-      "[Notifications] Saving push token to Supabase..."
-    );
 
     const { error } = await supabase
       .from("push_tokens")
@@ -198,14 +157,6 @@ export async function registerPushToken(
 
       return null;
     }
-
-    console.log(
-      "[Notifications] Push token saved successfully."
-    );
-
-    console.log(
-      "[Notifications] Registration completed successfully."
-    );
 
     return expoPushToken;
   } catch (error) {

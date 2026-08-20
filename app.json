@@ -1,14 +1,12 @@
 {
   "expo": {
-   "jsEngine": "hermes",
-    "name": "repair-hub",
+    "name": "Repair Hub",
     "slug": "repair-hub",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "repairhub",
     "userInterfaceStyle": "automatic",
-    "newArchEnabled": true,
     "ios": {
       "supportsTablet": true
     },
@@ -18,7 +16,6 @@
         "backgroundImage": "./assets/images/android-icon-background.png",
         "monochromeImage": "./assets/images/android-icon-monochrome.png"
       },
-      "edgeToEdgeEnabled": false,
       "predictiveBackGestureEnabled": false,
       "package": "com.anonymous.repairhub",
       "googleServicesFile": "./google-services.json",
@@ -37,7 +34,7 @@
           "image": "./assets/images/splash-icon.png",
           "imageWidth": 200,
           "resizeMode": "contain",
-          "backgroundColor": "#0B1120",
+          "backgroundColor": "#ffffff",
           "dark": {
             "backgroundColor": "#000000"
           }

@@ -97,18 +97,18 @@ const SecurityAndPrivacy = () => {
         setShowPassword: (value: boolean) => void,
         isLast: boolean = false
     ) => (
-        <View className={`flex-col gap-1 ${!isLast ? 'border-b border-border-dark/50 pb-4' : ''}`}>
-            <Text className="text-sm font-manrope-semibold text-text-dark">
+        <View className={`flex-col gap-1 ${!isLast ? 'border-b border-border/50 pb-4' : ''}`}>
+            <Text className="text-sm font-manrope-semibold text-text">
                 {label}
             </Text>
-            <View className="mt-1 bg-input-dark rounded-xl flex-row items-center px-4">
+            <View className="mt-1 bg-input border border-border rounded-xl flex-row items-center px-4">
                 <Ionicons
                     name="lock-closed-outline"
                     size={20}
                     color="#94A3B8"
                 />
                 <TextInput
-                    className="flex-1 py-3.5 ml-2 text-text-dark"
+                    className="flex-1 py-3.5 ml-2 text-text"
                     placeholder={placeholder}
                     placeholderTextColor="#94A3B8"
                     value={value}
@@ -134,19 +134,19 @@ const SecurityAndPrivacy = () => {
     return (
         <View
             style={{ flex: 1, paddingTop: insets.top, paddingBottom: insets.bottom }}
-            className="flex-1 bg-bg-dark"
+            className="flex-1 bg-bg"
         >
             {/* Header */}
-            <View className="px-4 pt-2 pb-5 bg-bg-dark">
+            <View className="px-4 pt-2 pb-5">
                 <View className="flex-row items-center">
                     <TouchableOpacity
                         onPress={() => router.back()}
                         activeOpacity={0.7}
-                        className="w-10 h-10 items-center justify-center rounded-2xl bg-card-dark border border-border-dark"
+                        className="w-10 h-10 items-center justify-center rounded-2xl bg-card border border-border"
                     >
-                        <Ionicons name="arrow-back" size={20} color="#F8FAFC"/>
+                        <Ionicons name="arrow-back" size={20} color="#1F2937"/>
                     </TouchableOpacity>
-                    <Text className="ml-2 text-[20px] font-manrope-semibold text-text-dark">
+                    <Text className="ml-2 text-[20px] font-manrope-semibold text-text">
                         Security & Privacy
                     </Text>
                 </View>
@@ -158,10 +158,10 @@ const SecurityAndPrivacy = () => {
             >
                 {/* Password Section */}
                 <View className="mb-6">
-                    <Text className="mb-1 px-3 text-xs font-manrope-bold uppercase tracking-wider text-text-darkMuted">
+                    <Text className="mb-1 px-3 text-xs font-manrope-bold uppercase tracking-wider text-text-muted">
                         Change Password
                     </Text>
-                    <View className="bg-card-dark px-5 py-4 rounded-lg">
+                    <View className="bg-card px-5 py-4 rounded-lg">
                         {renderPasswordInput(
                             "Current Password",
                             currentPassword,
@@ -192,28 +192,28 @@ const SecurityAndPrivacy = () => {
 
                 {/* Security Tips */}
                 <View className="mb-6">
-                    <Text className="mb-1 px-3 text-xs font-manrope-bold uppercase tracking-wider text-text-darkMuted">
+                    <Text className="mb-1 px-3 text-xs font-manrope-bold uppercase tracking-wider text-text-muted">
                         Security Tips
                     </Text>
-                    <View className="bg-card-dark px-5 py-4 rounded-lg">
-                        <View className="flex-row items-start gap-3 py-2 border-b border-border-dark/50">
+                    <View className="bg-card px-5 py-4 rounded-lg">
+                        <View className="flex-row items-start gap-3 py-2 border-b border-border/50">
                             <Ionicons name="checkmark-circle-outline" size={20} color="#10B981" />
                             <View className="flex-1">
-                                <Text className="text-sm font-manrope-semibold text-text-dark">
+                                <Text className="text-sm font-manrope-semibold text-text">
                                     Use a strong password
                                 </Text>
-                                <Text className="text-xs text-text-darkMuted font-manrope-light">
+                                <Text className="text-xs text-text-muted font-manrope-light">
                                     Include numbers, symbols, and both uppercase & lowercase letters.
                                 </Text>
                             </View>
                         </View>
-                        <View className="flex-row items-start gap-3 py-2 border-b border-border-dark/50">
+                        <View className="flex-row items-start gap-3 py-2 border-b border-border/50">
                             <Ionicons name="checkmark-circle-outline" size={20} color="#10B981" />
                             <View className="flex-1">
-                                <Text className="text-sm font-manrope-semibold text-text-dark">
+                                <Text className="text-sm font-manrope-semibold text-text">
                                     Don&apos;t reuse passwords
                                 </Text>
-                                <Text className="text-xs text-text-darkMuted font-manrope-light">
+                                <Text className="text-xs text-text-muted font-manrope-light">
                                     Use a unique password for your Repair Hub account.
                                 </Text>
                             </View>
@@ -221,10 +221,10 @@ const SecurityAndPrivacy = () => {
                         <View className="flex-row items-start gap-3 py-2">
                             <Ionicons name="checkmark-circle-outline" size={20} color="#10B981" />
                             <View className="flex-1">
-                                <Text className="text-sm font-manrope-semibold text-text-dark">
+                                <Text className="text-sm font-manrope-semibold text-text">
                                     Enable two-factor authentication
                                 </Text>
-                                <Text className="text-xs text-text-darkMuted font-manrope-light">
+                                <Text className="text-xs text-text-muted font-manrope-light">
                                     Add an extra layer of security to your account.
                                 </Text>
                             </View>
@@ -234,20 +234,20 @@ const SecurityAndPrivacy = () => {
 
                 {/* Two-Factor Authentication */}
                 <View className="mb-6">
-                    <Text className="mb-1 px-3 text-xs font-manrope-bold uppercase tracking-wider text-text-darkMuted">
+                    <Text className="mb-1 px-3 text-xs font-manrope-bold uppercase tracking-wider text-text-muted">
                         Two-Factor Authentication
                     </Text>
-                    <View className="bg-card-dark px-5 py-4 rounded-lg">
+                    <View className="bg-card px-5 py-4 rounded-lg">
                         <View className="flex-row items-center justify-between">
                             <View className="flex-row items-center gap-3">
                                 <View className="w-10 h-10 bg-primary/20 rounded-full items-center justify-center">
                                     <Ionicons name="shield-checkmark-outline" size={20} color="#6366F1" />
                                 </View>
                                 <View>
-                                    <Text className="text-sm font-manrope-semibold text-text-dark">
+                                    <Text className="text-sm font-manrope-semibold text-text">
                                         Two-Factor Authentication
                                     </Text>
-                                    <Text className="text-xs text-text-darkMuted font-manrope-light">
+                                    <Text className="text-xs text-text-muted font-manrope-light">
                                         Add an extra layer of security to your account
                                     </Text>
                                 </View>
@@ -296,10 +296,10 @@ const SecurityAndPrivacy = () => {
                 </TouchableOpacity>
 
                 {/* Footer Note */}
-                <View className="mt-6 px-4 py-3 bg-input-dark/50 rounded-xl">
+                <View className="mt-6 px-4 py-3 bg-input/50 rounded-xl">
                     <View className="flex-row items-center gap-2">
                         <Ionicons name="lock-closed-outline" size={16} color="#94A3B8" />
-                        <Text className="text-xs text-text-darkMuted font-manrope-light flex-1">
+                        <Text className="text-xs text-text-muted font-manrope-light flex-1">
                             Your password is securely encrypted and stored. Never share your password with anyone.
                         </Text>
                     </View>

@@ -147,8 +147,8 @@ const ConversationCard = memo(({
           <Text
             numberOfLines={1}
             className={`mr-2 flex-1 font-manrope-semibold text-[15px] ${unreadCount > 0
-                ? "text-white"
-                : "text-white"
+                ? "text-primary"
+                : "text-text"
               }`}
           >
             {name}
@@ -156,7 +156,7 @@ const ConversationCard = memo(({
 
           {lastMessage && (
             <Text
-              className={`font-manrope text-xs ${unreadCount > 0 ? "text-primary" : "text-gray-400"
+              className={`font-manrope text-xs ${unreadCount > 0 ? "text-primary" : "text-gray-500"
                 }`}
             >
               {formatTime(lastMessage.created_at)}
@@ -179,8 +179,8 @@ const ConversationCard = memo(({
           <Text
             numberOfLines={1}
             className={`flex-1 font-manrope text-sm ${unreadCount > 0
-                ? "font-manrope-semibold text-text-darkMuted"
-                : "text-gray-400"
+                ? "font-manrope-semibold text-text-muted"
+                : "text-gray-500"
               }`}
           >
             {getMessagePreview(conversation)}

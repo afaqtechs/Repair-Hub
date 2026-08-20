@@ -2,7 +2,7 @@ import RequestCard from '@/src/components/cards/RequestCard';
 import AppRefreshControl from '@/src/components/ui/AppRefreshControl';
 import SortModal from '@/src/components/ui/SortModal';
 import { useAuth } from '@/src/context/AuthContext';
-import { useRequestsByTechnician } from '@/src/hooks';
+import { useRequestsByTechnician, useTechnician } from '@/src/hooks';
 import RequestForm from '@/src/screens/create/RequestForm';
 import { Request } from '@/types/requests';
 import { Ionicons } from '@expo/vector-icons';
@@ -20,6 +20,8 @@ const MyRequests = () => {
     const insets = useSafeAreaInsets()
 
     const loggedInUserId = String(user?.id)
+
+    const { data: technician } = useTechnician(loggedInUserId);
 
     const [listView, setListView] = useState(false);
     const [sortModalVisible, setSortModalVisible] = useState(false);
@@ -82,7 +84,7 @@ const MyRequests = () => {
 
     if (requestError) {
         return (
-            <SafeAreaView edges={["top", "left", "right"]} className="flex-1 bg-bg-dark">
+            <SafeAreaView edges={["top", "left", "right"]} className="flex-1 bg-bg">
                 <View className="flex-1 items-center justify-center px-4">
                     <Ionicons name="alert-circle-outline" size={60} color="#EF4444" />
                     <Text className="text-red-500 text-lg font-bold mt-4">Something went wrong</Text>
@@ -90,7 +92,7 @@ const MyRequests = () => {
                     <TouchableOpacity className="mt-6 bg-[#5B3DF5] px-6 py-3 rounded-xl" onPress={() => {
                         fetchRequests();
                     }}>
-                        <Text className="text-text-dark font-semibold">Try Again</Text>
+                        <Text className="text-text font-semibold">Try Again</Text>
                     </TouchableOpacity>
                 </View>
             </SafeAreaView>
@@ -112,7 +114,7 @@ const MyRequests = () => {
                     paddingTop: insets.top,
                     paddingBottom: insets.bottom,
                 }}
-                className="bg-bg-dark"
+                className="bg-bg"
             >
                 <RequestForm
                     isEdit
@@ -126,25 +128,25 @@ const MyRequests = () => {
     return (
         <View
             style={{ flex: 1, paddingTop: insets.top, paddingBottom: insets.bottom }}
-            className="relative flex-1 bg-bg-dark">
+            className="relative flex-1 bg-bg">
             <View className="px-5 pt-2 pb-5">
                 <View className="flex-row items-center">
                     <TouchableOpacity
                         onPress={() => router.push("/(root)/(tabs)/profile")}
                         activeOpacity={0.7}
-                        className="w-10 h-10 items-center justify-center rounded-2xl bg-card-dark border border-border-dark"
+                        className="w-10 h-10 items-center justify-center rounded-2xl bg-card border border-border"
                     >
-                        <Ionicons name="arrow-back" size={20} color="#F8FAFC" />
+                        <Ionicons name="arrow-back" size={20} color="#1F2937" />
                     </TouchableOpacity>
-                    <Text className="ml-2 text-[20px] font-manrope-semibold text-text-dark">
+                    <Text className="ml-2 text-[20px] font-manrope-semibold text-text">
                         My Requests
                     </Text>
                 </View>
             </View>
 
-            <View className="px-5 pb-3 border-b border-border-dark">
+            <View className="px-5 pb-3 border-b border-border">
                 <View className="flex-row items-center justify-between">
-                    <Text className="text-text-darkMuted text-base font-medium">
+                    <Text className="text-text-muted text-base font-medium">
                         Found <Text className="font-bold text-primary">
                             ({sortedResults.length})
                         </Text>
@@ -153,23 +155,23 @@ const MyRequests = () => {
                     <View className="flex-row items-center gap-2">
                         <TouchableOpacity
                             onPress={() => setSortModalVisible(true)}
-                            className="w-10 h-10 rounded-md border border-border-dark bg-card-dark items-center justify-center"
+                            className="w-10 h-10 rounded-md border border-border bg-card items-center justify-center"
                         >
                             <Ionicons
                                 name="swap-vertical-outline"
                                 size={20}
-                                color="#94A3B8"
+                                color="#1F2937"
                             />
                         </TouchableOpacity>
 
                         <TouchableOpacity
                             onPress={() => setListView(!listView)}
-                            className="w-10 h-10 rounded-md border border-border-dark bg-card-dark items-center justify-center"
+                            className="w-10 h-10 rounded-md border border-border bg-card items-center justify-center"
                         >
                             <Ionicons
                                 name={listView ? 'grid-outline' : 'list-outline'}
                                 size={20}
-                                color="#94A3B8"
+                                color="#1F2937"
                             />
                         </TouchableOpacity>
                     </View>
@@ -183,7 +185,7 @@ const MyRequests = () => {
                             size="large"
                             color="#60A5FA"
                         />
-                        <Text className="text-text-dark mt-4">
+                        <Text className="text-text mt-4">
                             Loading requests...
                         </Text>
                     </View>
@@ -206,7 +208,7 @@ const MyRequests = () => {
                             }
                             ListFooterComponent={
                                 <View className="flex-row justify-center items-center py-4">
-                                    <Text className="text-text-dark ml-2">
+                                    <Text className="text-text ml-2">
                                         No more requests...
                                     </Text>
                                 </View>
@@ -229,27 +231,28 @@ const MyRequests = () => {
                             size={60}
                             color="#64748B"
                         />
-                        <Text className="text-text-dark text-lg font-semibold mt-4">
+                        <Text className="text-text text-lg font-semibold mt-4">
                             No requests found
                         </Text>
-                        <Text className="text-text-darkMuted text-center mt-2">
+                        <Text className="text-text-muted text-center mt-2">
                             Try adjusting your search or filters
                         </Text>
                     </View>
                 )}
             </View>
 
-            <TouchableOpacity
-                onPress={() => router.push("/(pages)/create/request")}
-                className="absolute w-16 h-16 bottom-16 right-5 rounded-full border border-primary/10 bg-primary items-center justify-center"
-            >
-                <Ionicons
-                    name="add"
-                    size={32}
-                    color="#ffffff"
-                />
-            </TouchableOpacity>
-
+            {technician?.verification_status === "verified" && (
+                <TouchableOpacity
+                    onPress={() => router.push("/(pages)/create/request")}
+                    className="absolute w-16 h-16 bottom-16 right-5 rounded-full border border-primary/10 bg-primary items-center justify-center"
+                >
+                    <Ionicons
+                        name="add"
+                        size={32}
+                        color="#ffffff"
+                    />
+                </TouchableOpacity>
+            )}
             <SortModal
                 sortModalVisible={sortModalVisible}
                 setSortModalVisible={setSortModalVisible}

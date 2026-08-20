@@ -232,7 +232,7 @@ const Notifications = () => {
             <View
                 key={setting.type}
                 className={`flex-row items-center justify-between py-3.5 ${index !== length - 1
-                    ? "border-b border-border-dark/50"
+                    ? "border-b border-border/50"
                     : ""
                     }`}
             >
@@ -248,11 +248,11 @@ const Notifications = () => {
                     />
 
                     <View className="ml-4 flex-1">
-                        <Text className="text-[15px] font-manrope-semibold text-text-dark">
+                        <Text className="text-[15px] font-manrope-semibold text-text">
                             {setting.title}
                         </Text>
 
-                        <Text className="text-xs font-manrope-light text-text-darkMuted">
+                        <Text className="text-xs font-manrope-light text-text-muted">
                             {setting.description}
                         </Text>
                     </View>
@@ -282,24 +282,24 @@ const Notifications = () => {
                 paddingTop: insets.top,
                 paddingBottom: insets.bottom,
             }}
-            className="flex-1 bg-bg-dark"
+            className="flex-1 bg-bg"
         >
             {/* Header */}
-            <View className="px-4 pt-2 pb-5 bg-bg-dark">
+            <View className="px-4 pt-2 pb-5">
                 <View className="flex-row items-center">
                     <TouchableOpacity
                         onPress={() => router.back()}
                         activeOpacity={0.7}
-                        className="w-10 h-10 items-center justify-center rounded-2xl bg-card-dark border border-border-dark"
+                        className="w-10 h-10 items-center justify-center rounded-2xl bg-card border border-border"
                     >
                         <Ionicons
                             name="arrow-back"
                             size={20}
-                            color= "#F8FAFC"
+                            color= "#1F2937"
                         />
                     </TouchableOpacity>
 
-                    <Text className="ml-2 text-[20px] font-manrope-semibold text-text-dark">
+                    <Text className="ml-2 text-[20px] font-manrope-semibold text-text">
                         Notifications
                     </Text>
                 </View>
@@ -314,14 +314,14 @@ const Notifications = () => {
                 }}
             >
                 {/* Summary Card */}
-                <View className="mb-6 px-4 py-4 bg-card-dark rounded-xl">
+                <View className="mb-6 px-4 py-4 bg-card rounded-xl">
                     <View className="flex-row items-center justify-between">
                         <View className="flex-1">
-                            <Text className="text-base font-manrope-semibold text-text-dark">
+                            <Text className="text-base font-manrope-semibold text-text">
                                 Notification Settings
                             </Text>
 
-                            <Text className="text-sm text-text-darkMuted font-manrope-light">
+                            <Text className="text-sm text-text-muted font-manrope-light">
                                 {isLoading
                                     ? "Loading notification settings..."
                                     : `${enabledCount} of ${totalCount} notifications enabled`}
@@ -352,7 +352,7 @@ const Notifications = () => {
                             updateSettingMutation.isPending
                         }
                         className={`flex-row items-center justify-center gap-2 py-3.5 rounded-xl ${allEnabled
-                            ? "bg-card-dark border border-border-dark"
+                            ? "bg-card border border-border"
                             : "bg-primary"
                             }`}
                         onPress={() =>
@@ -370,14 +370,14 @@ const Notifications = () => {
                             size={21}
                             color={
                                 allEnabled
-                                    ? "#F8FAFC"
+                                    ? "#1F2937"
                                     : "#22C55E"
                             }
                         />
 
                         <Text
                             className={`font-manrope-semibold text-base ${allEnabled
-                                ? "text-text-dark"
+                                ? "text-text"
                                 : "text-white"
                                 }`}
                         >
@@ -391,7 +391,7 @@ const Notifications = () => {
                 {/* Settings */}
                 {isLoading ? (
                     <View className="py-10 items-center">
-                        <Text className="text-sm font-manrope-light text-text-darkMuted">
+                        <Text className="text-sm font-manrope-light text-text-muted">
                             Loading notification settings...
                         </Text>
                     </View>
@@ -415,13 +415,13 @@ const Notifications = () => {
                                 key={category}
                                 className="mb-6"
                             >
-                                <Text className="mb-1 px-3 text-xs font-manrope-bold uppercase tracking-wider text-text-darkMuted">
+                                <Text className="mb-1 px-3 text-xs font-manrope-bold uppercase tracking-wider text-text-muted">
                                     {getCategoryTitle(
                                         category
                                     )}
                                 </Text>
 
-                                <View className="bg-card-dark px-5 rounded-lg">
+                                <View className="bg-card px-5 rounded-lg">
                                     {categorySettings.map(
                                         (
                                             setting,
@@ -440,7 +440,7 @@ const Notifications = () => {
                 )}
 
                 {/* Footer */}
-                <View className="mt-2 px-4 py-3 bg-input-dark/50 rounded-xl">
+                <View className="mt-2 px-4 py-3 bg-input/50 rounded-xl">
                     <View className="flex-row items-center gap-2">
                         <Ionicons
                             name="information-circle-outline"
@@ -448,7 +448,7 @@ const Notifications = () => {
                             color="#94A3B8"
                         />
 
-                        <Text className="text-xs text-text-darkMuted font-manrope-light flex-1">
+                        <Text className="text-xs text-text-muted font-manrope-light flex-1">
                             Push notifications may require
                             app permissions. Manage
                             preferences anytime.

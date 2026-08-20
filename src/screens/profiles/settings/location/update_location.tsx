@@ -106,8 +106,8 @@ const UpdateLocation = ({ technicianId, location, setUpdatingLocation }: Props) 
 
     return (
         <View className='p-4'>
-            <View className="bg-card-dark p-4 rounded-xl shadow-sm">
-                <Text className="text-text-dark text-lg font-bold mb-3">
+            <View className="bg-card p-4 rounded-xl shadow-sm">
+                <Text className="text-text text-lg font-bold mb-3">
                     Update Location
                 </Text>
 
@@ -129,10 +129,10 @@ const UpdateLocation = ({ technicianId, location, setUpdatingLocation }: Props) 
                     )}
                 </TouchableOpacity>
 
-                <View className="h-px bg-border-dark my-2" />
+                <View className="h-px bg-border my-2" />
 
                 {/* Latitude Input */}
-                <View className="bg-input-dark border border-border-dark rounded-xl flex-row items-center px-4 mb-3">
+                <View className="bg-input border border-border rounded-xl flex-row items-center px-4 mb-3">
                     <Ionicons
                         name="navigate-outline"
                         size={20}
@@ -143,14 +143,14 @@ const UpdateLocation = ({ technicianId, location, setUpdatingLocation }: Props) 
                         onChangeText={(text) => handleInputChange("latitude", text)}
                         placeholder="Latitude"
                         placeholderTextColor="#94A3B8"
-                        className="flex-1 py-3.5 ml-2 text-text-dark"
+                        className="flex-1 py-3.5 ml-2 text-text"
                         keyboardType="numbers-and-punctuation"
                         editable={!isLoading}
                     />
                 </View>
 
                 {/* Longitude Input */}
-                <View className="bg-input-dark border border-border-dark rounded-xl flex-row items-center px-4 mb-3">
+                <View className="bg-input border border-border rounded-xl flex-row items-center px-4 mb-3">
                     <Ionicons
                         name="navigate-outline"
                         size={20}
@@ -161,7 +161,7 @@ const UpdateLocation = ({ technicianId, location, setUpdatingLocation }: Props) 
                         onChangeText={(text) => handleInputChange('longitude', text)}
                         placeholder="Longitude"
                         placeholderTextColor="#94A3B8"
-                        className="flex-1 py-3.5 ml-2 text-text-dark"
+                        className="flex-1 py-3.5 ml-2 text-text"
                         keyboardType="numeric"
                         editable={!isLoading}
                     />
@@ -172,9 +172,9 @@ const UpdateLocation = ({ technicianId, location, setUpdatingLocation }: Props) 
                     <TouchableOpacity
                         onPress={handleCancel}
                         disabled={isLoading}
-                        className="flex-1 bg-gray-700 rounded-xl py-3 px-4"
+                        className="flex-1 bg-gray-300 rounded-xl py-3 px-4"
                     >
-                        <Text className="text-text-dark font-semibold text-center">
+                        <Text className="text-text font-semibold text-center">
                             Cancel
                         </Text>
                     </TouchableOpacity>

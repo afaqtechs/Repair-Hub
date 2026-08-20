@@ -23,7 +23,7 @@ module.exports = {
 
       colors: {
         bg: {
-          DEFAULT: '#F8F7FC',
+          DEFAULT: '#F7F6FB',
           dark: '#0B1120',
         },
 

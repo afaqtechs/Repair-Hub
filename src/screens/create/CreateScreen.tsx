@@ -1,3 +1,5 @@
+import { useAuth } from '@/src/context/AuthContext';
+import { useTechnician } from '@/src/hooks';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
@@ -8,6 +10,12 @@ type TabType = 'part' | 'service' | 'request';
 const CreateScreen = () => {
     const router = useRouter();
     const [activeTab, setActiveTab] = useState<TabType>('part');
+
+    const { user } = useAuth();
+
+    const loggedInUserId = String(user?.id)
+
+    const { data: technician } = useTechnician(loggedInUserId);
 
     const tabs = [
         {
@@ -38,11 +46,11 @@ const CreateScreen = () => {
     return (
         <>
             <View className="px-5 pt-3">
-                <Text className="text-text-dark text-2xl font-bold">
+                <Text className="text-text text-2xl font-manrope-bold">
                     Create
                 </Text>
 
-                <Text className="text-text-darkMuted mt-2 text-base">
+                <Text className="text-text-muted font-manrope mt-2 text-base">
                     Choose what you&apos;d like to create and share with the community.
                 </Text>
 
@@ -54,9 +62,9 @@ const CreateScreen = () => {
                             <TouchableOpacity
                                 key={tab.value}
                                 onPress={() => setActiveTab(tab.value)}
-                                className={`bg-card-dark border rounded-xl p-5 ${isActive
-                                    ? 'border-blue-500'
-                                    : 'border-border-dark'
+                                className={`bg-card border rounded-xl p-5 ${isActive
+                                    ? 'border-primary'
+                                    : 'border-border'
                                     }`}
                             >
                                 <View className="flex-row items-center">
@@ -69,11 +77,11 @@ const CreateScreen = () => {
                                     </View>
 
                                     <View className="ml-4 flex-1">
-                                        <Text className="text-text-dark text-lg font-semibold">
+                                        <Text className="text-text text-lg font-semibold">
                                             {tab.label}
                                         </Text>
 
-                                        <Text className="text-text-darkMuted mt-1">
+                                        <Text className="text-textMuted mt-1">
                                             {tab.description}
                                         </Text>
                                     </View>
@@ -94,6 +102,7 @@ const CreateScreen = () => {
                             router.push(selectedTab.href as any);
                         }
                     }}
+                    disabled={technician?.verification_status !== "verified"}
                     className="mt-8 bg-button-primary rounded-xl py-4 px-5 flex-row items-center justify-center gap-2 active:opacity-80"
                 >
                     <Ionicons
@@ -106,6 +115,14 @@ const CreateScreen = () => {
                         Create {selectedTab?.label ?? 'Item'}
                     </Text>
                 </TouchableOpacity>
+
+                {technician?.verification_status !== "verified" && (
+                    <View className="mt-3 mx-4 px-4 py-2.5 rounded-xl items-center bg-red-500/10">
+                        <Text className="text-red-500 text-sm font-manrope-semibold text-center">
+                            Verify your document to create
+                        </Text>
+                    </View>
+                )}
             </View>
         </>
     );

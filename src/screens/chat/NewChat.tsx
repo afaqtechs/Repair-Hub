@@ -123,7 +123,7 @@ const NewChat = ({
 
     if (isLoading) {
         return (
-            <View className="flex-1 items-center justify-center bg-bg-dark">
+            <View className="flex-1 items-center justify-center bg-bg">
                 <ActivityIndicator
                     size="large"
                     color="#2563EB"
@@ -135,24 +135,24 @@ const NewChat = ({
     return (
         <View
             style={{ flex: 1, paddingBottom: insets.bottom }}
-            className="flex-1 bg-bg-dark"
+            className="flex-1 bg-bg"
         >
             {/* Header */}
-            <View className="border-b px-5 pb-4 pt-3 border-border-dark">
+            <View className="border-b px-5 pb-4 pt-3 border-border">
                 <View className="flex-row gap-3 items-center">
                     <TouchableOpacity
                         onPress={onBack}
                         activeOpacity={0.7}
-                        className="h-10 w-10 items-center justify-center rounded-2xl border border-border-dark bg-bg-dark"
+                        className="h-10 w-10 items-center justify-center rounded-2xl border border-border bg-bg"
                     >
                         <Ionicons
                             name="arrow-back"
                             size={20}
-                            color="#F8FAFC"
+                            color="#1F2937"
                         />
                     </TouchableOpacity>
                     <View>
-                        <Text className="font-manrope-bold text-2xl text-text-dark">
+                        <Text className="font-manrope-bold text-2xl text-text">
                             New Chat
                         </Text>
 
@@ -163,7 +163,7 @@ const NewChat = ({
                 </View>
 
                 {/* Search */}
-                <View className="mt-4 flex-row items-center rounded-2xl px-3 bg-card-dark">
+                <View className="mt-4 flex-row items-center rounded-2xl px-3 bg-card">
                     <Ionicons
                         name="search-outline"
                         size={20}
@@ -175,7 +175,7 @@ const NewChat = ({
                         onChangeText={setSearch}
                         placeholder="Search technicians..."
                         placeholderTextColor="#9CA3AF"
-                        className="ml-2 flex-1 py-3 font-manrope text-sm text-text-dark"
+                        className="ml-2 flex-1 py-3 font-manrope text-sm text-text"
                     />
 
                     {search.length > 0 && (
@@ -186,7 +186,7 @@ const NewChat = ({
                             <Ionicons
                                 name="close-circle"
                                 size={19}
-                                color="#9CA3AF"
+                                color="#1F2937"
                             />
                         </TouchableOpacity>
                     )}
@@ -245,7 +245,7 @@ const NewChat = ({
                                     item.is_available,
                                     item.last_seen_at
                                 ) && (
-                                        <View className="absolute bottom-0 right-0 h-4 w-4 rounded-full border-2 bg-green-500 :border-gray-900" />
+                                        <View className="absolute bottom-0 right-0 h-4 w-4 rounded-full border-b bg-green-500 border-border" />
                                     )}
                             </View>
 
@@ -253,7 +253,7 @@ const NewChat = ({
                             <View className="flex-1">
                                 <Text
                                     numberOfLines={1}
-                                    className="font-manrope-semibold text-[15px] text-text-dark"
+                                    className="font-manrope-semibold text-[15px] text-text"
                                 >
                                     {name}
                                 </Text>
@@ -292,7 +292,7 @@ const NewChat = ({
                     );
                 }}
                 ItemSeparatorComponent={() => (
-                    <View className="ml-[86px] h-px bg-gray-800" />
+                    <View className="ml-[86px] h-px bg-gray-200" />
                 )}
                 ListEmptyComponent={
                     <View className="flex-1 items-center justify-center px-8">
@@ -303,16 +303,16 @@ const NewChat = ({
                                     : "people-outline"
                             }
                             size={46}
-                            color="#9CA3AF"
+                            color="#1F2937"
                         />
 
-                        <Text className="mt-4 text-center font-manrope-semibold text-base text-gray-300">
+                        <Text className="mt-4 text-center font-manrope-semibold text-base text-gray-500">
                             {search
                                 ? "No technicians found"
                                 : "No technicians available"}
                         </Text>
 
-                        <Text className="mt-2 text-center font-manrope text-sm text-gray-400">
+                        <Text className="mt-2 text-center font-manrope text-sm text-gray-500">
                             {search
                                 ? "Try searching with a different name."
                                 : "There are no technicians available to contact."}

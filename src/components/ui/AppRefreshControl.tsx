@@ -23,7 +23,7 @@ const AppRefreshControl = ({
             titleColor="#94A3B8"
 
             // Android spinner background
-            progressBackgroundColor="#1E1B2E"
+            progressBackgroundColor="#fff"
         />
     );
 };

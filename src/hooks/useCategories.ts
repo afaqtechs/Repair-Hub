@@ -16,6 +16,10 @@ export const CATEGORY_KEYS = {
   service: () => [...CATEGORY_KEYS.all, 'service'] as const,
   categoryServices: (categoryId: string) =>
     [...CATEGORY_KEYS.service(), categoryId] as const,
+
+    request: () => [...CATEGORY_KEYS.all, 'request'] as const,
+  categoryRequests: (categoryId: string) =>
+    [...CATEGORY_KEYS.request(), categoryId] as const,
 };
 
 // 1. Fetch All Categories (Cached indefinitely or per staleTime)
@@ -49,6 +53,15 @@ export function useServicesByCategory(categoryId: string) {
   return useQuery({
     queryKey: CATEGORY_KEYS.categoryServices(categoryId),
     queryFn: () => categoriesApi.getServicesByCategory(categoryId),
+    enabled: !!categoryId,
+    staleTime: 1000 * 60 * 3,
+  });
+}
+
+export function useRequestsByCategory(categoryId: string) {
+  return useQuery({
+    queryKey: CATEGORY_KEYS.categoryRequests(categoryId),
+    queryFn: () => categoriesApi.getRequestsByCategory(categoryId),
     enabled: !!categoryId,
     staleTime: 1000 * 60 * 3,
   });

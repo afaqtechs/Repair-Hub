@@ -56,14 +56,14 @@ const Setting = () => {
             className="flex-row items-center justify-between py-4"
         >
             <View className="flex-row items-center flex-1">
-                <Ionicons name={item.icon} size={20} color="#CBD5E1" />
-                <Text className="ml-4 text-[15px] font-manrope-semibold text-text-dark">
+                <Ionicons name={item.icon} size={20} color="#1F2937" />
+                <Text className="ml-4 text-[15px] font-manrope-semibold text-text">
                     {item.title}
                 </Text>
             </View>
-            <Ionicons name="chevron-forward" size={18} color="#94A3B8" />
+            <Ionicons name="chevron-forward" size={18} color="#1F2937" />
             {index !== length - 1 && (
-                <View className="absolute bottom-0 left-9 right-0 h-[1px] bg-bg-dark/50" />
+                <View className="absolute bottom-0 left-9 right-0 h-[1px] bg-bg/50" />
             )}
         </TouchableOpacity>
     );
@@ -71,18 +71,18 @@ const Setting = () => {
     return (
         <View
             style={{ flex: 1, paddingTop: insets.top, paddingBottom: insets.bottom }}
-            className="flex-1 bg-bg-dark">
+            className="flex-1 bg-bg">
             {/* Header */}
             <View className="px-4 pt-2 pb-5">
                 <View className="flex-row items-center">
                     <TouchableOpacity
                         onPress={() => router.push("/(root)/(tabs)/profile")}
                         activeOpacity={0.7}
-                        className="w-10 h-10 items-center justify-center rounded-2xl bg-card-dark border border-border-dark"
+                        className="w-10 h-10 items-center justify-center rounded-2xl bg-card border border-border"
                     >
-                        <Ionicons name="arrow-back" size={20} color="#F8FAFC" />
+                        <Ionicons name="arrow-back" size={20} color="#1F2937" />
                     </TouchableOpacity>
-                    <Text className="ml-2 text-[20px] font-manrope-semibold text-text-dark">
+                    <Text className="ml-2 text-[20px] font-manrope-semibold text-text">
                         Settings
                     </Text>
                 </View>
@@ -99,10 +99,10 @@ const Setting = () => {
                     ["Legal", legalItems],
                 ].map(([title, items]: any, sectionIndex) => (
                     <React.Fragment key={title}>
-                        <Text className={`mb-1 px-3 text-xs font-manrope-bold uppercase tracking-wider text-text-darkMuted ${sectionIndex > 0 ? 'mt-6' : ''}`}>
+                        <Text className={`mb-1 px-3 text-xs font-manrope-bold uppercase tracking-wider text-text-muted ${sectionIndex > 0 ? 'mt-6' : ''}`}>
                             {title}
                         </Text>
-                        <View className="bg-card-dark px-5 rounded-lg">
+                        <View className="bg-card px-5 rounded-lg">
                             {items.map((item: any, index: number) => renderItem(item, index, items.length))}
                         </View>
                     </React.Fragment>

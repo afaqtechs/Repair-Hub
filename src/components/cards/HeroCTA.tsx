@@ -1,5 +1,6 @@
 
 import { Ionicons } from "@expo/vector-icons";
+import { useRouter } from "expo-router";
 import React from "react";
 import {
     ImageBackground,
@@ -9,8 +10,9 @@ import {
 } from "react-native";
 
 const HeroCTA = () => {
+    const router = useRouter();
 
-    const backgroundImage = require("@/assets/ui/background/dark_cta_background.png")
+    const backgroundImage = require("@/assets/ui/background/light_cta_background.png")
 
     return (
         <ImageBackground
@@ -21,19 +23,20 @@ const HeroCTA = () => {
             {/* Content */}
             <View className="flex-1 justify-center px-4">
                 <Text
-                    className={`text-[10px] font-manrope-medium text-white`}
+                    className={`text-[10px] font-manrope-medium text-text`}
                 >
                     Need a repair?
                 </Text>
 
                 <Text
                     numberOfLines={2}
-                    className={`mt-1 max-w-[170px] text-[18px] leading-[22px] font-manrope-bold text-white`}
+                    className={`mt-1 max-w-[170px] text-[18px] leading-[22px] font-manrope-bold text-text`}
                 >
                     Find trusted{"\n"}technicians near you
                 </Text>
 
                 <TouchableOpacity
+                    onPress={() => router.push("/(root)/(tabs)/inbox")}
                     activeOpacity={0.8}
                     className="mt-3 h-9 px-3.5 rounded-lg bg-primary flex-row items-center self-start"
                 >

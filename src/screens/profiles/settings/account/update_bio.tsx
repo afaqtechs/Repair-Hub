@@ -56,7 +56,7 @@ const UpdateBio = ({ setEditingBio, technician }: Props) => {
     return (
         <View className="mb-6">
             <View className="flex-row items-center justify-between mb-1 px-3">
-                <Text className="text-xs font-manrope-bold uppercase tracking-wider text-text-darkMuted">
+                <Text className="text-xs font-manrope-bold uppercase tracking-wider text-text-muted">
                     Update Bio
                 </Text>
                 <TouchableOpacity
@@ -68,7 +68,7 @@ const UpdateBio = ({ setEditingBio, technician }: Props) => {
                     <Text className="text-xs font-manrope-medium text-primary">Back</Text>
                 </TouchableOpacity>
             </View>
-            <View className="rounded-lg overflow-hidden border border-border-dark/50">
+            <View className="rounded-lg overflow-hidden border border-border">
                 <RichToolbar
                     editor={bioRef}
                     actions={[
@@ -84,9 +84,9 @@ const UpdateBio = ({ setEditingBio, technician }: Props) => {
                         "redo",
                     ]}
                     style={{
-                        backgroundColor: "#172033",
+                        backgroundColor: "#F8F7FC",
                     }}
-                    iconTint="#F8FAFC"
+                    iconTint="#25213A"
                 />
 
 
@@ -94,9 +94,9 @@ const UpdateBio = ({ setEditingBio, technician }: Props) => {
                     initialContentHTML={form.bio || technician.bio || ""}
                     ref={bioRef}
                     editorStyle={{
-                        backgroundColor: "#0B112080",
-                        color: "#F8FAFC",
-                        placeholderColor: "#94A3B8",
+                        backgroundColor: "#fff",
+                        color: "#25213A",
+                        placeholderColor: "#25213A",
                         contentCSSText: `font-family: Manrope; font-size: 16px; padding: 12px; min-height: 120px;`,
                     }}
                     placeholder="Describe your experience and skills..."

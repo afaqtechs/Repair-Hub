@@ -1,7 +1,7 @@
 import { createClient } from "@supabase/supabase-js";
 
 interface NotificationRequest {
-  userid: string;
+  userId: string;
   type: string;
   title: string;
   body: string;
@@ -45,29 +45,19 @@ Deno.serve(async (req: Request) => {
     }
 
     const {
-      userid,
+      userId,
       type,
       title,
       body,
       data = {},
     } = payload;
 
-    console.log(
-      "[send-notification] Request:",
-      {
-        userid,
-        type,
-        title,
-        body,
-        data,
-      }
-    );
 
     // ------------------------------------------
     // 2. Validate request
     // ------------------------------------------
 
-    if (!userid || !type || !title || !body) {
+    if (!userId || !type || !title || !body) {
       console.log(
         "[send-notification] Missing required fields."
       );
@@ -76,7 +66,7 @@ Deno.serve(async (req: Request) => {
         JSON.stringify({
           success: false,
           error:
-            "userid, type, title and body are required.",
+            "userId, type, title and body are required.",
         }),
         {
           status: 400,
@@ -156,7 +146,7 @@ Deno.serve(async (req: Request) => {
     } = await supabase
       .from("notification_settings")
       .select("enabled")
-      .eq("user_id", userid)
+      .eq("user_id", userId)
       .eq("type", type)
       .maybeSingle();
 
@@ -214,7 +204,7 @@ Deno.serve(async (req: Request) => {
     } = await supabase
       .from("push_tokens")
       .select("id, token")
-      .eq("userid", userid);
+      .eq("user_id", userId);
 
     if (tokenError) {
       console.log(

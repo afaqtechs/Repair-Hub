@@ -22,6 +22,7 @@ const initialForm: ProfileForm = {
   latitude: null,
   longitude: null,
 
+  verification_status:'',
   legal_document_url: '',
   profile_image_url: '',
 };

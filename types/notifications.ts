@@ -30,6 +30,14 @@ export interface NotificationSettingDefinition {
     | "general";
 }
 
+export type NotificationData = {
+  type?: string;
+  request_id?: string;
+  part_id?: string;
+  service_id?: string;
+  conversation_id?: string;
+  [key: string]: unknown;
+};
 export interface DevicePushToken {
     id: string;
     user_id: string;

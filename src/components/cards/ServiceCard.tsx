@@ -70,7 +70,7 @@ const ServiceCard = ({
 
   const imageSource = service?.images?.[0]
     ? { uri: service.images[0] }
-    : require("@/assets/ui/heroimage.png");
+    : require("@/assets/ui/background/service_image.jpg");
 
   const handleMenuAction = async (value: string) => {
     switch (value) {
@@ -107,7 +107,7 @@ const ServiceCard = ({
 
   return (
     <View
-      className={`m-1 ${isListView ? "w-full flex-row items-center" : "flex-col"} bg-card-dark/50 p-2 border border-border-dark overflow-hidden rounded-md`}
+      className={`m-1 ${isListView ? "w-full flex-row items-center" : "flex-col"} bg-card p-2 rounded-md`}
       style={{ elevation: 0 }}
     >
       <TouchableOpacity
@@ -120,12 +120,12 @@ const ServiceCard = ({
           <TouchableOpacity
             onPress={() => toggleSave()}
             disabled={saveLoading}
-            className="absolute top-2 right-2 bg-bg-dark rounded-full p-2 items-center justify-center"
+            className="absolute top-2 right-2 bg-bg rounded-full p-2 items-center justify-center"
           >
             <Ionicons
               name={isSaved ? "heart" : "heart-outline"}
               size={20}
-              color={isSaved ? "#EF4444" : "#ffffff"}
+              color={isSaved ? "#EF4444" : "#1F2937"}
             />
           </TouchableOpacity>
         )}
@@ -162,7 +162,7 @@ const ServiceCard = ({
           >
             <Text
               numberOfLines={2}
-              className="text-sm font-manrope-semibold text-text-dark leading-5 min-h-[40px] hover:opacity-70"
+              className="text-sm font-manrope-semibold text-text leading-5 min-h-[40px] hover:opacity-70"
               style={Platform.select({
                 web: {
                   cursor: 'pointer',
@@ -182,7 +182,7 @@ const ServiceCard = ({
             </View>
           )}
 
-          <View className="flex-row items-center justify-between mt-2 pt-2 border-t border-border-dark/30">
+          <View className="flex-row items-center justify-between mt-2 pt-2 border-t border-border/30">
             <Text className="text-xs text-gray-400">
               {service?.category?.name || 'Uncategorized'}
             </Text>
@@ -211,12 +211,12 @@ const ServiceCard = ({
           <TouchableOpacity
             onPress={() => toggleSave()}
             disabled={saveLoading}
-            className="absolute top-2 right-2 bg-bg-dark rounded-full p-2 items-center justify-center"
+            className="absolute top-2 right-2 bg-bg rounded-full p-2 items-center justify-center"
           >
             <Ionicons
               name={isSaved ? "heart" : "heart-outline"}
               size={20}
-              color={isSaved ? "#EF4444" : "#ffffff"}
+              color={isSaved ? "#EF4444" : "#1F2937"}
             />
           </TouchableOpacity>
         )}

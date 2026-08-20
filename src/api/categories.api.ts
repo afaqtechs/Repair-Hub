@@ -148,13 +148,15 @@ export const categoriesApi = {
         .select(
           `
             *,
-            technician:profiles(*),
+            technician:profiles!inner(*,is_active),
             category:categories(*),
             condition:conditions(*),
             platform:platforms(*)
           `
         )
         .eq('category_id', categoryId)
+        .eq('is_available', true)
+        .eq('technician.is_active', true)
         .order('created_at', {
           ascending: false,
         });
@@ -184,12 +186,14 @@ export const categoriesApi = {
         .select(
           `
             *,
-            technician:profiles(*),
+            technician:profiles!inner(*,is_active),
             category:categories(*),
             platform:platforms(*)
           `
         )
         .eq('category_id', categoryId)
+        .eq('is_active', true)
+        .eq('technician.is_active', true)
         .order('created_at', {
           ascending: false,
         });
@@ -207,4 +211,38 @@ export const categoriesApi = {
       return [];
     }
   },
+  
+  async getRequestsByCategory(categoryId: string) {
+    try {
+      const { data, error } = await supabase
+        .from('requests')
+        .select(
+          `
+            *,
+            technician:profiles!inner(*,is_active),
+            category:categories(*),
+            platform:platforms(*)
+          `
+        )
+        .eq('category_id', categoryId)
+         .eq('is_active', true)
+        .eq('technician.is_active', true)
+        .order('created_at', {
+          ascending: false,
+        });
+
+      if (error) {
+        logApiError('getRequestsByCategory', error);
+
+        return [];
+      }
+
+      return data || [];
+    } catch (error) {
+      logApiError('getRequestsByCategory', error);
+
+      return [];
+    }
+  },
 };
+

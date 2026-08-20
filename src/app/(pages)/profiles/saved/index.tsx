@@ -50,7 +50,7 @@ const SavedItems = () => {
 
     if (error) {
         return (
-            <SafeAreaView edges={["top", "left", "right"]} className="flex-1 bg-bg-dark">
+            <SafeAreaView edges={["top", "left", "right"]} className="flex-1 bg-bg">
                 <View className="flex-1 items-center justify-center px-4">
                     <Ionicons name="alert-circle-outline" size={60} color="#EF4444" />
                     <Text className="text-red-500 text-lg font-bold mt-4">Something went wrong</Text>
@@ -59,7 +59,7 @@ const SavedItems = () => {
                         refetchParts();
                         refetchServices();
                     }}>
-                        <Text className="text-text-dark font-semibold">Try Again</Text>
+                        <Text className="text-text font-semibold">Try Again</Text>
                     </TouchableOpacity>
                 </View>
             </SafeAreaView>
@@ -74,17 +74,17 @@ const SavedItems = () => {
     return (
         <View
             style={{ flex: 1, paddingTop: insets.top, paddingBottom: insets.bottom }}
-            className="flex-1 bg-bg-dark">
+            className="flex-1 bg-bg">
             <View className="px-5 pt-2 pb-5">
                 <View className="flex-row items-center">
                     <TouchableOpacity
                         onPress={() => router.push("/(root)/(tabs)/profile")}
                         activeOpacity={0.7}
-                        className="w-10 h-10 items-center justify-center rounded-2xl bg-card-dark border border-border-dark"
+                        className="w-10 h-10 items-center justify-center rounded-2xl bg-card border border-border"
                     >
-                        <Ionicons name="arrow-back" size={20} color="#F8FAFC" />
+                        <Ionicons name="arrow-back" size={20} color="#1F2937" />
                     </TouchableOpacity>
-                    <Text className="ml-2 text-[20px] font-manrope-semibold text-text-dark">
+                    <Text className="ml-2 text-[20px] font-manrope-semibold text-text">
                         Saved Items
                     </Text>
                 </View>
@@ -113,13 +113,13 @@ const SavedItems = () => {
             {loading ? (
                 <View className="flex-1 justify-center items-center">
                     <ActivityIndicator size="large" color="#60A5FA" />
-                    <Text className="text-text-dark mt-4">Loading services...</Text>
+                    <Text className="text-text mt-4">Loading services...</Text>
                 </View>
             ) : (
                 <>
-                    <View className="px-5 pb-3 border-b border-border-dark">
+                    <View className="px-5 pb-3 border-b border-border">
                         <View className="flex-row items-center justify-between">
-                            <Text className="text-text-darkMuted text-base font-medium">
+                            <Text className="text-text-muted text-base font-medium">
                                 Found <Text className="font-bold text-primary">
                                     ({found})
                                 </Text>
@@ -129,12 +129,12 @@ const SavedItems = () => {
 
                                 <TouchableOpacity
                                     onPress={() => setListView(!listView)}
-                                    className="w-10 h-10 rounded-md border border-border-dark bg-card-dark items-center justify-center"
+                                    className="w-10 h-10 rounded-md border border-border bg-card items-center justify-center"
                                 >
                                     <Ionicons
                                         name={listView ? 'grid-outline' : 'list-outline'}
                                         size={20}
-                                        color="#94A3B8"
+                                        color="#1F2937"
                                     />
                                 </TouchableOpacity>
                             </View>

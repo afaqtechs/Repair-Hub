@@ -4,6 +4,7 @@ import { useProfileMutations, useTechnician } from "@/src/hooks";
 import { supabase } from "@/src/lib/supabase";
 import { showError, showSuccess } from "@/src/lib/toast";
 import { decodeBase64 } from "@/src/utils/decodeBase64";
+import { extractFileNameFromUrl } from "@/src/utils/extractFileNameFromUrl";
 import { formatFileSize } from "@/src/utils/formatFileSize";
 import { Ionicons } from "@expo/vector-icons";
 import * as DocumentPicker from "expo-document-picker";
@@ -36,11 +37,15 @@ const LegalDocument = () => {
 
     const { updateProfile } = useProfileMutations();
 
-    const isLicenseUploaded = !!technician?.legal_document_url;
-    const licenseStatus = technician?.verification_status || 'pending';
+    const legalDocumentUrl = technician?.legal_document_url ?? null;
+    const isLicenseUploaded = !!legalDocumentUrl;
+    const licenseStatus = technician?.verification_status ?? "pending";
+
+    console.log()
 
     const [viewerVisible, setViewerVisible] = useState(false);
     const [viewerUrl, setViewerUrl] = useState<string | null>(null);
+    const [deletingDocument, setDeletingDocument] = useState(false);
 
     const getStatusColor = (status: string) => {
         switch (status) {
@@ -123,31 +128,52 @@ const LegalDocument = () => {
             const fileExtension = selectedFile.name.includes(".")
                 ? selectedFile.name.split(".").pop()
                 : selectedFile.mimeType.split("/").pop();
+
             const filePath = `${technicianId}/legal_doc_${Date.now()}.${fileExtension}`;
 
             const { error: uploadError } = await supabase.storage
                 .from("legal_documents")
-                .upload(filePath, decodeBase64(base64), {
-                    contentType: selectedFile.mimeType,
-                    upsert: false,
-                });
+                .upload(
+                    filePath,
+                    decodeBase64(base64),
+                    {
+                        contentType: selectedFile.mimeType,
+                        upsert: false,
+                    }
+                );
 
+            // IMPORTANT: stop if upload failed
             if (uploadError) {
-                showError(uploadError.message);
+                showError(
+                    "Upload Failed",
+                    uploadError.message
+                );
+                return;
             }
 
+            // Save the storage path in profile
             await updateProfile.mutateAsync({
                 id: technicianId,
                 payload: {
                     legal_document_url: filePath,
+                    verification_status: "pending",
                 },
             });
+
             await refetchTechnician();
 
             setSelectedFile(null);
-            showSuccess("Upload Successful", "Your license has been uploaded and is pending review");
+
+            showSuccess(
+                "Upload Successful",
+                "Your license has been uploaded and is pending review"
+            );
+
         } catch (error: any) {
-            showError("Upload Failed", error.message || "Failed to upload document");
+            showError(
+                "Upload Failed",
+                error.message || "Failed to upload document"
+            );
         } finally {
             setUploading(false);
         }
@@ -175,10 +201,81 @@ const LegalDocument = () => {
         setViewerVisible(true);
     };
 
+    const handleDeleteDocument = async () => {
+        if (!technicianId) {
+            showError("Error", "User not authenticated");
+            return;
+        }
+
+        if (!technician?.legal_document_url) {
+            showError(
+                "No Document",
+                "There is no legal document to delete."
+            );
+            return;
+        }
+
+        setDeletingDocument(true);
+
+        try {
+            const fileName = extractFileNameFromUrl(
+                technician.legal_document_url
+            );
+
+            if (!fileName) {
+                showError(
+                    "Error",
+                    "Could not determine the document file."
+                );
+                return;
+            }
+
+            const filePath = `${technicianId}/${fileName}`;
+
+            // 1. Delete Storage file
+            const { error: deleteError } = await supabase.storage
+                .from("legal_documents")
+                .remove([filePath]);
+
+            if (deleteError) {
+                showError(
+                    "Delete Failed",
+                    deleteError.message
+                );
+                return;
+            }
+
+            // 2. Clear profile URL
+            await updateProfile.mutateAsync({
+                id: technicianId,
+                payload: {
+                    legal_document_url: null,
+                    verification_status: "pending",
+                },
+            });
+
+            // 3. Refresh technician data
+            await refetchTechnician();
+
+            showSuccess(
+                "Deleted",
+                "Legal document deleted successfully."
+            );
+
+        } catch (error: any) {
+            showError(
+                "Delete Failed",
+                error.message || "Failed to delete document"
+            );
+        } finally {
+            setDeletingDocument(false);
+        }
+    };
+
 
     if (loadingTechnician) {
         return (
-            <View className="flex-1 items-center justify-center bg-bg-dark">
+            <View className="flex-1 items-center justify-center bg-bg">
                 <ActivityIndicator size="large" color="#6366F1" />
             </View>
         );
@@ -187,19 +284,19 @@ const LegalDocument = () => {
     return (
         <View
             style={{ flex: 1, paddingTop: insets.top, paddingBottom: insets.bottom }}
-            className="flex-1 bg-bg-dark"
+            className="flex-1 bg-bg"
         >
             {/* Header */}
-            <View className="px-4 pt-2 pb-5 bg-bg-dark border-b border-border-dark/50">
+            <View className="px-4 pt-2 pb-5 bg-bg border-b border-border/50">
                 <View className="flex-row items-center">
                     <TouchableOpacity
                         onPress={() => router.back()}
                         activeOpacity={0.7}
-                        className="w-10 h-10 items-center justify-center rounded-2xl bg-card-dark border border-border-dark"
+                        className="w-10 h-10 items-center justify-center rounded-2xl bg-card border border-border"
                     >
-                        <Ionicons name="arrow-back" size={20} color="#F8FAFC" />
+                        <Ionicons name="arrow-back" size={20} color="#1F2937" />
                     </TouchableOpacity>
-                    <Text className="ml-2 text-[20px] font-manrope-semibold text-text-dark">
+                    <Text className="ml-2 text-[20px] font-manrope-semibold text-text">
                         Legal Documents
                     </Text>
                 </View>
@@ -220,14 +317,14 @@ const LegalDocument = () => {
                 )}
 
                 <View className="mb-6">
-                    <Text className="mb-3 px-3 text-xs font-manrope-bold uppercase tracking-wider text-text-darkMuted">
+                    <Text className="mb-3 px-3 text-xs font-manrope-bold uppercase tracking-wider text-text-muted">
                         Business License
                     </Text>
 
-                    <View className="bg-card-dark border border-border-dark rounded-lg overflow-hidden">
+                    <View className="bg-card border border-border rounded-lg overflow-hidden">
                         <View className="px-4 py-4 flex-row items-center">
                             <View className={`w-12 h-12 rounded-full items-center justify-center ${isLicenseUploaded ? 'bg-primary/10' :
-                                selectedFile ? 'bg-yellow-500/10' : 'bg-input-dark'
+                                selectedFile ? 'bg-yellow-500/10' : 'bg-input'
                                 }`}>
                                 <Ionicons
                                     name={
@@ -238,15 +335,15 @@ const LegalDocument = () => {
                                     size={24}
                                     color={
                                         isLicenseUploaded ? '#10B981' :
-                                            selectedFile ? '#F59E0B' :'#94A3B8'
+                                            selectedFile ? '#F59E0B' : '#94A3B8'
                                     }
                                 />
                             </View>
                             <View className="flex-1 ml-3">
-                                <Text className="text-base font-manrope-semibold text-text-dark">
+                                <Text className="text-base font-manrope-semibold text-text">
                                     Business License
                                 </Text>
-                                <Text className="text-xs font-manrope-light text-text-darkMuted">
+                                <Text className="text-xs font-manrope-light text-text-muted">
                                     {isLicenseUploaded ? (
                                         `Status: ${getStatusText(licenseStatus)}`
                                     ) : selectedFile ? (
@@ -283,18 +380,19 @@ const LegalDocument = () => {
                             ) : isLicenseUploaded ? (
                                 <View className="flex-row gap-2">
                                     <TouchableOpacity
-                                        className="flex-1 py-3 bg-card-dark border border-border-dark rounded-lg flex-row items-center justify-center gap-2"
+                                        className="flex-1 py-3 bg-card border border-border rounded-lg flex-row items-center justify-center gap-2"
                                         onPress={handleViewDocument}
                                     >
                                         <Ionicons name="eye-outline" size={18} color="#F8FAFC" />
-                                        <Text className="text-text-dark font-manrope-semibold text-sm">View</Text>
+                                        <Text className="text-text font-manrope-semibold text-sm">View</Text>
                                     </TouchableOpacity>
                                     <TouchableOpacity
+                                        onPress={handleDeleteDocument}
                                         className="flex-1 py-3 bg-red-500/10 border border-red-500/30 rounded-lg flex-row items-center justify-center gap-2"
 
                                     >
                                         <Ionicons name="trash-outline" size={18} color="#EF4444" />
-                                        <Text className="text-red-500 font-manrope-semibold text-sm">Delete</Text>
+                                        <Text className="text-red-500 font-manrope-semibold text-sm">{deletingDocument ? "Deleting..." : 'Delete'}</Text>
                                     </TouchableOpacity>
                                 </View>
                             ) : selectedFile ? (
@@ -319,36 +417,36 @@ const LegalDocument = () => {
                 </View>
 
                 {/* Why Upload */}
-                <View className="mb-6 px-4 py-4 bg-card-dark rounded-lg border border-border-dark">
-                    <Text className="text-sm font-manrope-semibold text-text-dark mb-2">
+                <View className="mb-6 px-4 py-4 bg-card rounded-lg border border-border">
+                    <Text className="text-sm font-manrope-semibold text-text mb-2">
                         Why upload your license?
                     </Text>
-                    <Text className="text-xs font-manrope-light text-text-darkMuted leading-5">
+                    <Text className="text-xs font-manrope-light text-text-muted leading-5">
                         Verifies your legitimacy as a technician and builds trust within our community.
                     </Text>
                 </View>
 
                 {/* Requirements */}
-                <View className="mb-6 px-4 py-4 bg-card-dark rounded-lg border border-border-dark">
-                    <Text className="text-sm font-manrope-semibold text-text-dark mb-2">
+                <View className="mb-6 px-4 py-4 bg-card rounded-lg border border-border">
+                    <Text className="text-sm font-manrope-semibold text-text mb-2">
                         Requirements
                     </Text>
                     <View className="space-y-2">
                         <View className="flex-row items-start gap-2">
                             <Ionicons name="checkmark-circle" size={16} color="#10B981" />
-                            <Text className="flex-1 text-xs font-manrope-light text-text-darkMuted">
+                            <Text className="flex-1 text-xs font-manrope-light text-text-muted">
                                 Valid business license or registration
                             </Text>
                         </View>
                         <View className="flex-row items-start gap-2">
                             <Ionicons name="checkmark-circle" size={16} color="#10B981" />
-                            <Text className="flex-1 text-xs font-manrope-light text-text-darkMuted">
+                            <Text className="flex-1 text-xs font-manrope-light text-text-muted">
                                 Accepted: PDF, JPG, PNG (max 2MB)
                             </Text>
                         </View>
                         <View className="flex-row items-start gap-2">
                             <Ionicons name="checkmark-circle" size={16} color="#10B981" />
-                            <Text className="flex-1 text-xs font-manrope-light text-text-darkMuted">
+                            <Text className="flex-1 text-xs font-manrope-light text-text-muted">
                                 Must be clearly visible and valid
                             </Text>
                         </View>
@@ -356,10 +454,10 @@ const LegalDocument = () => {
                 </View>
 
                 {/* Footer Note */}
-                <View className="px-4 py-3 bg-input-dark rounded-lg">
+                <View className="px-4 py-3 bg-input rounded-lg">
                     <View className="flex-row items-center gap-2">
                         <Ionicons name="shield-outline" size={16} color="#94A3B8" />
-                        <Text className="text-xs font-manrope-light text-text-darkMuted flex-1">
+                        <Text className="text-xs font-manrope-light text-text-muted flex-1">
                             Securely stored and reviewed within 24-48 hours
                         </Text>
                     </View>
@@ -367,7 +465,7 @@ const LegalDocument = () => {
             </ScrollView>
 
             <DocumentViewerModal
-                 visible={viewerVisible}
+                visible={viewerVisible}
                 url={viewerUrl}
                 onClose={() => {
                     setViewerVisible(false);

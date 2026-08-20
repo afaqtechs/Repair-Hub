@@ -1,5 +1,5 @@
+
 import { Ionicons } from "@expo/vector-icons";
-// import * as FileSystem from "expo-file-system";
 import React, { useState } from "react";
 import {
     ActivityIndicator,
@@ -29,24 +29,6 @@ const DocumentViewerModal = ({
 
     if (!url) return null;
 
-    // const handleDownload = async () => {
-    //     try {
-    //         const downloadResumable = FileSystem.createDownloadResumable(
-    //             url,
-    //             FileSystem.documentDirectory + 'document.pdf'
-    //         );
-    //         const result = await downloadResumable.downloadAsync();
-    //         if (result) {
-    //             Alert.alert(
-    //                 "Download Complete",
-    //                 `File saved to: ${result.uri}`
-    //             );
-    //         }
-    //     } catch (error) {
-    //         Alert.alert("Download Failed", "Could not download the document");
-    //     }
-    // };
-
     return (
         <Modal
             visible={visible}
@@ -54,26 +36,26 @@ const DocumentViewerModal = ({
             transparent={false}
             onRequestClose={onClose}
         >
-            <View className="flex-1 bg-bg-dark">
+            <View className="flex-1 bg-bg py-8">
                 {/* Header */}
-                <View className="flex-row items-center justify-between px-4 py-4 border-b border-border-dark">
-                    <Text className="text-lg font-manrope-semibold text-text-dark">
+                <View className="flex-row items-center justify-between px-4 py-4 border-b border-border">
+                    <Text className="text-lg font-manrope-semibold text-text">
                         Document Preview
                     </Text>
                     <View className="flex-row items-center gap-2">
-                        <TouchableOpacity
-                            // onPress={handleDownload}
-                            className="w-10 h-10 items-center justify-center rounded-full bg-card-dark"
+                        {/* <TouchableOpacity
+                            activeOpacity={0.7}
+                            className="w-10 h-10 items-center justify-center rounded-full bg-card"
                         >
                             <Ionicons
                                 name="download-outline"
                                 size={22}
-                                color="#F8FAFC"
+                                color="#1F2937"
                             />
-                        </TouchableOpacity>
+                        </TouchableOpacity> */}
                         <TouchableOpacity
                             onPress={onClose}
-                            className="w-10 h-10 items-center justify-center rounded-full bg-card-dark"
+                            className="w-10 h-10 items-center justify-center rounded-full bg-card"
                         >
                             <Ionicons
                                 name="close"
@@ -107,14 +89,13 @@ const DocumentViewerModal = ({
                             {error && (
                                 <View className="absolute inset-0 items-center justify-center px-6">
                                     <Ionicons name="image-outline" size={48} color="#94A3B8" />
-                                    <Text className="mt-3 text-center font-manrope-medium text-text-darkMuted">
+                                    <Text className="mt-3 text-center font-manrope-medium text-text-muted">
                                         Could not load image
                                     </Text>
                                     <TouchableOpacity
                                         onPress={() => {
                                             setError(false);
                                             setLoading(true);
-                                            // Reload image by setting state
                                             setLoading(true);
                                         }}
                                         className="mt-4 px-6 py-2 bg-primary rounded-lg"
@@ -126,34 +107,40 @@ const DocumentViewerModal = ({
                         </View>
                     ) : (
                         <WebView
-                            source={{ uri: url }}
-                            startInLoadingState={true}
+                            source={{
+                                uri: `https://docs.google.com/gview?embedded=true&url=${encodeURIComponent(url)}`
+                            }}
+                            startInLoadingState
                             renderLoading={() => (
                                 <View className="flex-1 items-center justify-center">
-                                    <ActivityIndicator size="large" color="#6366F1" />
-                                    <Text className="mt-3 text-sm font-manrope-medium text-text-darkMuted">
+                                    <ActivityIndicator
+                                        size="large"
+                                        color="#6366F1"
+                                    />
+
+                                    <Text className="mt-3 text-sm font-manrope-medium text-text-muted">
                                         Loading document...
                                     </Text>
                                 </View>
                             )}
-                            onError={() => {
-                                setError(true);
-                            }}
                             style={{ flex: 1 }}
-                            onHttpError={(event) => {
-                                console.log('HTTP Error:', event.nativeEvent);
+                            onError={(event) => {
+                                console.log(
+                                    "WebView error:",
+                                    event.nativeEvent
+                                );
                                 setError(true);
                             }}
                         />
                     )}
 
                     {error && !isImage && (
-                        <View className="absolute inset-0 items-center justify-center px-6 bg-bg-dark">
+                        <View className="absolute inset-0 items-center justify-center px-6 bg-bg">
                             <Ionicons name="document-text-outline" size={48} color="#94A3B8" />
-                            <Text className="mt-3 text-center font-manrope-medium text-text-darkMuted">
+                            <Text className="mt-3 text-center font-manrope-medium text-text-muted">
                                 Could not load document
                             </Text>
-                            <Text className="mt-1 text-xs font-manrope-light text-text-darkMuted text-center">
+                            <Text className="mt-1 text-xs font-manrope-light text-text-muted text-center">
                                 The document may be private or unavailable
                             </Text>
                             <TouchableOpacity

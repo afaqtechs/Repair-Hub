@@ -171,21 +171,21 @@ const Parts = () => {
     };
 
     return (
-        <View style={{ flex: 1, paddingTop: insets.top, paddingBottom: insets.bottom }} className="flex-1 bg-bg-dark">
+        <View style={{ flex: 1, paddingTop: insets.top, paddingBottom: insets.bottom }} className="flex-1 bg-bg">
             <View className="px-5 py-3">
                 <View className="flex-row items-center gap-3">
                     <TouchableOpacity
                         onPress={() => router.push("/(root)/(tabs)")}
                         activeOpacity={0.7}
-                        className="w-11 h-11 items-center justify-center rounded-2xl bg-card-dark border border-border-dark"
+                        className="w-11 h-11 items-center justify-center rounded-2xl bg-card border border-border"
                     >
                         <Ionicons
                             name="arrow-back"
                             size={20}
-                            color="#94A3B8"
+                            color="#1F2937"
                         />
                     </TouchableOpacity>
-                    <View className="flex-1 h-12 rounded-md flex-row items-center px-4 border bg-input-dark/30 border-border-dark">
+                    <View className="flex-1 h-12 rounded-md flex-row items-center px-4 border bg-input/30 border-border">
                         <Ionicons
                             name="search"
                             size={20}
@@ -199,7 +199,7 @@ const Parts = () => {
                             placeholderTextColor="#94A3B8"
                             className="flex-1 ml-2 "
                             style={{
-                                color: "#F8FAFC",
+                                color: "#1F2937",
                                 fontSize: 16,
                             }}
                             onChangeText={setSearchQuery}
@@ -213,17 +213,17 @@ const Parts = () => {
                                 <Ionicons
                                     name="close-circle"
                                     size={20}
-                                    color="#94A3B8"
+                                    color="#1F2937"
                                 />
                             </TouchableOpacity>
                         )}
                     </View>
                     <View className="relative">
-                        <TouchableOpacity onPress={() => setShowFilters(true)} className="w-12 h-12 rounded-md flex-row items-center justify-center bg-card-dark border border-border-dark">
+                        <TouchableOpacity onPress={() => setShowFilters(true)} className="w-12 h-12 rounded-md flex-row items-center justify-center bg-card border border-border">
                             <Ionicons
                                 name="funnel-outline"
                                 size={24}
-                                color='#94A3B8'
+                                color='#1F2937'
                             />
                         </TouchableOpacity >
                         {activeFilterCount > 0 && (
@@ -234,7 +234,7 @@ const Parts = () => {
                     </View>
                 </View>
             </View>
-            <View className="px-5 pb-3 border-b border-border-dark">
+            <View className="px-5 pb-3 border-b border-border">
 
                 {filterLabels.length > 0 && (
                     <View className="mb-3 flex-row items-center justify-between gap-2">
@@ -267,7 +267,7 @@ const Parts = () => {
                     </View>
                 )}
                 <View className="flex-row items-center justify-between">
-                    <Text className="text-text-darkMuted text-base font-medium">
+                    <Text className="text-text-muted text-base font-medium">
                         Found{' '}
                         <Text className="font-bold text-primary">({totalCount})</Text>
                     </Text>
@@ -275,23 +275,23 @@ const Parts = () => {
                     <View className="flex-row items-center gap-2">
                         <TouchableOpacity
                             onPress={() => setSortModalVisible(true)}
-                            className="w-10 h-10 rounded-md border border-border-dark bg-card-dark items-center justify-center"
+                            className="w-10 h-10 rounded-md border border-border bg-card items-center justify-center"
                         >
                             <Ionicons
                                 name="swap-vertical-outline"
                                 size={20}
-                                color='#94A3B8'
+                                color='#1F2937'
                             />
                         </TouchableOpacity>
 
                         <TouchableOpacity
                             onPress={() => setListView(!listView)}
-                            className="w-10 h-10 rounded-md border border-border-dark bg-card-dark items-center justify-center"
+                            className="w-10 h-10 rounded-md border border-border bg-card items-center justify-center"
                         >
                             <Ionicons
                                 name={listView ? 'grid-outline' : 'list-outline'}
                                 size={20}
-                                color='#94A3B8'
+                                color='#1F2937'
                             />
                         </TouchableOpacity>
                     </View>
@@ -305,7 +305,7 @@ const Parts = () => {
                             size="large"
                             color="#60A5FA"
                         />
-                        <Text className="text-text-dark mt-4">
+                        <Text className="text-text mt-4">
                             Loading parts...
                         </Text>
                     </View>
@@ -333,7 +333,7 @@ const Parts = () => {
                                 isFetchingNextPage ? (
                                     <View className="flex-row justify-center items-center py-4">
                                         <ActivityIndicator />
-                                        <Text className="text-text-dark ml-2">
+                                        <Text className="text-text ml-2">
                                             Loading more parts...
                                         </Text>
                                     </View>
@@ -356,10 +356,10 @@ const Parts = () => {
                             size={60}
                             color="#64748B"
                         />
-                        <Text className="text-text-dark text-lg font-semibold mt-4">
+                        <Text className="text-text text-lg font-semibold mt-4">
                             No parts found
                         </Text>
-                        <Text className="text-text-darkMuted text-center mt-2">
+                        <Text className="text-text-muted text-center mt-2">
                             Try adjusting your search or filters
                         </Text>
                     </View>

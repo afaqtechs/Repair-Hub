@@ -68,18 +68,18 @@ const UpdateGeneralInfo = ({ setEditingGeneralInfo, technician }: Props) => {
     }: any) => {
 
         return (
-            <View className={`mt-2 ${editable ? "bg-input-dark/30" : "bg-card-dark"} border border-border-dark rounded-xl flex-row items-center px-4 flex-1`}>
+            <View className={`mt-2 ${editable ? "bg-input" : "bg-card"} border border-border/50 rounded-xl flex-row items-center px-4 flex-1`}>
                 <Ionicons
                     name={icon}
                     size={20}
-                    color="#94A3B8"
+                    color="#1F2937"
                 />
 
                 <TextInput
                     value={value ?? ""}
                     onChangeText={onChangeText}
                     keyboardType={keyboardType}
-                    className="flex-1 py-3.5 ml-2 text-text-dark"
+                    className="flex-1 py-3.5 ml-2 text-text"
                     placeholder={placeholder}
                     placeholderTextColor="#94A3B8"
                     editable={editable}
@@ -93,7 +93,7 @@ const UpdateGeneralInfo = ({ setEditingGeneralInfo, technician }: Props) => {
     return (
         <View className="mb-6">
             <View className="flex-row items-center justify-between mb-1 px-3">
-                <Text className="text-xs font-manrope-bold uppercase tracking-wider text-text-darkMuted">
+                <Text className="text-xs font-manrope-bold uppercase tracking-wider text-text-muted">
                     Update General Info
                 </Text>
                 <TouchableOpacity
@@ -105,7 +105,7 @@ const UpdateGeneralInfo = ({ setEditingGeneralInfo, technician }: Props) => {
                     <Text className="text-xs font-manrope-medium text-primary">Back</Text>
                 </TouchableOpacity>
             </View>
-            <View className="bg-card-dark px-5 py-4 flex-col gap-3 rounded-lg">
+            <View className="bg-card px-5 py-4 flex-col gap-3 rounded-lg">
                 <Input
                     icon="person-outline"
                     value={form.first_name}

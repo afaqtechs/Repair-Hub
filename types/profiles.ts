@@ -68,6 +68,7 @@ export interface ProfileForm {
   latitude: string | null;
   longitude: string | null;
 
+  verification_status?:string | null;
   legal_document_url: string | null;
   profile_image_url: string | null;
 }
@@ -91,6 +92,7 @@ export type ProfileDto = Partial<{
   latitude: number | null;
   longitude: number | null;
 
+  verification_status?:string | null;
   legal_document_url: string | null;
   profile_image_url: string | null;
 }>;

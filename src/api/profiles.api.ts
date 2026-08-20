@@ -26,6 +26,7 @@ export const profileApi = {
         .from('profiles')
         .select('*')
         .eq('role', 'technician')
+        .eq('is_active', true)
         .order('first_name', {
           ascending: true,
         });

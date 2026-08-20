@@ -1,13 +1,5 @@
+import { NotificationData } from "@/types/notifications";
 import { Router } from "expo-router";
-
-export type NotificationData = {
-  type?: string;
-  request_id?: string;
-  part_id?: string;
-  service_id?: string;
-  conversation_id?: string;
-  [key: string]: unknown;
-};
 
 export function handleNotification(
   router: Router,
@@ -21,12 +13,6 @@ export function handleNotification(
 
     return;
   }
-
-  console.log(
-    "[NotificationHandler] Handling:",
-    data.type,
-    data
-  );
 
   switch (data.type) {
     case "new_request":

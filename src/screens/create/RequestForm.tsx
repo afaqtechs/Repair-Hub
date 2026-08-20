@@ -71,8 +71,8 @@ const RequestForm = ({ isEdit = false, request, onCancel }: RequestFormProps) =>
 
     if (!technicianId) {
         return (
-            <View className="flex-1 items-center justify-center bg-bg-dark">
-                <Text className="text-text-darkSecondary">User not found</Text>
+            <View className="flex-1 items-center justify-center bg-bg">
+                <Text className="text-textSecondary">User not found</Text>
             </View>
         );
     }
@@ -232,11 +232,11 @@ const RequestForm = ({ isEdit = false, request, onCancel }: RequestFormProps) =>
                         <TouchableOpacity
                             onPress={onCancel}
                             activeOpacity={0.7}
-                            className="w-10 h-10 items-center justify-center rounded-2xl bg-card-dark border border-border-dark"
+                            className="w-10 h-10 items-center justify-center rounded-2xl bg-card border border-border"
                         >
                             <Ionicons name="arrow-back" size={20} color='#F8FAFC' />
                         </TouchableOpacity>
-                        <Text className="ml-2 text-[20px] font-manrope-semibold text-text-dark">
+                        <Text className="ml-2 text-[20px] font-manrope-semibold text-text">
                             Editing {request?.title}
                         </Text>
                     </View>
@@ -250,7 +250,7 @@ const RequestForm = ({ isEdit = false, request, onCancel }: RequestFormProps) =>
                 {/* Photos Section */}
                 <View className="flex-col gap-1 px-3">
                     <View className="flex-row justify-between">
-                        <Text className={`text-text-dark font-manrope-semibold`}>
+                        <Text className={`text-text font-manrope-semibold`}>
                             Photos{" "}
                             <Text className={`text-gray-500 font-manrope-light`}>
                                 (up to 3)
@@ -272,7 +272,7 @@ const RequestForm = ({ isEdit = false, request, onCancel }: RequestFormProps) =>
                             <TouchableOpacity
                                 onPress={handlePickImages}
                                 disabled={isUploading}
-                                className={`w-24 h-24 mr-1 rounded-lg bg-card-dark items-center justify-center border-2 border-dashed border-border-dark`}
+                                className={`w-24 h-24 mr-1 rounded-lg bg-card items-center justify-center border-2 border-dashed border-border`}
                             >
                                 <Ionicons name="add" size={22} color='#34D399' />
                                 <Text className={`text-success text-xs mt-1`}>Add</Text>
@@ -321,9 +321,9 @@ const RequestForm = ({ isEdit = false, request, onCancel }: RequestFormProps) =>
                 </View>
 
                 {/* Title */}
-                <View className="mt-6 p-5 bg-card-dark rounded-lg">
+                <View className="mt-6 p-5 bg-card rounded-lg">
                     <View className="gap-2">
-                        <Text className="text-text-dark text-sm font-manrope-semibold">
+                        <Text className="text-text text-sm font-manrope-semibold">
                             Title <Text className="text-red-500">*</Text>
                         </Text>
                         <TextInput
@@ -332,16 +332,16 @@ const RequestForm = ({ isEdit = false, request, onCancel }: RequestFormProps) =>
                             placeholderTextColor='#94A3B8'
                             value={form.title}
                             onChangeText={(text) => setField("title", text)}
-                            className="h-14 px-4 rounded-lg bg-bg-dark/50 border border-border-dark/50 text-text-dark font-manrope"
+                            className="h-14 px-4 rounded-lg bg-bg/50 border border-border/50 text-text font-manrope"
                         />
                     </View>
                     {errors.title && <Text className="text-red-500 text-xs mt-1">{errors.title}</Text>}
                 </View>
 
                 {/* Platform & Category */}
-                <View className="mt-6 p-5 gap-4 bg-card-dark rounded-lg">
+                <View className="mt-6 p-5 gap-4 bg-card rounded-lg">
                     <View className="gap-2">
-                        <Text className="text-text-dark text-sm font-manrope-semibold">
+                        <Text className="text-text text-sm font-manrope-semibold">
                             Platform <Text className="text-red-500">*</Text>
                         </Text>
                         <AppSelectModal
@@ -371,7 +371,7 @@ const RequestForm = ({ isEdit = false, request, onCancel }: RequestFormProps) =>
                     {errors.platform_id && <Text className="text-red-500 text-xs mt-1">{errors.platform_id}</Text>}
 
                     <View className="gap-2">
-                        <Text className="text-text-dark text-sm font-manrope-semibold">
+                        <Text className="text-text text-sm font-manrope-semibold">
                             Category <Text className="text-red-500">*</Text>
                         </Text>
                         <AppSelectModal
@@ -401,8 +401,8 @@ const RequestForm = ({ isEdit = false, request, onCancel }: RequestFormProps) =>
                 </View>
 
                 {/* Priority */}
-                <View className="mt-6 p-5 gap-4 bg-card-dark rounded-lg">
-                    <Text className="text-text-dark text-sm font-manrope-semibold">
+                <View className="mt-6 p-5 gap-4 bg-card rounded-lg">
+                    <Text className="text-text text-sm font-manrope-semibold">
                         Priority
                     </Text>
                     <View className="flex-row items-center gap-5">
@@ -419,7 +419,7 @@ const RequestForm = ({ isEdit = false, request, onCancel }: RequestFormProps) =>
                                         size={20}
                                         color={selected ? '#10B981' : '#CBD5E1'}
                                     />
-                                    <Text className={selected ? 'text-emerald-500 font-manrope-semibold' : 'text-text-dark font-manrope'}>
+                                    <Text className={selected ? 'text-emerald-500 font-manrope-semibold' : 'text-text font-manrope'}>
                                         {option.label}
                                     </Text>
                                 </TouchableOpacity>
@@ -430,21 +430,21 @@ const RequestForm = ({ isEdit = false, request, onCancel }: RequestFormProps) =>
 
                 {/* Description */}
                 <View className="mt-6 gap-2 px-3">
-                    <Text className="text-text-dark text-sm font-manrope-semibold">
+                    <Text className="text-text text-sm font-manrope-semibold">
                         Description
                     </Text>
-                    <View className="rounded-lg overflow-hidden border :border-border-dark/50">
+                    <View className="rounded-lg overflow-hidden border border-border/50">
                         <RichToolbar
                             editor={descriptionRef}
                             actions={["heading1", "bold", "italic", "underline", "unorderedList", "orderedList", "link", "removeFormat", "undo", "redo"]}
-                            style={{ backgroundColor: "#172033" }}
-                            iconTint="#F8FAFC"
+                            style={{ backgroundColor: "#F8FAFC" }}
+                            iconTint="#1F2937"
                         />
                         <RichEditor
                             ref={descriptionRef}
                             editorStyle={{
-                                backgroundColor:"#0B1120/50",
-                                color: "#F8FAFC",
+                                backgroundColor:"#fff",
+                                color: "#1F2937",
                                 placeholderColor:"#94A3B8",
                                 contentCSSText: `font-family: Manrope; font-size: 16px; padding: 12px; min-height: 120px;`,
                             }}

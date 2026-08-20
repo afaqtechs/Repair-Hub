@@ -29,16 +29,16 @@ const ListCategory = ({
         >
             {/* Category square */}
             <View
-                className="w-[94px] h-[94px] rounded-[14px] items-center justify-center bg-bg-dark/50 border border-border-dark overflow-hidden"
+                className="w-[94px] h-[94px] rounded-xl items-center justify-center bg-bg/50 border border-border overflow-hidden p-2"
             >
                 <Image
-                    source={require("@/assets/ui/background/category_image.jpg")}
+                    source={category?.icon_url ? { uri: category?.icon_url } : require("@/assets/ui/background/category_image.jpg")}
                     resizeMode="cover"
-                    className="w-full h-full"
+                    className="w-full h-full rounded-xl"
                 />
 
                 {isOverflow && (
-                    <View className="absolute inset-0 bg-black/45 rounded-[14px] items-center justify-center">
+                    <View className="absolute inset-0 bg-black/45 rounded-xl items-center justify-center">
                         <Text className="text-white text-base font-manrope-bold">
                             +{total - 11}
                         </Text>
@@ -49,7 +49,7 @@ const ListCategory = ({
             {/* Category name */}
             <Text
                 numberOfLines={2}
-                className="text-[11px] leading-[14px] font-manrope-medium text-center w-[72px] mt-[6px] text-text-darkSecondary"
+                className="text-[11px] leading-[14px] font-manrope-medium text-center w-[72px] mt-[6px] text-text"
             >
                 {category.name}
             </Text>

@@ -392,16 +392,16 @@ const SearchScreen = () => {
           <TouchableOpacity
             onPress={() => router.back()}
             activeOpacity={0.7}
-            className="w-11 h-11 items-center justify-center rounded-2xl bg-card-dark border border-border-dark"
+            className="w-11 h-11 items-center justify-center rounded-2xl bg-card border border-border"
           >
             <Ionicons
               name="arrow-back"
               size={24}
-              color="#94A3B8"
+              color="#1F2937"
             />
           </TouchableOpacity>
 
-          <View className="flex-1 h-12 rounded-md flex-row items-center px-4 border bg-input-dark/30 border-border-dark">
+          <View className="flex-1 h-12 rounded-md flex-row items-center px-4 border bg-input/30 border-border">
             <Ionicons
               name="search"
               size={20}
@@ -415,7 +415,7 @@ const SearchScreen = () => {
               placeholderTextColor="#94A3B8"
               className="flex-1 ml-2 "
               style={{
-                color: "#F8FAFC",
+                color: "#1F2937",
                 fontSize: 16,
               }}
               onChangeText={setSearchQuery}
@@ -430,7 +430,7 @@ const SearchScreen = () => {
                 <Ionicons
                   name="close-circle"
                   size={20}
-                  color="#94A3B8"
+                  color="#1F2937"
                 />
               </TouchableOpacity>
             )}
@@ -438,12 +438,12 @@ const SearchScreen = () => {
           <View className="relative">
             <TouchableOpacity
               onPress={() => setShowFilters(true)}
-              className="w-12 h-12 rounded-md flex-row items-center justify-center bg-card-dark border border-border-dark"
+              className="w-12 h-12 rounded-md flex-row items-center justify-center bg-card border border-border"
             >
               <Ionicons
                 name="funnel-outline"
                 size={24}
-                color="#94A3B8"
+                color="#1F2937"
               />
             </TouchableOpacity>
             {activeFilterCount > 0 && (
@@ -458,7 +458,7 @@ const SearchScreen = () => {
       </View>
 
       {/* Segment Controls & Sorting Bar */}
-      <View className="px-5 pb-3 flex-col gap-3 border-b border-border-dark">
+      <View className="px-5 pb-3 flex-col gap-3 border-b border-border">
 
         {filterLabels.length > 0 ? (
 
@@ -491,20 +491,20 @@ const SearchScreen = () => {
             </TouchableOpacity>
           </View>
         ) : (
-          <View className="flex-row justify-between items-center gap-3">
+          <View className="flex-row justify-between items-center gap-3 bg-card px-2 py-0.5 rounded-xl">
             {types.map((type) => (
               <TouchableOpacity
                 key={type.value}
                 onPress={() => setSelectedType(type.value)}
                 className={`px-3 w-[31%] justify-center py-2 rounded-md flex-row items-center ${selectedType === type.value
                   ? 'border border-primary bg-primary'
-                  : 'border border-border-dark bg-card-dark'
+                  : ''
                   }`}
               >
                 <Text
                   className={`text-sm mr-1 ${selectedType === type.value
                     ? 'text-white font-medium'
-                    : 'text-text-dark'
+                    : 'text-text'
                     }`}
                 >
                   {type.label}
@@ -515,32 +515,31 @@ const SearchScreen = () => {
         )}
 
         <View className="flex-row items-center justify-between">
-          <Text className="text-text-darkMuted text-base font-medium">
-            Found {hasSearched && (
-              <Text className="font-bold text-primary">({totalCount})</Text>
-            )}
+          <Text className="text-text text-base font-medium">
+            Found
+            <Text className="font-bold text-primary">({hasSearched ? totalCount : 0})</Text>
           </Text>
 
           <View className="flex-row items-center gap-2">
             <TouchableOpacity
               onPress={() => setSortModalVisible(true)}
-              className="w-10 h-10 rounded-md border border-border-dark bg-card-dark items-center justify-center"
+              className="w-10 h-10 rounded-md border border-border bg-card items-center justify-center"
             >
               <Ionicons
                 name="swap-vertical-outline"
                 size={20}
-                color="#94A3B8"
+                color="#1F2937"
               />
             </TouchableOpacity>
 
             <TouchableOpacity
               onPress={() => setListView(!listView)}
-              className="w-10 h-10 rounded-md border border-border-dark bg-card-dark items-center justify-center"
+              className="w-10 h-10 rounded-md border border-border bg-card items-center justify-center"
             >
               <Ionicons
                 name={listView ? 'grid-outline' : 'list-outline'}
                 size={20}
-                color="#94A3B8"
+                color="#1F2937"
               />
             </TouchableOpacity>
           </View>
@@ -548,14 +547,14 @@ const SearchScreen = () => {
       </View>
 
       {/* Content Body */}
-      <View className="flex-1 pt-4">
+      <View className="flex-1">
         <View className="flex-1 pt-4">
           {showRecentSearches ? (
             recentSearches.length > 0 ? (
               /* Recent Searches */
               <View className="px-5 flex-col">
                 <View className="flex-row justify-between items-center mb-4">
-                  <Text className="text-text-dark text-lg font-semibold">
+                  <Text className="text-text text-lg font-semibold">
                     Recent Searches
                   </Text>
 
@@ -602,7 +601,7 @@ const SearchScreen = () => {
                     color="#60A5FA"
                   />
 
-                  <Text className="-text-dark mt-4">
+                  <Text className="-text mt-4">
                     Loading...
                   </Text>
                 </View>
@@ -633,7 +632,7 @@ const SearchScreen = () => {
                             color="#60A5FA"
                           />
 
-                          <Text className="text-text-dark ml-2">
+                          <Text className="text-text ml-2">
                             Loading more {selectedType}...
                           </Text>
                         </View>
@@ -653,7 +652,6 @@ const SearchScreen = () => {
           )}
         </View>
       </View>
-
       {/* Modals */}
       <ConfirmModal
         visible={showClearModal}
@@ -667,7 +665,7 @@ const SearchScreen = () => {
           setShowClearModal(false);
         }}
       />
-      
+
       <SortModal
         sortModalVisible={sortModalVisible}
         setSortModalVisible={setSortModalVisible}

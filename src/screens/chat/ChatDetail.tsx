@@ -22,7 +22,7 @@ export default function ChatDetail({ conversationId, onBack }: { conversationId:
 
     if (!conversationId || !user?.id) {
         return (
-            <View className="flex-1 items-center justify-center bg-bg-dark">
+            <View className="flex-1 items-center justify-center bg-bg">
                 <ActivityIndicator />
             </View>
         );
@@ -59,6 +59,7 @@ export default function ChatDetail({ conversationId, onBack }: { conversationId:
             otherUserLastReadAt={
                 conversation?.other_user_last_read_at ?? null
             }
+            otherUserId={otherUserId}
             isOnline={isOnline}
             onBack={onBack}
         />

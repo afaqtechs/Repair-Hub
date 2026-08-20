@@ -25,7 +25,7 @@ const HTMLRenderer = ({
             }}
             tagsStyles={{
                 body: {
-                    color: "#F8FAFC",
+                    color: "#1F2937",
                     fontFamily: "Manrope",
                     fontSize,
                     lineHeight,
