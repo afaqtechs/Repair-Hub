@@ -7,9 +7,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:220785429098:android:8d0a3e95bfd8707e605813",
+        "mobilesdk_app_id": "1:220785429098:android:f0520cba9befa3dd605813",
         "android_client_info": {
-          "package_name": "com.anonymous.repairhub"
+          "package_name": "com.repairhub.app"
         }
       },
       "oauth_client": [],

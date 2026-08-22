@@ -9,6 +9,7 @@ import React, {
 
 import { supabase } from "@/src/lib/supabase";
 import { PresenceUser } from "@/types/chat";
+import { usePresenceStore } from "@/store/presenceStore";
 
 interface PresenceContextValue {
   onlineUsers: PresenceUser[];
@@ -58,12 +59,16 @@ export const PresenceProvider = ({
           ([key, entries]) =>
             entries.map((entry: any) => ({
               user_id: key,
-              // role: entry.role,
               online_at: entry.online_at,
             }))
         );
 
+      // Existing context state
       setOnlineUsers(users);
+
+      usePresenceStore
+        .getState()
+        .setOnlineUsers(users.map((user) => user.user_id));
     };
 
     channel.on(

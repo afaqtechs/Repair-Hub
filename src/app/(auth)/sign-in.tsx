@@ -81,15 +81,10 @@ export default function SignInScreen() {
 
                                 <Image
                                     source={require("@/assets/ui/logo.png")}
-                                    style={{
-                                        width: 40,
-                                        height: 40,
-                                        tintColor: "purple",
-                                    }}
                                     resizeMode="contain"
+                                    className="w-[40px] h-[40px] rounded-xl overflow-hidden"
                                 />
                             </View>
-
 
                             <Text className=" text-text  text-2xl  font-bold  ml-3">
                                 Repair
@@ -168,32 +163,6 @@ export default function SignInScreen() {
                             />
                         </View>
 
-                        <View className="flex-row justify-between items-center mt-4 mb-6">
-
-                            <View className="flex-row items-center">
-                                <View className=" w-5 h-5 rounded bg-violet-600 items-center justify-center mr-2 ">
-
-                                    <Ionicons
-                                        name="checkmark"
-                                        size={14}
-                                        color="white"
-                                    />
-                                </View>
-
-                                <Text className="text-gray-500">
-                                    Remember me
-                                </Text>
-                            </View>
-
-
-                            <TouchableOpacity>
-                                <Text className="text-violet-600 font-semibold">
-                                    Forgot password?
-                                </Text>
-                            </TouchableOpacity>
-
-                        </View>
-
                         {error && (
 
                             <Text className=" text-red-500 mb-4">
@@ -205,7 +174,7 @@ export default function SignInScreen() {
                         <TouchableOpacity
                             onPress={onSignInPress}
                             disabled={loading}
-                            className="bg-violet-700 rounded-xl py-4 items-center mb-6"
+                            className="bg-violet-700 rounded-xl py-4 items-center my-6"
                         >
 
                             {
@@ -226,52 +195,10 @@ export default function SignInScreen() {
 
                                     </View>
                             }
-
                         </TouchableOpacity>
-
-                        <View className=" flex-row items-center mb-5">
-
-                            <View className="flex-1 h-px bg-card" />
-
-                            <Text className="mx-3 text-gray-400">
-                                continue with
-                            </Text>
-
-                            <View className="flex-1 h-px bg-card" />
-                        </View>
-
-                        <TouchableOpacity
-                            className="bg-card border border-border rounded-xl py-3 flex-1 mx-1 items-center"
-
-                        >
-                            <Text className="text-text font-semibold">
-                                Google
-                            </Text>
-                        </TouchableOpacity>
-
-                        <View className=" bg-card rounded-2xl p-4 mt-6">
-                            <View className="flex-row items-center">
-
-                                <Image
-                                    source={require("@/assets/ui/security-badge.png")}
-                                    className="w-7 h-7 mr-2"
-                                    resizeMode="contain"
-                                />
-
-                                <Text className=" text-violet-700 font-bold">
-                                    Safe & Secure
-                                </Text>
-
-                            </View>
-                            <Text className=" text-gray-500 mt-1">
-                                Your information is protected and your account stays secure.
-                            </Text>
-                        </View>
                     </View>
 
-                    {/* Footer */}
-
-                    <View className=" flex-row justify-center gap-3 mt-8 mb-8">
+                    <View className=" flex-row justify-center gap-3">
                         <Text className="text-gray-500">
                             Don&apos;t have an account?
                         </Text>
@@ -283,6 +210,7 @@ export default function SignInScreen() {
 
                         </Link>
                     </View>
+
                 </View>
             </ScrollView>
         </View>

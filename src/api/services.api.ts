@@ -319,6 +319,7 @@ export const serviceApi = {
         )
         .eq('technician_id', technicianId)
         .eq('technician.is_active', true)
+        .eq('is_approved', true)
         .order('created_at', {
           ascending: false,
         });

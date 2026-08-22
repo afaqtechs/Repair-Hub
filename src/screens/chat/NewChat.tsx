@@ -16,9 +16,9 @@ import { useAuth } from "@/src/context/AuthContext";
 import { useTechnicians } from "@/src/hooks";
 import { useConversations } from "@/src/hooks/chat/useConversations";
 import { showError } from "@/src/lib/toast";
-import { isUserOnline } from "@/src/utils/presence";
 import { Technician } from "@/types/profiles";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { usePresenceStatus } from "@/src/context/PresenceContext";
 
 interface NewChatProps {
     onBack: () => void;
@@ -31,6 +31,9 @@ const NewChat = ({
 }: NewChatProps) => {
     const insets = useSafeAreaInsets();
     const { user } = useAuth();
+
+    const { isUserOnline } = usePresenceStatus();
+
 
     const [search, setSearch] = useState("");
     const [
@@ -52,7 +55,7 @@ const NewChat = ({
             (tech) => tech?.id !== user?.id
         );
     }, [technicians, user?.id]);
-    
+
     const filteredTechnicians = useMemo(() => {
         const query = search.trim().toLowerCase();
 
@@ -241,12 +244,9 @@ const NewChat = ({
                                     </View>
                                 )}
 
-                                {isUserOnline(
-                                    item.is_available,
-                                    item.last_seen_at
-                                ) && (
-                                        <View className="absolute bottom-0 right-0 h-4 w-4 rounded-full border-b bg-green-500 border-border" />
-                                    )}
+                                {isUserOnline(item.id) && (
+                                    <View className="absolute bottom-0 right-0 h-4 w-4 rounded-full border-b bg-green-500 border-border" />
+                                )}
                             </View>
 
                             {/* Technician information */}

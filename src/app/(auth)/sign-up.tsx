@@ -58,7 +58,7 @@ export default function SignUpScreen() {
   };
 
   return (
-    <View style={{ flex: 1, paddingTop: insets.top ,paddingBottom: insets.bottom}} className="flex-1 bg-bg">
+    <View style={{ flex: 1, paddingTop: insets.top, paddingBottom: insets.bottom }} className="flex-1 bg-bg">
       <ScrollView
         contentContainerStyle={{
           flexGrow: 1
@@ -75,11 +75,7 @@ export default function SignUpScreen() {
 
                 <Image
                   source={require("@/assets/ui/logo.png")}
-                  style={{
-                    width: 40,
-                    height: 40,
-                    tintColor: "purple",
-                  }}
+                  className="w-[40px] h-[40px] rounded-xl overflow-hidden"
                   resizeMode="contain"
                 />
               </View>
@@ -101,7 +97,6 @@ export default function SignUpScreen() {
                 <Text className=" text-text  text-2xl  font-bold  mt-5 ">
                   Create your account
                 </Text>
-
 
                 <Text className=" text-gray-500 mt-2 text-base ">
                   Join Repair Hub and grow your repair business today.
@@ -230,32 +225,6 @@ export default function SignUpScreen() {
               Password must be at least 8 characters
 
             </Text>
-
-
-            <View className=" flex-row items-center mb-6 ">
-
-              <View className=" w-5 h-5 rounded bg-violet-600 items-center justify-center mr-2 ">
-                <Ionicons
-                  name="checkmark"
-                  size={14}
-                  color="white"
-                />
-              </View>
-
-              <Text className=" text-gray-500">
-                I agree to the
-                <Text className="mx-1 text-violet-600">
-                  Terms of Service
-                </Text>
-
-                and
-
-                <Text className="mx-1 text-violet-600">
-                  Privacy Policy
-                </Text>
-
-              </Text>
-            </View>
 
             {error &&
               <Text className="text-red-500 mb-4">

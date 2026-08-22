@@ -6,6 +6,7 @@ import { useRef, useState } from "react";
 import { KeyboardAvoidingView, Platform, ScrollView, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { RichEditor, RichToolbar } from "react-native-pell-rich-editor";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { SubmitFeedback as submitFeedbackApi } from "@/src/api";
 
 const SubmitFeedback = () => {
     const router = useRouter();
@@ -19,32 +20,60 @@ const SubmitFeedback = () => {
     const MAX_CHARS = 1000;
 
     const handleContentChange = (html: string) => {
-        const text = html.replace(/<[^>]*>/g, '').trim();
+        const text = html.trim();
         setCharacterCount(text.length);
     };
 
     const handleSubmit = async () => {
         if (!subject.trim()) {
-            showError("Validation Error", "Please enter a subject for your feedback.");
+            showError(
+                "Validation Error",
+                "Please enter a subject for your feedback."
+            );
             return;
         }
 
-        descriptionRef.current?.getContentHtml().then((html) => {
-            const text = html?.replace(/<[^>]*>/g, '').trim() || '';
-            if (!text) {
-                showError("Validation Error", "Please describe your feedback in the comment section.");
+        const html = await descriptionRef.current?.getContentHtml();
+        const text = html?.replace(/<[^>]*>/g, "").trim() || "";
+
+        if (!text) {
+            showError(
+                "Validation Error",
+                "Please describe your feedback in the comment section."
+            );
+            return;
+        }
+
+        setIsSubmitting(true);
+
+        try {
+            const result = await submitFeedbackApi({
+                subject: subject.trim(),
+                message: text,
+            });
+
+            if (!result) {
+                showError(
+                    "Submission Failed",
+                    "Could not submit your feedback. Please try again."
+                );
                 return;
             }
 
-            setIsSubmitting(true);
+            showSuccess(
+                "Feedback Submitted",
+                "Thank you for your valuable feedback!"
+            );
 
-            // Simulate API call
-            setTimeout(() => {
-                setIsSubmitting(false);
-                showSuccess("Feedback Submitted", "Thank you for your valuable feedback!");
-                router.back();
-            }, 1500);
-        });
+            router.back();
+        } catch {
+            showError(
+                "Submission Failed",
+                "Something went wrong while submitting your feedback."
+            );
+        } finally {
+            setIsSubmitting(false);
+        }
     };
 
     return (
@@ -178,7 +207,7 @@ const SubmitFeedback = () => {
                                 ref={descriptionRef}
                                 onChange={handleContentChange}
                                 editorStyle={{
-                                    backgroundColor:"#fff",
+                                    backgroundColor: "#fff",
                                     color: "#25213A",
                                     placeholderColor: "#25213A",
                                     contentCSSText: `font-family: Manrope; font-size: 16px; padding: 12px; min-height: 150px;`,

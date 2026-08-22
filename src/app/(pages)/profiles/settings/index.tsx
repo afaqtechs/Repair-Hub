@@ -19,8 +19,6 @@ const preferenceItems = [
 const supportItems = [
     { icon: 'help-circle-outline', title: 'Help Center', route: "/(pages)/profiles/settings/help" },
     { icon: 'chatbubble-ellipses-outline', title: 'Submit Feedback', route: "/(pages)/profiles/settings/feedback" },
-    { icon: 'star-outline', title: 'Rate App' },
-    { icon: 'bug-outline', title: 'Report a Problem' },
     { icon: 'information-circle-outline', title: 'About Repair Hub', route: "/(pages)/profiles/settings/about" },
 ];
 

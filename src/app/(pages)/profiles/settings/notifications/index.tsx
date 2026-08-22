@@ -243,7 +243,7 @@ const Notifications = () => {
                         color={
                             enabled
                                 ? "#6366F1"
-                                :  "#64748B"
+                                : "#64748B"
                         }
                     />
 
@@ -295,7 +295,7 @@ const Notifications = () => {
                         <Ionicons
                             name="arrow-back"
                             size={20}
-                            color= "#1F2937"
+                            color="#1F2937"
                         />
                     </TouchableOpacity>
 
@@ -313,35 +313,6 @@ const Notifications = () => {
                     paddingHorizontal: 16,
                 }}
             >
-                {/* Summary Card */}
-                <View className="mb-6 px-4 py-4 bg-card rounded-xl">
-                    <View className="flex-row items-center justify-between">
-                        <View className="flex-1">
-                            <Text className="text-base font-manrope-semibold text-text">
-                                Notification Settings
-                            </Text>
-
-                            <Text className="text-sm text-text-muted font-manrope-light">
-                                {isLoading
-                                    ? "Loading notification settings..."
-                                    : `${enabledCount} of ${totalCount} notifications enabled`}
-                            </Text>
-                        </View>
-
-                        {!isLoading && (
-                            <View className="px-3 py-1.5 bg-primary/20 rounded-full">
-                                <Text className="text-xs text-primary font-manrope-bold">
-                                    {Math.round(
-                                        (enabledCount /
-                                            totalCount) *
-                                        100
-                                    )}
-                                    %
-                                </Text>
-                            </View>
-                        )}
-                    </View>
-                </View>
 
                 {/* Enable / Disable All */}
                 <View className="mb-6">

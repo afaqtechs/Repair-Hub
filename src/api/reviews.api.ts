@@ -7,11 +7,13 @@ export const getMyReview = async (technicianId: string) => {
     } = await supabase.auth.getUser();
 
     if (userError) {
-        throw userError;
+        console.log(userError);
+        return null;
     }
 
     if (!user) {
-        throw new Error("You must be logged in.");
+        console.log("You must be logged in.");
+        return null;
     }
 
     const { data, error } = await supabase
@@ -22,7 +24,7 @@ export const getMyReview = async (technicianId: string) => {
         .maybeSingle();
 
     if (error) {
-        throw error;
+        console.log(error);
     }
 
     return data;

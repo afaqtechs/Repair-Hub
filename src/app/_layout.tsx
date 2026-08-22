@@ -91,15 +91,6 @@ function AppContent() {
 
           const data = content.data;
 
-          console.log(
-            "App opened from notification:",
-            {
-              title: content.title,
-              body: content.body,
-              data,
-            }
-          );
-
           if (data) {
             handleNotification(router, data);
           }
