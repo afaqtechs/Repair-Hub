@@ -1,50 +1,35 @@
-# Welcome to your Expo app 👋
+# RepairHub Mobile App
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+RepairHub is a mobile marketplace that connects customers with trusted repair technicians and helps users find repair services and spare parts for their devices.
 
-## Get started
+The app provides a convenient platform for discovering nearby technicians, exploring available services and spare parts, communicating with technicians, and managing repair-related activities from a single mobile application.
 
-1. Install dependencies
+### Key Features
 
-   ```bash
-   npm install
-   ```
+* 🔍 **Search & Discovery** — Find technicians, repair services, and spare parts.
+* 📍 **Nearby Technicians** — Discover available technicians based on location.
+* 👨‍🔧 **Technician Profiles** — View technician information, experience, availability, ratings, and services.
+* 🛠️ **Repair Services** — Browse and explore services offered by technicians.
+* 🔧 **Spare Parts Marketplace** — Browse and search for available device parts.
+* ⭐ **Ratings & Reviews** — Rate technicians and view customer reviews.
+* 💬 **Messaging** — Communicate directly with technicians.
+* 📞 **Quick Call** — Contact technicians directly when needed.
+* ❤️ **Saved Items** — Save services, parts, and other useful listings.
+* 🔐 **Authentication** — Secure user authentication and profile management.
+* 📄 **Technician Verification** — Support technician document and profile verification.
+* 🔔 **Notifications** — Receive relevant updates and platform notifications.
+* 📱 **Modern Mobile UI** — Built with a clean, responsive interface optimized for Android.
 
-2. Start the app
+### Tech Stack
 
-   ```bash
-   npx expo start
-   ```
+* **React Native**
+* **Expo**
+* **TypeScript**
+* **NativeWind / Tailwind CSS**
+* **Supabase**
+* **Zustand**
+* **TanStack React Query**
+* **PostGIS**
+* **Expo Notifications**
 
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
-```
-
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+RepairHub aims to make device repair easier by connecting customers with nearby technicians and providing a centralized marketplace for repair services and spare parts.
