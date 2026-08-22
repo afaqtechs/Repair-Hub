@@ -12,6 +12,5 @@ export * from "./storage.api"
 export * from "./technicianLocation.api"
 export * from "./requests.api"
 export * from "./reviews.api";
-export * from "./provider/signinwithgoogle.api";
 export * from "./submitFeedback.api";
 
