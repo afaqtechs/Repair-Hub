@@ -61,11 +61,19 @@ const SecurityAndPrivacy = () => {
         setIsSubmitting(true);
 
         try {
-            await updateAuthCredentials({
+            const updatedUser = await updateAuthCredentials({
                 email: user.email,
                 currentPassword: currentPassword.trim(),
-                newPassword: newPassword.trim(),
+                newPassword,
             });
+
+            if (!updatedUser) {
+                showError(
+                    "Update Failed",
+                    "Unable to update your password. Please check your current password and try again."
+                );
+                return;
+            }
 
             showSuccess(
                 "Password Updated",
@@ -144,7 +152,7 @@ const SecurityAndPrivacy = () => {
                         activeOpacity={0.7}
                         className="w-10 h-10 items-center justify-center rounded-2xl bg-card border border-border"
                     >
-                        <Ionicons name="arrow-back" size={20} color="#1F2937"/>
+                        <Ionicons name="arrow-back" size={20} color="#1F2937" />
                     </TouchableOpacity>
                     <Text className="ml-2 text-[18px] font-manrope-semibold text-text">
                         Security & Privacy

@@ -166,76 +166,35 @@ export async function updateAuthCredentials({
   currentPassword,
   newPassword,
 }: {
-  email?: string;
-  currentPassword?: string;
-  newPassword?: string;
+  email: string;
+  currentPassword: string;
+  newPassword: string;
 }) {
   try {
-    const updates: {
-      email?: string;
-      password?: string;
-    } = {};
+    // Verify current password
+    const { error: signInError } = await supabase.auth.signInWithPassword({
+      email,
+      password: currentPassword,
+    });
 
-    // ─────────────────────────────────────────
-    // Change password
-    // ─────────────────────────────────────────
-
-    if (newPassword) {
-      if (!email || !currentPassword) {
-        console.log(
-          '[authApi.updateAuthCredentials] Email and current password are required to change password.'
-        );
-
-        return null;
-      }
-
-      const { error: signInError } = await supabase.auth.signInWithPassword({
-        email,
-        password: currentPassword,
-      });
-
-      if (signInError) {
-        logApiError('updateAuthCredentials', signInError);
-
-        return null;
-      }
-
-      updates.password = newPassword;
-    }
-
-    // ─────────────────────────────────────────
-    // Change email
-    // ─────────────────────────────────────────
-
-    if (email) {
-      updates.email = email;
-    }
-
-    // ─────────────────────────────────────────
-    // Nothing to update
-    // ─────────────────────────────────────────
-
-    if (Object.keys(updates).length === 0) {
-      console.log('[authApi.updateAuthCredentials] Nothing to update.');
-
+    if (signInError) {
+      logApiError("updateAuthCredentials", signInError);
       return null;
     }
 
-    // ─────────────────────────────────────────
-    // Update user
-    // ─────────────────────────────────────────
-
-    const { data, error } = await supabase.auth.updateUser(updates);
+    // Update password only
+    const { data, error } = await supabase.auth.updateUser({
+      password: newPassword,
+    });
 
     if (error) {
-      logApiError('updateAuthCredentials', error);
-
+      logApiError("updateAuthCredentials", error);
       return null;
     }
 
     return data.user;
   } catch (error) {
-    logApiError('updateAuthCredentials', error);
+    logApiError("updateAuthCredentials", error);
     return null;
   }
 }
