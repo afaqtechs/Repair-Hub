@@ -320,6 +320,16 @@ const ConversationsScreen = ({
     );
   }
 
+  if (technician?.verification_status === "verified") {
+    return (
+      <View className="mt-3 mx-4 px-4 py-2.5 rounded-xl items-center bg-red-500/10">
+        <Text className="text-red-500 text-sm font-manrope-semibold text-center">
+          You can&apos;t start conversation unless you&apos;re verified.
+        </Text>
+      </View >
+    );
+  }
+
   return (
     <View className="relative flex-1 bg-bg">
       {/* Header */}
@@ -405,64 +415,56 @@ const ConversationsScreen = ({
       </View>
 
       {/* Conversations */}
-      {technician?.verification_status === "verified" ? (
-        <FlatList
-          data={conversationList}
-          keyExtractor={(item) => item.id}
-          renderItem={renderConversation}
-          refreshControl={
-            <AppRefreshControl
-              refreshing={isRefetching}
-              onRefresh={refetch}
-            />
-          }
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={
-            conversationList.length === 0
-              ? {
-                flexGrow: 1,
-              }
-              : undefined
-          }
-          extraData={{
-            selectedConversationIds,
-            selectionMode,
-          }}
-          ListEmptyComponent={
-            <View className="flex-1 items-center justify-center px-6 py-20">
+      <FlatList
+        data={conversationList}
+        keyExtractor={(item) => item.id}
+        renderItem={renderConversation}
+        refreshControl={
+          <AppRefreshControl
+            refreshing={isRefetching}
+            onRefresh={refetch}
+          />
+        }
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={
+          conversationList.length === 0
+            ? {
+              flexGrow: 1,
+            }
+            : undefined
+        }
+        extraData={{
+          selectedConversationIds,
+          selectionMode,
+        }}
+        ListEmptyComponent={
+          <View className="flex-1 items-center justify-center px-6 py-20">
 
 
-              <View className="h-16 w-16 items-center justify-center rounded-full bg-primary/10">
-                <Ionicons
-                  name="chatbubbles-outline"
-                  size={30}
-                  color="#5B3DF5"
-                />
-              </View>
-
-              <Text
-                className={`mt-5 font-manrope-semibold text-lg text-text`}
-              >
-                No conversations
-              </Text>
-
-              <Text
-                className={`mt-2 text-center font-manrope text-sm text-text-muted`}
-              >
-                Start a conversation
-                with a technician
-                or admin.
-              </Text>
+            <View className="h-16 w-16 items-center justify-center rounded-full bg-primary/10">
+              <Ionicons
+                name="chatbubbles-outline"
+                size={30}
+                color="#5B3DF5"
+              />
             </View>
-          }
-        />
-      ) : (
-        <View className="mt-3 mx-4 px-4 py-2.5 rounded-xl items-center bg-red-500/10">
-          <Text className="text-red-500 text-sm font-manrope-semibold text-center">
-            You can&apos;t start conversation unless you&apos;re verified.
-          </Text>
-        </View >
-      )}
+
+            <Text
+              className={`mt-5 font-manrope-semibold text-lg text-text`}
+            >
+              No conversations
+            </Text>
+
+            <Text
+              className={`mt-2 text-center font-manrope text-sm text-text-muted`}
+            >
+              Start a conversation
+              with a technician
+              or admin.
+            </Text>
+          </View>
+        }
+      />
 
 
       {/* New conversation button */}
@@ -471,7 +473,6 @@ const ConversationsScreen = ({
           <TouchableOpacity
             activeOpacity={0.8}
             onPress={onCreateConversation}
-            disabled={technician?.verification_status !== "verified"}
             className="absolute bottom-16 right-6 h-14 w-14 items-center justify-center rounded-full bg-primary"
             style={{
               elevation: 5,

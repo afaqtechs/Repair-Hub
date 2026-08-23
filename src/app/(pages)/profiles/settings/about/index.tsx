@@ -11,12 +11,6 @@ const AboutRepairHub = () => {
   const buildNumber = "100";
   const releaseDate = "January 2026";
 
-  const teamMembers = [
-    { name: "Development Team", role: "Core Development" },
-    { name: "Design Team", role: "UI/UX Design" },
-    { name: "Quality Assurance", role: "Testing & Support" },
-  ];
-
   const features = [
     "Spare parts management",
     "Repair request tracking",
@@ -52,7 +46,7 @@ const AboutRepairHub = () => {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingTop: 10, paddingBottom: 40, paddingHorizontal: 16 }}
       >
-               {/* App Description */}
+        {/* App Description */}
         <View className="mb-6">
           <Text className="mb-2 px-1 text-xs font-manrope-bold uppercase tracking-wider text-text-muted">
             Description
@@ -90,35 +84,32 @@ const AboutRepairHub = () => {
         </View>
 
         {/* Team */}
+        {/* About Repair Hub */}
         <View className="mb-6">
           <Text className="mb-2 px-1 text-xs font-manrope-bold uppercase tracking-wider text-text-muted">
-            Team
+            About Repair Hub
           </Text>
-          <View className="bg-card px-5 py-3 rounded-2xl shadow-sm">
-            {teamMembers.map((member, index) => (
-              <View
-                key={index}
-                className={`flex-row items-center justify-between py-2.5 ${index !== teamMembers.length - 1 ? 'border-b border-border' : ''}`}
-              >
-                <View className="flex-row items-center gap-3">
-                  <View className="w-9 h-9 bg-primary/10 rounded-full items-center justify-center">
-                    <Ionicons
-                      name="person-outline"
-                      size={18}
-                      color="#6366F1"
-                    />
-                  </View>
-                  <View>
-                    <Text className="text-sm font-manrope-semibold text-text">
-                      {member.name}
-                    </Text>
-                    <Text className="text-xs font-manrope-light text-text-muted">
-                      {member.role}
-                    </Text>
-                  </View>
-                </View>
-              </View>
-            ))}
+
+          <View className="bg-card px-5 py-4 rounded-2xl shadow-sm">
+            <Text className="text-sm font-manrope-regular text-text leading-6">
+              Repair Hub brings essential repair services and resources together in
+              one convenient mobile platform. It helps technicians manage their
+              professional activities, showcase their services, manage spare parts,
+              and stay connected with customers.
+            </Text>
+
+            <Text className="mt-4 text-sm font-manrope-regular text-text leading-6">
+              The platform is designed to make the repair process more organized,
+              transparent, and efficient. Customers can discover available
+              technicians and services, explore spare parts, submit repair requests,
+              and communicate with technicians directly.
+            </Text>
+
+            <Text className="mt-4 text-sm font-manrope-regular text-text leading-6">
+              Repair Hub also provides real-time communication and notifications,
+              making it easier for technicians and customers to stay updated
+              throughout the repair process.
+            </Text>
           </View>
         </View>
 

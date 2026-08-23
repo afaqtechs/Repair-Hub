@@ -227,29 +227,6 @@ const HelpCenter = () => {
           </View>
         </View>
 
-        {/* Contact Support Card */}
-        <View className="mb-6 px-4 py-4 bg-primary/10 rounded-2xl">
-          <View className="flex-row items-center gap-3">
-            <View className="w-10 h-10 bg-primary/20 rounded-full items-center justify-center">
-              <Ionicons name="chatbubbles-outline" size={20} color="#6366F1" />
-            </View>
-            <View className="flex-1">
-              <Text className="text-sm font-manrope-semibold text-text">
-                Still need help?
-              </Text>
-              <Text className="text-xs text-text-muted font-manrope-light mt-0.5">
-                Contact our support team for personalized assistance
-              </Text>
-            </View>
-            <TouchableOpacity
-              activeOpacity={0.7}
-              className="px-4 py-2 bg-primary rounded-xl"
-            >
-              <Text className="text-white font-manrope-semibold text-xs">Contact</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-
         {/* Footer */}
         <View className="mt-1 px-4 py-3 bg-input rounded-2xl">
           <View className="flex-row items-center justify-center gap-2">

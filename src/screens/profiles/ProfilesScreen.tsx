@@ -452,7 +452,7 @@ const ProfileScreen = () => {
                                             <Ionicons
                                                 name={item.icon}
                                                 size={20}
-                                                color="#94A3B8"
+                                                color="#1F2937"
                                             />
                                         </View>
 

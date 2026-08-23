@@ -34,14 +34,6 @@ export default function MapScreen() {
         }
     };
 
-    const handleOpenAppleMaps = () => {
-        if (hasValidCoordinates) {
-            Linking.openURL(`http://maps.apple.com/?q=${lat},${lng}`).catch(() => {
-                Linking.openURL(`https://www.openstreetmap.org/?mlat=${lat}&mlon=${lng}&zoom=15`);
-            });
-        }
-    };
-
     return (
         <View
             style={{ flex: 1, paddingTop: insets.top, paddingHorizontal: 10, paddingBottom: insets.bottom }}
@@ -53,7 +45,7 @@ export default function MapScreen() {
                     onPress={() => router.back()}
                     className="w-10 h-10 items-center justify-center rounded-2xl bg-card border border-border"
                 >
-                    <Ionicons name="arrow-back" size={20} color="#1F2937"/>
+                    <Ionicons name="arrow-back" size={20} color="#1F2937" />
                 </TouchableOpacity>
 
                 <View className="flex-1 mx-2">
@@ -123,40 +115,9 @@ export default function MapScreen() {
                                         {lat?.toFixed(6)}, {lng?.toFixed(6)}
                                     </Text>
                                 </View>
-                                <TouchableOpacity
-                                    onPress={() => {
-                                        // Copy coordinates to clipboard
-                                    }}
-                                    className="px-2 py-1 bg-bg rounded"
-                                >
-                                    <Text className="text-[10px] font-manrope-medium text-text-muted">
-                                        Copy
-                                    </Text>
-                                </TouchableOpacity>
                             </View>
                         </View>
 
-                        {/* Action Buttons */}
-                        <View className="flex-row gap-3">
-                            <TouchableOpacity
-                                onPress={handleOpenGoogleMaps}
-                                className="flex-1 flex-row items-center justify-center gap-2 py-3.5 bg-primary rounded-xl active:opacity-80"
-                            >
-                                <Ionicons name="navigate-outline" size={20} color="#FFFFFF" />
-                                <Text className="text-white font-manrope-semibold text-sm">
-                                    Open in Maps
-                                </Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity
-                                onPress={handleOpenAppleMaps}
-                                className="flex-1 flex-row items-center justify-center gap-2 py-3.5 bg-card rounded-xl border border-border active:opacity-80"
-                            >
-                                <Ionicons name="map-outline" size={20} color="#F8FAFC" />
-                                <Text className="text-text font-manrope-semibold text-sm">
-                                    Apple Maps
-                                </Text>
-                            </TouchableOpacity>
-                        </View>
                     </View>
                 </View>
             ) : (

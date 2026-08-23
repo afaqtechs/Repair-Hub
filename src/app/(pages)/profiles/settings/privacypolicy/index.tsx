@@ -49,7 +49,7 @@ const PrivacyPolicy = () => {
 
           <View className="bg-primary/5 rounded-xl px-4 py-3 mb-6">
             <Text className="text-sm font-manrope-medium text-primary text-center">
-              Last Updated: January 2026
+              Last Updated: August 2026
             </Text>
           </View>
 
@@ -248,7 +248,7 @@ const PrivacyPolicy = () => {
           {/* Footer */}
           <View className="pt-4 border-t border-border">
             <Text className="text-sm font-manrope-light text-text-muted text-center">
-              Effective Date: January 2026
+              Effective Date: August 2026
             </Text>
             <Text className="text-xs font-manrope-light text-text-muted text-center mt-2">
               © 2026 Repair Hub. All rights reserved.

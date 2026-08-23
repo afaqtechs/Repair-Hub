@@ -468,6 +468,7 @@ const TechnicianDetail = () => {
                         {isOwner && (
                             <View className="flex-row gap-3">
                                 <TouchableOpacity
+                                    onPress={() => router.push("/(pages)/profiles/settings/account")}
                                     className="flex-1 border border-primary py-3 rounded-xl items-center"
                                 >
                                     <Text className="text-primary font-manrope-semibold">
@@ -475,6 +476,7 @@ const TechnicianDetail = () => {
                                     </Text>
                                 </TouchableOpacity>
                                 <TouchableOpacity
+                                    onPress={() => router.push("/(root)/(tabs)/profile")}
                                     className="flex-1 bg-primary border border-primary py-3 rounded-xl items-center"
                                 >
                                     <Text className="text-white font-manrope-semibold">

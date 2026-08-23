@@ -219,12 +219,11 @@ const FAQAccordion = () => {
                         <TouchableOpacity
                             className="px-4 py-2 bg-primary rounded-lg"
                             onPress={() => {
-                                // Navigate to help center or contact
-                                // router.push("/(pages)/profiles/help");
+                                router.push("/(pages)/profiles/settings/help");
                             }}
                         >
                             <Text className="text-white font-manrope-semibold text-xs">
-                                Contact
+                                Get support
                             </Text>
                         </TouchableOpacity>
                     </View>

@@ -49,7 +49,7 @@ const TermsAndConditions = () => {
 
                     <View className="bg-primary/5 rounded-xl px-4 py-3 mb-6">
                         <Text className="text-sm font-manrope-medium text-primary text-center">
-                            Last Updated: January 2026
+                            Last Updated: August 2026
                         </Text>
                     </View>
 
@@ -291,33 +291,10 @@ const TermsAndConditions = () => {
                         </Text>
                     </View>
 
-                    {/* Section 14 */}
-                    <View className="mb-6">
-                        <View className="flex-row items-center gap-2 mb-2">
-                            <View className="w-6 h-6 bg-primary/10 rounded-full items-center justify-center">
-                                <Text className="text-primary font-manrope-bold text-xs">14</Text>
-                            </View>
-                            <Text className="text-base font-manrope-semibold text-text">
-                                Contact Information
-                            </Text>
-                        </View>
-                        <View className="ml-8">
-                            <Text className="text-sm font-manrope-regular text-text leading-6 mb-1">
-                                If you have any questions about these Terms and Conditions, please contact us at:
-                            </Text>
-                            <Text className="text-sm font-manrope-semibold text-text leading-6">
-                                📧 support@repairhub.com
-                            </Text>
-                            <Text className="text-sm font-manrope-semibold text-text leading-6">
-                                🌐 www.repairhub.com
-                            </Text>
-                        </View>
-                    </View>
-
                     {/* Footer */}
                     <View className="pt-4 border-t border-border">
                         <Text className="text-sm font-manrope-light text-text-muted text-center">
-                            Effective Date: January 2026
+                            Effective Date: August 2026
                         </Text>
                         <Text className="text-xs font-manrope-light text-text-muted text-center mt-2">
                             © 2026 Repair Hub. All rights reserved.

@@ -155,7 +155,7 @@ const NewChat = ({
                         />
                     </TouchableOpacity>
                     <View>
-                        <Text className="font-manrope-bold text-2xl text-text">
+                        <Text className="font-manrope-bold text-[18px] text-text">
                             New Chat
                         </Text>
 

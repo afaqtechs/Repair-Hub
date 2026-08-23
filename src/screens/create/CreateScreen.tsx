@@ -17,6 +17,16 @@ const CreateScreen = () => {
 
     const { data: technician } = useTechnician(loggedInUserId);
 
+    if (technician?.verification_status === "verified") {
+        return (
+            <View className="mt-3 mx-4 px-4 py-2.5 rounded-xl items-center bg-red-500/10">
+                <Text className="text-red-500 text-sm font-manrope-semibold text-center">
+                    Verify your document to create
+                </Text>
+            </View>
+        );
+    }
+
     const tabs = [
         {
             label: 'Spare Part',
@@ -102,7 +112,6 @@ const CreateScreen = () => {
                             router.push(selectedTab.href as any);
                         }
                     }}
-                    disabled={technician?.verification_status !== "verified"}
                     className="mt-8 bg-button-primary rounded-xl py-4 px-5 flex-row items-center justify-center gap-2 active:opacity-80"
                 >
                     <Ionicons
@@ -115,14 +124,6 @@ const CreateScreen = () => {
                         Create {selectedTab?.label ?? 'Item'}
                     </Text>
                 </TouchableOpacity>
-
-                {technician?.verification_status !== "verified" && (
-                    <View className="mt-3 mx-4 px-4 py-2.5 rounded-xl items-center bg-red-500/10">
-                        <Text className="text-red-500 text-sm font-manrope-semibold text-center">
-                            Verify your document to create
-                        </Text>
-                    </View>
-                )}
             </View>
         </>
     );
