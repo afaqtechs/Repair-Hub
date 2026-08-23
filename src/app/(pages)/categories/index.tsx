@@ -95,7 +95,7 @@ const CategoryPage = () => {
           >
             <Ionicons name="arrow-back" size={20} color="#1F2937" />
           </TouchableOpacity>
-          <Text className={`ml-2 text-[20px] font-manrope-semibold text-text`}>
+          <Text className={`ml-2 text-[18px] font-manrope-semibold text-text`}>
             Categories
           </Text>
         </View>
@@ -142,7 +142,7 @@ const CategoryPage = () => {
               </View>
               <Text
                 numberOfLines={1}
-                className="text-[11px] font-manrope-semibold text-center px-5 py-1 bg-primary mt-1 text-white rounded-xl"
+                className="text-[11px] font-manrope-semibold text-center w-full px-3 py-1 bg-primary/10 mt-2 text-primary rounded-lg"
               >
                 {item.name}
               </Text>

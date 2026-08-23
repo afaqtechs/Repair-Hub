@@ -54,7 +54,7 @@ const HeroCards = () => {
                         onPress={() => router.push(item.route as any)}
                         className="flex-1"
                     >
-                        <View className="h-[142px] rounded-2xl overflow-hidden border bg-card/30 border-border/50">
+                        <View className="h-[142px] rounded-2xl overflow-hidden border bg-card border-border/10">
                             <View className="flex-1 p-3.5">
 
                                 {/* Icon + Arrow */}

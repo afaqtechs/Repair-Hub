@@ -50,6 +50,8 @@ const TechnicianDetail = () => {
         data: loggedInUser,
     } = useTechnician(loggedInUserId);
 
+    const isVerified = loggedInUser?.verification_status === "verified" && technician?.verification_status === "verified";
+
     const {
         data: parts,
         error: partError,
@@ -442,7 +444,7 @@ const TechnicianDetail = () => {
                     )}
 
                     <View className="w-full mt-5 p-5 bg-card rounded-xl items-center justify-center shadow-xs">
-                        {(!isOwner && loggedInUser?.verification_status === "verified") && (
+                        {(!isOwner && isVerified) && (
                             <View className="flex-row gap-3">
 
                                 <TouchableOpacity

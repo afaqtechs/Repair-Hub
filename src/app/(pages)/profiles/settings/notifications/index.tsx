@@ -299,7 +299,7 @@ const Notifications = () => {
                         />
                     </TouchableOpacity>
 
-                    <Text className="ml-2 text-[20px] font-manrope-semibold text-text">
+                    <Text className="ml-2 text-[18px] font-manrope-semibold text-text">
                         Notifications
                     </Text>
                 </View>

@@ -236,7 +236,7 @@ const RequestForm = ({ isEdit = false, request, onCancel }: RequestFormProps) =>
                         >
                             <Ionicons name="arrow-back" size={20} color='#F8FAFC' />
                         </TouchableOpacity>
-                        <Text className="ml-2 text-[20px] font-manrope-semibold text-text">
+                        <Text className="ml-2 text-[18px] font-manrope-semibold text-text">
                             Editing {request?.title}
                         </Text>
                     </View>
@@ -345,7 +345,7 @@ const RequestForm = ({ isEdit = false, request, onCancel }: RequestFormProps) =>
                             Platform <Text className="text-red-500">*</Text>
                         </Text>
                         <AppSelectModal
-                            title="Select Platform"
+                            title="Platform"
                             placeholder="Select platform"
                             data={platforms.map(item => ({ label: item.name, value: item.id }))}
                             value={form.platform_id}
@@ -375,7 +375,7 @@ const RequestForm = ({ isEdit = false, request, onCancel }: RequestFormProps) =>
                             Category <Text className="text-red-500">*</Text>
                         </Text>
                         <AppSelectModal
-                            title="Select Category"
+                            title="Category"
                             placeholder="Select category"
                             data={categories.map(item => ({ label: item.name, value: item.id }))}
                             value={form.category_id}

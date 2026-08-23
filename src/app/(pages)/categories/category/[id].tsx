@@ -139,7 +139,7 @@ const CategoryDetail = () => {
                     >
                         <Ionicons name="arrow-back" size={20} color="#1F2937" />
                     </TouchableOpacity>
-                    <Text className="ml-2 text-[20px] font-manrope-semibold text-text">
+                    <Text className="ml-2 text-[18px] font-manrope-semibold text-text">
                         {category?.name}
                     </Text>
                 </View>

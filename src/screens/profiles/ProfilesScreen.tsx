@@ -15,6 +15,7 @@ import React, { useState } from "react";
 import {
     ActivityIndicator,
     Image,
+    Linking,
     ScrollView,
     Text,
     TouchableOpacity,
@@ -285,9 +286,13 @@ const ProfileScreen = () => {
                     </Text>
                     {technician?.role === "admin" ? (
                         <TouchableOpacity
+                            onPress={() => Linking.openURL("https://repairhub.vercel.app")}
                             className="bg-primary px-3 py-2 rounded-full items-center justify-center"
+                            activeOpacity={0.8}
                         >
-                            <Text className="text-white font-manrope">Dashboard</Text>
+                            <Text className="text-white font-manrope">
+                                Dashboard
+                            </Text>
                         </TouchableOpacity>
                     ) : (
                         <TouchableOpacity
@@ -317,12 +322,12 @@ const ProfileScreen = () => {
                         <TouchableOpacity
                             onPress={handlePickImages}
                             disabled={uploadingImages}
-                            className="absolute bottom-1 right-1 w-11 h-11 rounded-2xl bg-card items-center justify-center"
+                            className="absolute bottom-1 right-1 w-11 h-11 rounded-2xl items-center justify-center bg-primary/95 shadow-sm"
                         >
                             <Ionicons
                                 name="camera-outline"
                                 size={20}
-                                color="#1F2937"
+                                color="#ffffff"
                             />
                         </TouchableOpacity>
                         {uploadingImages && (

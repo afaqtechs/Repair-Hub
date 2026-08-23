@@ -180,9 +180,9 @@ const MessageItem = memo(
             }`}
         >
           <View
-            className={`max-w-[80%] rounded-xl px-4 py-1 ${isMine
-              ? 'rounded-br-none bg-primary'
-              : 'rounded-bl-none bg-primary/30'
+            className={`max-w-[80%] rounded-lg px-4 py-1 ${isMine
+              ? ' bg-primary'
+              : ' bg-primary/30'
               }`}
           >
             <View className="flex-row items-center">

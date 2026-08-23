@@ -139,13 +139,13 @@ export async function registerPushToken(
       .from("push_tokens")
       .upsert(
         {
-          userid: userId,
+          user_id: userId,
           token: expoPushToken,
           platform: Platform.OS,
           updated_at: new Date().toISOString(),
         },
         {
-          onConflict: "userid,token",
+          onConflict: "user_id,token",
         }
       );
 

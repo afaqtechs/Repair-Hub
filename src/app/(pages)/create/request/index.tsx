@@ -35,7 +35,7 @@ const CreatePart = () => {
                     </TouchableOpacity>
 
                     <Text
-                        className={`ml-2 text-[20px] font-manrope-semibold text-text`}
+                        className={`ml-2 text-[18px] font-manrope-semibold text-text`}
                     >
                         Add Requests
                     </Text>

@@ -110,7 +110,7 @@ const EmptySearch = ({
                                 onSuggestionPress?.(suggestion)
                             }
                             activeOpacity={0.7}
-                            className="flex-row items-center rounded-full border border-primary bg-card p-3"
+                            className="flex-row items-center rounded-full  bg-primary/10 p-3"
                         >
                             <Text className="text-xs font-medium text-text">
                                 {suggestion}
@@ -119,7 +119,7 @@ const EmptySearch = ({
                             <Ionicons
                                 name="arrow-forward"
                                 size={13}
-                                color="#94A3B8"
+                                color="#000000"
                                 style={{ marginLeft: 5 }}
                             />
                         </TouchableOpacity>

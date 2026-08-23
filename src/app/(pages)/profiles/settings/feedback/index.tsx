@@ -2,9 +2,8 @@
 import { showError, showSuccess } from "@/src/lib/toast";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
-import { useRef, useState } from "react";
-import { KeyboardAvoidingView, Platform, ScrollView, Text, TextInput, TouchableOpacity, View } from "react-native";
-import { RichEditor, RichToolbar } from "react-native-pell-rich-editor";
+import { useState } from "react";
+import { ActivityIndicator, KeyboardAvoidingView, Platform, ScrollView, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { SubmitFeedback as submitFeedbackApi } from "@/src/api";
 
@@ -15,12 +14,12 @@ const SubmitFeedback = () => {
     const [subject, setSubject] = useState("");
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [characterCount, setCharacterCount] = useState(0);
-    const descriptionRef = useRef<RichEditor>(null);
+    const [message, setMessage] = useState("");
 
     const MAX_CHARS = 1000;
 
-    const handleContentChange = (html: string) => {
-        const text = html.trim();
+    const handleMessageChange = (text: string) => {
+        setMessage(text);
         setCharacterCount(text.length);
     };
 
@@ -33,8 +32,7 @@ const SubmitFeedback = () => {
             return;
         }
 
-        const html = await descriptionRef.current?.getContentHtml();
-        const text = html?.replace(/<[^>]*>/g, "").trim() || "";
+        const text = message.trim();
 
         if (!text) {
             showError(
@@ -95,7 +93,7 @@ const SubmitFeedback = () => {
                         >
                             <Ionicons name="arrow-back" size={20} color="#1F2937" />
                         </TouchableOpacity>
-                        <Text className="ml-2 text-[20px] font-manrope-semibold text-text">
+                        <Text className="ml-2 text-[18px] font-manrope-semibold text-text">
                             Submit Feedback
                         </Text>
                     </View>
@@ -180,40 +178,20 @@ const SubmitFeedback = () => {
                         </View>
 
                         <View className="bg-card border border-border rounded-lg overflow-hidden">
-                            <RichToolbar
-                                editor={descriptionRef}
-                                actions={[
-                                    "heading1",
-                                    "bold",
-                                    "italic",
-                                    "underline",
-                                    "unorderedList",
-                                    "orderedList",
-                                    "link",
-                                    "removeFormat",
-                                    "undo",
-                                    "redo",
-                                ]}
-                                style={{
-                                    backgroundColor: "#F8F7FC",
-                                    borderBottomWidth: 1,
-                                    borderBottomColor: "#F8F7FC",
-                                }}
-                                iconTint="#25213A"
-                                selectedIconTint="#6366F1"
-                            />
-
-                            <RichEditor
-                                ref={descriptionRef}
-                                onChange={handleContentChange}
-                                editorStyle={{
-                                    backgroundColor: "#fff",
-                                    color: "#25213A",
-                                    placeholderColor: "#25213A",
-                                    contentCSSText: `font-family: Manrope; font-size: 16px; padding: 12px; min-height: 150px;`,
-                                }}
+                            <TextInput
+                                value={message}
+                                onChangeText={handleMessageChange}
                                 placeholder="Describe your feedback in detail... Be specific about what you'd like to see improved or what's working well."
-                                initialHeight={150}
+                                placeholderTextColor="#94A3B8"
+                                multiline
+                                textAlignVertical="top"
+                                maxLength={MAX_CHARS}
+                                className="px-4 py-4 text-text bg-card min-h-[150px]"
+                                style={{
+                                    fontFamily: "Manrope",
+                                    fontSize: 16,
+                                    lineHeight: 24,
+                                }}
                             />
                         </View>
                     </View>
@@ -230,12 +208,12 @@ const SubmitFeedback = () => {
                     >
                         <View className="flex-row items-center gap-2">
                             {isSubmitting ? (
-                                <>
-                                    <Ionicons name="reload" size={20} color="#FFFFFF" className="animate-spin" />
+                                <View className="flex-row items-center gap-2">
+                                    <ActivityIndicator size="small" color="#ffffff" />
                                     <Text className="text-white font-manrope-semibold">
                                         Submitting...
                                     </Text>
-                                </>
+                                </View>
                             ) : (
                                 <>
                                     <Ionicons name="send-outline" size={20} color="#FFFFFF" />
@@ -258,7 +236,7 @@ const SubmitFeedback = () => {
                     </View>
                 </ScrollView>
             </View>
-        </KeyboardAvoidingView>
+        </KeyboardAvoidingView >
     );
 };
 

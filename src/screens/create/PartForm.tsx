@@ -244,7 +244,7 @@ const PartForm = ({ isEdit = false, part, onCancel }: PartFormProps) => {
             >
               <Ionicons name="arrow-back" size={20} color="#F8FAFC" />
             </TouchableOpacity>
-            <Text className="ml-2 text-[20px] font-manrope-semibold text-text">
+            <Text className="ml-2 text-[18px] font-manrope-semibold text-text">
               Editing {part?.title}
             </Text>
           </View>

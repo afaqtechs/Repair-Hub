@@ -29,12 +29,12 @@ const ListCategory = ({
         >
             {/* Category square */}
             <View
-                className="w-[94px] h-[94px] rounded-xl items-center justify-center bg-bg/50 border border-border overflow-hidden p-2"
+                className="w-[94px] h-[94px] flex-col rounded-xl items-center justify-center bg-card p-3"
             >
                 <Image
                     source={category?.icon_url ? { uri: category?.icon_url } : require("@/assets/ui/background/category_image.jpg")}
                     resizeMode="cover"
-                    className="w-full h-full rounded-xl"
+                    className="w-full h-[80%] rounded-xl"
                 />
 
                 {isOverflow && (
@@ -44,15 +44,16 @@ const ListCategory = ({
                         </Text>
                     </View>
                 )}
+
+                <Text
+                    numberOfLines={2}
+                    className="text-[11px] leading-[14px] font-manrope-medium text-center w-[72px] mt-[6px] text-text"
+                >
+                    {category.name.substring(0, 10)}
+                </Text>
             </View>
 
             {/* Category name */}
-            <Text
-                numberOfLines={2}
-                className="text-[11px] leading-[14px] font-manrope-medium text-center w-[72px] mt-[6px] text-text"
-            >
-                {category.name}
-            </Text>
         </TouchableOpacity>
     );
 };

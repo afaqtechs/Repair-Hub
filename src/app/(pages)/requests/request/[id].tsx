@@ -50,6 +50,8 @@ const RequestDetail = () => {
         data: loggedInUser,
     } = useTechnician(loggedInUserId);
 
+    const isVerified = loggedInUser?.verification_status === "verified" && technician?.verification_status === "verified";
+
     const {
         data: technicianLocation,
     } = useTechnicianLocation(technicianId);
@@ -332,7 +334,7 @@ const RequestDetail = () => {
                             {request?.title}
                         </Text>
 
-                        {(!isOwner && loggedInUser?.verification_status === "verified") && (
+                        {(!isOwner && isVerified) && (
                             <View className="flex-row gap-3 mb-5">
 
                                 <TouchableOpacity
@@ -427,10 +429,7 @@ const RequestDetail = () => {
                                     ? "bg-success"
                                     : "bg-danger"
                                     }`}>
-                                    <Text className={`text-xs font-manrope-semibold ${request?.is_active
-                                        ? "text-text"
-                                        : "text-white"
-                                        }`}>
+                                    <Text className={`text-xs font-manrope-semibold text-white`}>
                                         {request?.is_active ? "Active" : "In Active"}
                                     </Text>
                                 </View>

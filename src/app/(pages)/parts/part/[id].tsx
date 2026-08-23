@@ -74,6 +74,8 @@ const PartDetail = () => {
         data: loggedInUser,
     } = useTechnician(loggedInUserId);
 
+    const isVerified = loggedInUser?.verification_status === "verified" && technician?.verification_status === "verified";
+
     const { data: technicianLocation } = useTechnicianLocation(technicianId);
     const {
         data: partsData,
@@ -263,7 +265,6 @@ const PartDetail = () => {
         }
     };
 
-
     const isOwner = loggedInUserId === technicianId;
 
     const imageData = part?.images?.length ? part.images : [null];
@@ -377,7 +378,7 @@ const PartDetail = () => {
                             ETB {part?.price?.toLocaleString()}
                         </Text>
 
-                        {(!isOwner && loggedInUser?.verification_status === "verified") && (
+                        {(!isOwner && isVerified) && (
                             <View className="flex-row gap-3 mb-5">
                                 <TouchableOpacity onPress={handleChat} className="flex-1 border border-primary py-3 rounded-xl items-center">
                                     <Text className="text-primary font-manrope-semibold">

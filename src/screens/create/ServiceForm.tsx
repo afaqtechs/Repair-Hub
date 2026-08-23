@@ -223,7 +223,7 @@ const ServiceForm = ({ isEdit = false, service, onCancel }: ServiceFormProps) =>
                         >
                             <Ionicons name="arrow-back" size={20} color="#F8FAFC" />
                         </TouchableOpacity>
-                        <Text className="ml-2 text-[20px] font-manrope-semibold text-text">
+                        <Text className="ml-2 text-[18px] font-manrope-semibold text-text">
                             Editing {service?.title}
                         </Text>
                     </View>
@@ -332,7 +332,7 @@ const ServiceForm = ({ isEdit = false, service, onCancel }: ServiceFormProps) =>
                             Platform <Text className="text-red-500">*</Text>
                         </Text>
                         <AppSelectModal
-                            title="Select Platform"
+                            title="Platform"
                             placeholder="Select platform"
                             data={platforms.map(item => ({ label: item.name, value: item.id }))}
                             value={form.platform_id}
@@ -362,7 +362,7 @@ const ServiceForm = ({ isEdit = false, service, onCancel }: ServiceFormProps) =>
                             Category <Text className="text-red-500">*</Text>
                         </Text>
                         <AppSelectModal
-                            title="Select Category"
+                            title="Category"
                             placeholder="Select category"
                             data={categories.map(item => ({ label: item.name, value: item.id }))}
                             value={form.category_id}
@@ -473,7 +473,7 @@ const ServiceForm = ({ isEdit = false, service, onCancel }: ServiceFormProps) =>
                         <RichEditor
                             ref={descriptionRef}
                             editorStyle={{
-                                backgroundColor:"#fff",
+                                backgroundColor: "#fff",
                                 color: "#1F2937",
                                 placeholderColor: "#94A3B8",
                                 contentCSSText: `font-family: Manrope; font-size: 16px; padding: 12px; min-height: 120px;`,

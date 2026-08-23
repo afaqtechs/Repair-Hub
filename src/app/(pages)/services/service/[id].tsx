@@ -57,6 +57,7 @@ const ServiceDetail = () => {
         data: technicianLocation,
     } = useTechnicianLocation(technicianId);
 
+    const isVerified = loggedInUser?.verification_status === "verified" && technician?.verification_status === "verified";
 
     const {
         data: serviceData,
@@ -346,7 +347,7 @@ const ServiceDetail = () => {
                             ETB {service?.price?.toLocaleString()}
                         </Text>
 
-                        {(!isOwner && loggedInUser?.verification_status === "verified") && (
+                        {(!isOwner && isVerified) && (
                             <View className="flex-row gap-3 mb-5">
 
                                 <TouchableOpacity
@@ -451,10 +452,7 @@ const ServiceDetail = () => {
                                     ? "bg-success"
                                     : "bg-danger"
                                     }`}>
-                                    <Text className={`text-xs font-manrope-semibold ${service?.is_active
-                                        ? "text-white"
-                                        : "text-red-600"
-                                        }`}>
+                                    <Text className={`text-xs font-manrope-semibold text-white`}>
                                         {service?.is_active ? "Active" : "Unavailable"}
                                     </Text>
                                 </View>

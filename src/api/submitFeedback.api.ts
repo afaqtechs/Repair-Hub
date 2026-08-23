@@ -14,6 +14,8 @@ export const SubmitFeedback = async ({
     error: userError,
   } = await supabase.auth.getUser();
 
+  console.log("user",user?.id)
+
   if (userError) {
     console.log("Auth error:", userError);
     return null;
@@ -33,6 +35,8 @@ export const SubmitFeedback = async ({
     })
     .select()
     .single();
+
+    console.log(data)
 
   if (error) {
     console.log("Submit feedback error:", error);

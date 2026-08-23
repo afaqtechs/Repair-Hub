@@ -107,7 +107,7 @@ const HomeScreen = () => {
                 <TouchableOpacity
                     activeOpacity={0.7}
                     onPress={() => router.push("/search")}
-                    className="w-12 h-12 rounded-lg bg-bg/50 border border-border/30 items-center justify-center"
+                    className="w-12 h-12 rounded-lg bg-card items-center justify-center"
                 >
                     <Ionicons
                         name="search-outline"
@@ -141,8 +141,8 @@ const HomeScreen = () => {
                                     Top Categories
                                 </Text>
                                 <TouchableOpacity onPress={() => router.push("/(pages)/categories")} className=''>
-                                    <Text className="text-base font-manrope-semibold text-primary">
-                                        View All
+                                    <Text className="text-sm font-manrope-semibold text-primary">
+                                        View all
                                     </Text>
                                 </TouchableOpacity>
                             </View>

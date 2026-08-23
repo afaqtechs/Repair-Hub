@@ -123,7 +123,7 @@ const TechniciansCard = ({ techncicians }: TechniciansCardProps) => {
                 {/* View Profile */}
                 <TouchableOpacity
                     activeOpacity={0.8}
-                    className="mt-auto w-full p-3 rounded-md bg-primary items-center justify-center"
+                    className="mt-auto w-full p-3 rounded-md bg-primary/10 items-center justify-center"
                     onPress={() =>
                         router.push({
                             pathname: "/(pages)/technician/[id]",
@@ -131,7 +131,7 @@ const TechniciansCard = ({ techncicians }: TechniciansCardProps) => {
                         })
                     }
                 >
-                    <Text className="text-[10px] font-manrope-bold text-white">
+                    <Text className="text-[12px] font-manrope-bold text-primary">
                         View Profile
                     </Text>
                 </TouchableOpacity>
