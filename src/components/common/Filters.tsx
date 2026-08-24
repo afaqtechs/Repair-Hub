@@ -161,7 +161,7 @@ const FilterChip = ({
             activeOpacity={0.7}
             className={`flex-row items-center rounded-full border px-3 py-2 ${selected
                 ? 'border-primary bg-primary'
-                : '  border-border bg-card/50'
+                : 'border-border bg-card/50'
                 }`}
         >
             <Text
@@ -442,7 +442,7 @@ const Filters = ({
                             onPress={onClose}
                             className="h-10 w-10 items-center justify-center rounded-full bg-card"
                         >
-                            <Ionicons name="close" size={24} color="#EF4444" />
+                            <Ionicons name="close" size={24} color="#6B7280" />
                         </TouchableOpacity>
                     </View>
 
@@ -626,7 +626,7 @@ const Filters = ({
                     {/* Bottom actions */}
                     <View
                         style={{
-                            paddingBottom: Math.max(insets.bottom, 16),
+                            paddingBottom: Math.max(insets.bottom + 16),
                         }}
                         className="absolute bottom-0 left-0 right-0 flex-row gap-3 border-t px-4 py-4 border-border bg-bg">
                         <TouchableOpacity

@@ -320,13 +320,15 @@ const ConversationsScreen = ({
     );
   }
 
-  if (technician?.verification_status === "verified") {
+  if (!isLoading && technician?.verification_status !== "verified") {
     return (
-      <View className="mt-3 mx-4 px-4 py-2.5 rounded-xl items-center bg-red-500/10">
-        <Text className="text-red-500 text-sm font-manrope-semibold text-center">
-          You can&apos;t start conversation unless you&apos;re verified.
-        </Text>
-      </View >
+      <View className="h-screen items-center justify-center">
+        <View className="items-center justify-center mt-3 mx-4 px-4 py-2.5 rounded-xl bg-red-500/10">
+          <Text className="text-red-500 text-sm font-manrope-semibold text-center">
+            You can&apos;t start conversation unless you&apos;re verified.
+          </Text>
+        </View >
+      </View>
     );
   }
 

@@ -4,7 +4,7 @@ import { showError, showSuccess } from "@/src/lib/toast";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import { useState } from "react";
-import { ScrollView, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, ScrollView, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const SecurityAndPrivacy = () => {
@@ -287,7 +287,7 @@ const SecurityAndPrivacy = () => {
                     <View className="flex-row items-center gap-2">
                         {isSubmitting ? (
                             <>
-                                <Ionicons name="reload" size={20} color="#FFFFFF" className="animate-spin" />
+                                <ActivityIndicator size="small" color="#ffffff" />
                                 <Text className="text-white font-manrope-semibold">
                                     Updating...
                                 </Text>

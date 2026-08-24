@@ -10,6 +10,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import { useState } from "react";
 import {
+    ActivityIndicator,
     ScrollView,
     Switch,
     Text,
@@ -265,7 +266,7 @@ const Notifications = () => {
                         toggleSetting(setting.type)
                     }
                     trackColor={{
-                        false: "#2D3A4F",
+                        false: "#64748B",
                         true: "#6366F1",
                     }}
                     thumbColor="#FFFFFF"
@@ -361,7 +362,8 @@ const Notifications = () => {
 
                 {/* Settings */}
                 {isLoading ? (
-                    <View className="py-10 items-center">
+                    <View className="flex-row gap-2 py-10 h-screen justify-center items-center">
+                        <ActivityIndicator size="small" color="#ffffff" />
                         <Text className="text-sm font-manrope-light text-text-muted">
                             Loading notification settings...
                         </Text>
