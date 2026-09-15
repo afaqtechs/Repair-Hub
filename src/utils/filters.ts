@@ -2,13 +2,10 @@
 import { FilterType, FilterValues } from "@/types/filters";
 
 export const EMPTY_FILTERS: FilterValues = {
-  brand: null,
-  model: null,
-  priceMin: null,
+ priceMin: null,
   priceMax: null,
-  categoryId: null,
-  platformId: null,
-  conditionId: null,
+  categoryId:null,
+  platformId:null,
   city: null,
 };
 
@@ -25,12 +22,6 @@ export const getActiveFilterCount = (
   type: FilterType
 ): number => {
   let count = 0;
-
-  if (type === "parts") {
-    if (filters.brand) count++;
-    if (filters.model) count++;
-    if (filters.conditionId) count++;
-  }
 
   if (
     filters.priceMin !== null ||
@@ -51,32 +42,12 @@ export const getActiveFilterCount = (
  */
 export const getFilterLabels = (
   filters: FilterValues,
-  type: FilterType
+  type: FilterType,
+  categories: { id: string; name: string }[] = [],
+  platforms: { id: string; name: string }[] = []
 ): ActiveFilter[] => {
   const result: ActiveFilter[] = [];
 
-  if (type === "parts") {
-    if (filters.brand) {
-      result.push({
-        key: "brand",
-        label: filters.brand,
-      });
-    }
-
-    if (filters.model) {
-      result.push({
-        key: "model",
-        label: filters.model,
-      });
-    }
-
-    if (filters.conditionId) {
-      result.push({
-        key: "conditionId",
-        label: "Condition",
-      });
-    }
-  }
 
   if (
     filters.priceMin !== null ||
@@ -94,16 +65,24 @@ export const getFilterLabels = (
   }
 
   if (filters.categoryId) {
+
+    const category = categories.find(
+      (item) => item.id === filters.categoryId
+    );
+
     result.push({
       key: "categoryId",
-      label: "Category",
+      label: category?.name ?? "Category",
     });
   }
 
   if (filters.platformId) {
+    const platform = platforms.find(
+      (item) => item.id === filters.platformId
+    );
     result.push({
       key: "platformId",
-      label: "Platform",
+      label: platform?.name ?? 'Platform',
     });
   }
 

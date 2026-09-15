@@ -3,6 +3,7 @@ import EmptyState from '@/src/components/ui/EmptyState';
 import HTMLRenderer from '@/src/components/ui/HTMLRenderer';
 import { useAuth } from '@/src/context/AuthContext';
 import {
+    useIncrementPartViews,
     useInfiniteParts,
     usePart,
     usePartsMutations,
@@ -15,7 +16,7 @@ import { showError, showSuccess } from '@/src/lib/toast';
 import { Ionicons } from '@expo/vector-icons';
 import { FlashList } from '@shopify/flash-list';
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import {
     ActivityIndicator,
     Dimensions,
@@ -85,6 +86,20 @@ const PartDetail = () => {
 
     const { updatePartAvailability } = usePartsMutations();
 
+    const partId = Array.isArray(id) ? id[0] : id;
+
+    const incrementViews = useIncrementPartViews(partId);
+
+    const hasIncrementedView = React.useRef(false);
+
+    useEffect(() => {
+        if (!partId || hasIncrementedView.current) return;
+
+        hasIncrementedView.current = true;
+
+        incrementViews.mutate();
+    }, [partId]);
+
     const parts = useMemo(
         () => partsData?.pages.flatMap((page) => page.data) ?? [],
         [partsData]
@@ -99,9 +114,7 @@ const PartDetail = () => {
             (item) =>
                 item.id !== part.id &&
                 (item.category?.id === part.category?.id ||
-                    item.platform?.id === part.platform?.id ||
-                    item.brand === part.brand ||
-                    item.model === part.model)
+                    item.platform?.id === part.platform?.id)
         );
     }, [parts, part]);
 
@@ -123,10 +136,11 @@ const PartDetail = () => {
     const error = partsError || technicianError || partError;
     const loading = loadingPart || loadingParts || loadingTechnician;
 
+
     if (loading) {
         return (
             <View className="flex-1 items-center justify-center bg-bg">
-                <ActivityIndicator size="large" color="#2563EB" />
+                <ActivityIndicator size="large" color="#5EAE32" />
             </View>
         );
     }
@@ -193,6 +207,7 @@ const PartDetail = () => {
             </View>
         );
     };
+
 
     const handleRemove = async () => {
         if (!part) return;
@@ -355,24 +370,57 @@ const PartDetail = () => {
                 <View className="flex-col gap-5 mt-5 pb-32 px-5">
                     <View className="w-full px-5 pt-5 pb-6 bg-card rounded-xl shadow-xs">
                         <View className="flex-row items-center justify-between mb-4">
-                            <View className="flex-row items-center gap-1">
-                                <Ionicons name="location" size={15} color="#5B3DF5" />
-                                <Text className="text-xs text-textSecondary font-manrope-medium">
-                                    {technician?.city}
-                                </Text>
-                            </View>
-                            <View className="px-3 py-1 bg-bg/70 rounded-xl">
-                                <Text className="text-xs text-text font-manrope-medium">
-                                    {part?.condition?.name}
-                                </Text>
-                            </View>
+                            {technician?.city && (
+                                <View className="flex-row items-center gap-1">
+                                    <Ionicons name="location" size={15} color="#5EAE32" />
+                                    <Text className="text-xs text-textSecondary font-manrope-medium">
+                                        {technician?.city}
+                                    </Text>
+                                </View>
+
+                            )}
+                            {part?.condition?.toLowerCase() === "new" ? (
+                                <View className="flex-row items-center bg-primary/10 px-2 py-1 rounded-full">
+                                    <Ionicons
+                                        name="sparkles"
+                                        size={11}
+                                        color="#4CAF50"
+                                    />
+
+                                    <Text className="ml-1 text-[8px] font-manrope-bold text-success">
+                                        NEW
+                                    </Text>
+                                </View>
+                            ) : (
+                                <View className="items-center bg-primary/10 px-2 py-1 rounded-full">
+                                    <Text className="ml-1 text-[8px] font-manrope-bold text-orange-500">
+                                        USED
+                                    </Text>
+                                </View>
+                            )}
                         </View>
-                        <Text
-                            className="text-xl text-text font-manrope-bold mb-2"
-                            numberOfLines={2}
-                        >
-                            {part?.title}
-                        </Text>
+                        <View className='flex-row gap-3 items-center justify-between'>
+                            <Text
+                                className="text-xl text-text font-manrope-bold mb-2"
+                                numberOfLines={2}
+                            >
+                                {part?.title}
+                            </Text>
+
+                            {part?.views_count !== 0 && (
+                                <View className="flex-row items-center bg-black/50 px-2 py-0.5 rounded-3xl">
+                                    <Ionicons
+                                        name="eye-outline"
+                                        size={15}
+                                        color="#FFFFFF"
+                                    />
+
+                                    <Text className="ml-1 text-white text-xs font-manrope-medium">
+                                        {part?.views_count} view
+                                    </Text>
+                                </View>
+                            )}
+                        </View>
 
                         <Text className="text-2xl text-emerald-500 font-manrope-extra mb-5">
                             ETB {part?.price?.toLocaleString()}
@@ -380,7 +428,7 @@ const PartDetail = () => {
 
                         {(!isOwner && isVerified) && (
                             <View className="flex-row gap-3 mb-5">
-                                <TouchableOpacity onPress={handleChat} className="flex-1 border border-primary py-3 rounded-xl items-center">
+                                <TouchableOpacity onPress={handleChat} className="flex-1 border border-primary py-3 rounded-lg items-center">
                                     <Text className="text-primary font-manrope-semibold">
                                         Chat With Owner
                                     </Text>
@@ -395,28 +443,28 @@ const PartDetail = () => {
                                 <TouchableOpacity
                                     onPress={handleMarkUnavailable}
                                     disabled={updatePartAvailability.isPending}
-                                    className="flex-1 border border-primary py-3 rounded-xl items-center"
+                                    className="flex-1 border border-primary py-3 text-sm rounded-lg items-center"
                                 >
                                     {updatePartAvailability.isPending ? (
-                                        <ActivityIndicator size="small" color="#5B3DF5" />
+                                        <ActivityIndicator size="small" color="#5EAE32" />
                                     ) : (
                                         <Text className="text-primary font-manrope-semibold">
                                             {part?.is_available
-                                                ? 'Mark As UnAvailable'
-                                                : 'Mark As Available'}
+                                                ? 'Mark UnAvailable'
+                                                : 'Mark Available'}
                                         </Text>
                                     )}
                                 </TouchableOpacity>
                                 <TouchableOpacity
                                     onPress={handleRemove}
                                     disabled={deletePart.isPending}
-                                    className="flex-1 bg-danger border border-danger py-3 rounded-xl items-center"
+                                    className="flex-1 bg-danger border border-danger py-3 text-sm rounded-lg items-center"
                                 >
                                     {deletePart.isPending ? (
-                                        <ActivityIndicator size="small" color="#5B3DF5" />
+                                        <ActivityIndicator size="small" color="#5EAE32" />
                                     ) : (
                                         <Text className="text-white font-manrope-semibold">
-                                            Remove Spare Part
+                                            Remove Part
                                         </Text>
                                     )}
                                 </TouchableOpacity>
@@ -429,24 +477,6 @@ const PartDetail = () => {
                             Details
                         </Text>
                         <View className="flex-row flex-wrap justify-between gap-y-5">
-                            <View className="w-[48%]">
-                                <Text className="text-base text-text font-manrope-semibold">
-                                    {part?.brand || 'N/A'}
-                                </Text>
-                                <Text className="text-xs text-gray-500 font-manrope">
-                                    Brand
-                                </Text>
-                            </View>
-
-                            {/* Model */}
-                            <View className="w-[48%]">
-                                <Text className="text-base text-text font-manrope-semibold">
-                                    {part?.model || 'N/A'}
-                                </Text>
-                                <Text className="text-xs text-gray-500 font-manrope">
-                                    Model
-                                </Text>
-                            </View>
 
                             <View className="w-[48%]">
                                 <Text className="text-base text-text font-manrope-semibold">
@@ -470,7 +500,7 @@ const PartDetail = () => {
                             {/* Condition */}
                             <View className="w-[48%]">
                                 <Text className="text-base text-text font-manrope-semibold">
-                                    {part?.condition?.name || 'N/A'}
+                                    {part?.condition || 'N/A'}
                                 </Text>
                                 <Text className="text-xs text-gray-500 font-manrope">
                                     Condition
@@ -514,7 +544,7 @@ const PartDetail = () => {
                             <HTMLRenderer html={displayDesc} fontSize={16} lineHeight={24} />
                             {isLongDesc && (
                                 <TouchableOpacity onPress={() => setExpanded(!expanded)}>
-                                    <Text className="text-blue-600 text-sm font-manrope mb-5">
+                                    <Text className="text-green-600 text-sm font-manrope mb-5">
                                         {expanded ? 'Show less' : 'Read more'}
                                     </Text>
                                 </TouchableOpacity>

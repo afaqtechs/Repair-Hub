@@ -2,8 +2,6 @@ import { supabase } from '@/src/lib/supabase';
 
 export type PartFilter = {
   price: number;
-  model: string | null;
-  brand: string | null;
 };
 
 export type TechnicianFilter = {
@@ -37,7 +35,7 @@ export const filtersApi = {
     try {
       const { data, error } = await supabase
         .from('parts')
-        .select('price, model, brand');
+        .select('price');
 
       if (error) {
         logApiError('filterParts', error);

@@ -99,7 +99,7 @@ const Location = () => {
                 <>
                     {loading ? (
                         <View className="flex-1 items-center justify-center bg-bg">
-                            <ActivityIndicator size="large" color="#6366F1" />
+                            <ActivityIndicator size="large" color="#5FAF35" />
                             <Text className="mt-4 text-sm font-manrope-medium text-text-muted">
                                 Loading location...
                             </Text>
@@ -142,7 +142,7 @@ const Location = () => {
                             {/* Location Info Card */}
                             <View className="mb-4 px-4 py-3 bg-card rounded-xl flex-row items-center gap-3">
                                 <View className="w-10 h-10 bg-primary/20 rounded-full items-center justify-center">
-                                    <Ionicons name="location" size={20} color="#6366F1" />
+                                    <Ionicons name="location" size={20} color="#5FAF35" />
                                 </View>
                                 <View className="flex-1">
                                     <Text className="text-sm font-manrope-semibold text-text">
@@ -150,11 +150,6 @@ const Location = () => {
                                     </Text>
                                     <Text className="text-xs font-manrope-light text-text-muted">
                                         {location?.latitude?.toFixed(6)}, {location?.longitude?.toFixed(6)}
-                                    </Text>
-                                </View>
-                                <View className="px-2 py-1 bg-green-500/10 rounded-full">
-                                    <Text className="text-[10px] font-manrope-medium text-green-500">
-                                        Live
                                     </Text>
                                 </View>
                             </View>
@@ -189,7 +184,7 @@ const Location = () => {
                                             startInLoadingState={true}
                                             renderLoading={() => (
                                                 <View className="absolute inset-0 items-center justify-center bg-card">
-                                                    <ActivityIndicator size="small" color="#6366F1" />
+                                                    <ActivityIndicator size="small" color="#5FAF35" />
                                                     <Text className="mt-2 text-xs font-manrope-medium text-text-muted">
                                                         Loading map...
                                                     </Text>

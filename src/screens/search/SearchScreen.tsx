@@ -7,7 +7,7 @@ import Filters from '@/src/components/common/Filters';
 import AppRefreshControl from '@/src/components/ui/AppRefreshControl';
 import ConfirmModal from '@/src/components/ui/ConfirmModal';
 import SortModal from '@/src/components/ui/SortModal';
-import { useTechniciansLocation } from '@/src/hooks';
+import { useCategories, usePlatforms, useTechniciansLocation } from '@/src/hooks';
 import { useInfiniteParts } from '@/src/hooks/useParts';
 import { useInfiniteRequests } from '@/src/hooks/useRequest';
 import { useSearch } from '@/src/hooks/useSearch';
@@ -45,7 +45,10 @@ const SearchScreen = () => {
 
   const [filters, setFilters] = useState<FilterValues>(clearAllFilters());
 
-  const filterLabels = getFilterLabels(filters, type);
+  const { data: categories = [] } = useCategories();
+  const { data: platforms = [] } = usePlatforms();
+
+  const filterLabels = getFilterLabels(filters, type, categories, platforms);
 
   const handleClearFilter = (key: keyof FilterValues) => {
     setFilters((prev) => clearFilter(prev, key));
@@ -85,11 +88,8 @@ const SearchScreen = () => {
     refetch: refetchParts,
   } = useInfiniteParts({
     search: debouncedSearch,
-    brand: filters.brand,
-    model: filters.model,
     categoryId: filters.categoryId,
     platformId: filters.platformId,
-    conditionId: filters.conditionId,
     priceMin: filters.priceMin,
     priceMax: filters.priceMax,
     city: filters.city,
@@ -573,7 +573,7 @@ const SearchScreen = () => {
                   <View className="flex-1 justify-center items-center py-10">
                     <ActivityIndicator
                       size="small"
-                      color="#60A5FA"
+                      color="#5EAE32"
                     />
                   </View>
                 ) : (
@@ -598,7 +598,7 @@ const SearchScreen = () => {
                 <View className="flex-1 justify-center items-center">
                   <ActivityIndicator
                     size="large"
-                    color="#60A5FA"
+                    color="#5EAE32"
                   />
 
                   <Text className="-text mt-4">
@@ -629,7 +629,7 @@ const SearchScreen = () => {
                       isFetchingNext ? (
                         <View className="flex-row justify-center items-center py-4">
                           <ActivityIndicator
-                            color="#60A5FA"
+                            color="#5EAE32"
                           />
 
                           <Text className="text-text ml-2">

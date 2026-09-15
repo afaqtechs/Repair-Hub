@@ -7,7 +7,7 @@ const HomePage = () => {
   const insets = useSafeAreaInsets();
   return (
     <View
-      style={{ flex: 1, paddingTop: insets.top, paddingBottom: insets.bottom + 64 }}
+      style={{ flex: 1, paddingTop: insets.top, paddingBottom: insets.bottom }}
       className="flex-1 bg-bg"
     >
       <HomeScreen />

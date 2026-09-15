@@ -80,7 +80,7 @@ const EmptySearch = ({
                         <Ionicons
                             name="search-outline"
                             size={28}
-                            color="#5B3DF5"
+                            color="#5FAF35"
                         />
                     </View>
 

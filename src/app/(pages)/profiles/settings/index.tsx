@@ -9,23 +9,17 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 const accountItems = [
     { icon: 'person-outline', title: 'Account', route: "/(pages)/profiles/settings/account" },
     { icon: 'lock-closed-outline', title: 'Security and Privacy', route: "/(pages)/profiles/settings/security" },
-];
-
-const preferenceItems = [
-    { icon: 'notifications-outline', title: 'Notifications', route: "/(pages)/profiles/settings/notifications" },
+    // { icon: 'notifications-outline', title: 'Notifications', route: "/(pages)/profiles/settings/notifications" },
     { icon: 'location-outline', title: 'Location', route: "/(pages)/profiles/settings/location" },
 ];
 
 const supportItems = [
-    { icon: 'help-circle-outline', title: 'Help Center', route: "/(pages)/profiles/settings/help" },
     { icon: 'chatbubble-ellipses-outline', title: 'Submit Feedback', route: "/(pages)/profiles/settings/feedback" },
-    { icon: 'information-circle-outline', title: 'About Repair Hub', route: "/(pages)/profiles/settings/about" },
-];
-
-const legalItems = [
+    { icon: 'information-circle-outline', title: 'About Addis Repair', route: "/(pages)/profiles/settings/about" },
     { icon: 'document-outline', title: 'Terms & Conditions', route: "/(pages)/profiles/settings/termsandconditions" },
     { icon: 'shield-outline', title: 'Privacy Policy', route: "/(pages)/profiles/settings/privacypolicy" },
 ];
+
 
 const Setting = () => {
     const router = useRouter();
@@ -91,10 +85,8 @@ const Setting = () => {
                 contentContainerStyle={{ paddingTop: 10, paddingBottom: 40, paddingHorizontal: 16 }}
             >
                 {[
-                    ["Account & Privacy", accountItems],
-                    ["Preferences", preferenceItems],
-                    ["Support", supportItems],
-                    ["Legal", legalItems],
+                    ["Account & Preferences", accountItems],
+                    ["Support & Legal", supportItems],
                 ].map(([title, items]: any, sectionIndex) => (
                     <React.Fragment key={title}>
                         <Text className={`mb-1 px-3 text-xs font-manrope-bold uppercase tracking-wider text-text-muted ${sectionIndex > 0 ? 'mt-6' : ''}`}>

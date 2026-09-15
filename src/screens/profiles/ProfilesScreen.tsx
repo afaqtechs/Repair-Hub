@@ -23,6 +23,7 @@ import {
 } from "react-native";
 import Popover, { PopoverPlacement } from "react-native-popover-view";
 import { SafeAreaView } from "react-native-safe-area-context";
+import AppRefreshControl from '@/src/components/ui/AppRefreshControl';
 
 type IconName = React.ComponentProps<typeof Ionicons>["name"];
 
@@ -34,6 +35,7 @@ const ProfileScreen = () => {
     const [activePopover, setActivePopover] = useState<number | null>(null);
     const [uploadingImages, setUploadingImages] = useState(false);
     const [localImage, setLocalImage] = useState<string | null>(null);
+    const [refreshing, setRefreshing] = useState(false);
 
     const {
         data: technician,
@@ -85,13 +87,7 @@ const ProfileScreen = () => {
                 icon: "settings-outline",
                 path: "/(pages)/profiles/settings",
                 notification: false,
-            },
-            {
-                title: "FAQ",
-                icon: "help-circle-outline",
-                path: "/(pages)/profiles/faq",
-                notification: false,
-            },
+            }
         ];
 
     const {
@@ -140,8 +136,6 @@ const ProfileScreen = () => {
 
                         if (deleteError) {
                             showError("Error deleting old profile image:", deleteError.message);
-                        } else {
-                            showError("Old profile image deleted successfully");
                         }
                     }
                 } catch (deleteError: any) {
@@ -216,23 +210,61 @@ const ProfileScreen = () => {
         }
     };
 
+    const handleRefresh = async () => {
+        setRefreshing(true);
+
+        try {
+            await fetchTechnician();
+        } catch (error) {
+            console.error("Failed to refresh profile:", error);
+        } finally {
+            setRefreshing(false);
+        }
+    };
+
     if (loadingTechnician) {
         return (
             <View className="flex-1 items-center justify-center bg-bg">
-                <ActivityIndicator size="large" color="#2563EB" />
+                <ActivityIndicator size="large" color="#5FAF35" />
             </View>
         );
     }
 
     if (technicianError) {
         return (
-            <SafeAreaView edges={["top", "left", "right"]} className="flex-1 bg-bg">
-                <View className="flex-1 items-center justify-center px-4">
-                    <Ionicons name="alert-circle-outline" size={60} color="#EF4444" />
-                    <Text className="text-red-500 text-lg font-bold mt-4">Something went wrong</Text>
-                    <Text className="text-gray-500 text-sm text-center mt-2">{technicianError.message}</Text>
-                    <TouchableOpacity className="mt-6 bg-[#5B3DF5] px-6 py-3 rounded-xl" onPress={() => fetchTechnician()}>
-                        <Text className="text-text font-semibold">Try Again</Text>
+            <SafeAreaView
+                edges={["top", "left", "right"]}
+                className="flex-1 bg-bg"
+            >
+                <View className="flex-1 items-center justify-center px-6">
+                    <Ionicons
+                        name="cloud-offline-outline"
+                        size={60}
+                        color="#EF4444"
+                    />
+
+                    <Text className="text-text text-lg font-manrope-bold mt-4">
+                        Something went wrong
+                    </Text>
+
+                    <Text className="text-text-muted text-sm text-center mt-2">
+                        {technicianError instanceof Error
+                            ? technicianError.message
+                            : "Unable to load your profile. Please try again."}
+                    </Text>
+
+                    <TouchableOpacity
+                        className="mt-6 bg-primary px-6 py-3 rounded-xl"
+                        onPress={handleRefresh}
+                        disabled={refreshing}
+                    >
+                        {refreshing ? (
+                            <ActivityIndicator color="#FFFFFF" />
+                        ) : (
+                            <Text className="text-white font-manrope-semibold">
+                                Try Again
+                            </Text>
+                        )}
                     </TouchableOpacity>
                 </View>
             </SafeAreaView>
@@ -241,9 +273,40 @@ const ProfileScreen = () => {
 
     if (!technician) {
         return (
-            <View className="flex-1 items-center justify-center bg-bg">
-                <Text className="text-gray-500">User not found</Text>
-            </View>
+            <SafeAreaView
+                edges={["top", "left", "right"]}
+                className="flex-1 bg-bg"
+            >
+                <View className="flex-1 items-center justify-center px-6">
+                    <Ionicons
+                        name="person-outline"
+                        size={60}
+                        color="#94A3B8"
+                    />
+
+                    <Text className="text-text text-lg font-manrope-bold mt-4">
+                        Unable to load profile
+                    </Text>
+
+                    <Text className="text-text-muted text-sm text-center mt-2">
+                        We couldn&apos;t load your profile information.
+                    </Text>
+
+                    <TouchableOpacity
+                        className="mt-6 bg-primary px-6 py-3 rounded-xl"
+                        onPress={handleRefresh}
+                        disabled={refreshing}
+                    >
+                        {refreshing ? (
+                            <ActivityIndicator color="#FFFFFF" />
+                        ) : (
+                            <Text className="text-white font-manrope-semibold">
+                                Try Again
+                            </Text>
+                        )}
+                    </TouchableOpacity>
+                </View>
+            </SafeAreaView>
         );
     }
 
@@ -286,8 +349,8 @@ const ProfileScreen = () => {
                     </Text>
                     {technician?.role === "admin" ? (
                         <TouchableOpacity
-                            onPress={() => Linking.openURL("https://repairhub.vercel.app")}
-                            className="bg-primary px-3 py-2 rounded-full items-center justify-center"
+                            onPress={() => Linking.openURL("https://addis-repair-admin.vercel.app/")}
+                            className="bg-primary px-5 py-2 rounded-full items-center justify-center"
                             activeOpacity={0.8}
                         >
                             <Text className="text-white font-manrope">
@@ -339,7 +402,15 @@ const ProfileScreen = () => {
                 </View>
             </View>
 
-            <ScrollView showsVerticalScrollIndicator={false}>
+            <ScrollView
+                showsVerticalScrollIndicator={false}
+                refreshControl={
+                    <AppRefreshControl
+                        refreshing={refreshing}
+                        onRefresh={handleRefresh}
+                    />
+                }
+            >
                 <View className="flex-1 px-5 pb-10">
                     {/* Profile Card */}
                     <View className="-mt-6 bg-card pt-20 px-5 pb-6 shadow-gray-200/40 rounded-xl">

@@ -24,6 +24,8 @@ import {
 } from "@/types/chat";
 import { showError } from "@/src/lib/toast";
 import { useTechnician } from "@/src/hooks";
+import { useAnnouncements } from "@/src/hooks/chat/useAnnouncements";
+import AnnouncementCard from "@/src/components/chat/AnnouncementCard";
 
 interface ConversationsScreenProps {
   onOpenConversation: (
@@ -52,6 +54,14 @@ const ConversationsScreen = ({
     deleteConversations,
   } = useConversations(user?.id);
 
+  const {
+    announcements = [],
+    isLoading: isAnnouncementsLoading,
+    isRefetching: isAnnouncementsRefetching,
+    refetch: refetchAnnouncements
+  } = useAnnouncements();
+
+  const activeAnnouncements = announcements?.filter((announcement) => announcement?.delete_for_me !== loggedInUserId);
 
   const [
     selectedConversationIds,
@@ -284,12 +294,12 @@ const ConversationsScreen = ({
   /**
    * Loading state.
    */
-  if (isLoading) {
+  if (isLoading || isAnnouncementsLoading) {
     return (
       <View className="flex-1 items-center justify-center bg-bg">
         <ActivityIndicator
           size="large"
-          color="#2563EB"
+          color="#5EAE32"
         />
       </View>
     );
@@ -423,8 +433,11 @@ const ConversationsScreen = ({
         renderItem={renderConversation}
         refreshControl={
           <AppRefreshControl
-            refreshing={isRefetching}
-            onRefresh={refetch}
+            refreshing={isRefetching || isAnnouncementsRefetching}
+            onRefresh={() => {
+              refetch();
+              refetchAnnouncements();
+            }}
           />
         }
         showsVerticalScrollIndicator={false}
@@ -439,32 +452,40 @@ const ConversationsScreen = ({
           selectedConversationIds,
           selectionMode,
         }}
-        ListEmptyComponent={
-          <View className="flex-1 items-center justify-center px-6 py-20">
-
-
-            <View className="h-16 w-16 items-center justify-center rounded-full bg-primary/10">
-              <Ionicons
-                name="chatbubbles-outline"
-                size={30}
-                color="#5B3DF5"
-              />
+        ListHeaderComponent={
+          activeAnnouncements.length > 0 ? (
+            <View>
+              {activeAnnouncements.map((announcement) => (
+                <AnnouncementCard
+                  key={announcement.id}
+                  announcement={announcement}
+                />
+              ))}
             </View>
+          ) : null
+        }
+        ListEmptyComponent={
+          <>
+            {activeAnnouncements.length === 0 && conversationList.length === 0 && (
+              <View className="flex-1 items-center justify-center px-6 py-20">
+                <View className="h-16 w-16 items-center justify-center rounded-full bg-primary/10">
+                  <Ionicons
+                    name="chatbubbles-outline"
+                    size={30}
+                    color="#5EAE32"
+                  />
+                </View>
 
-            <Text
-              className={`mt-5 font-manrope-semibold text-lg text-text`}
-            >
-              No conversations
-            </Text>
+                <Text className="mt-5 font-manrope-semibold text-lg text-text">
+                  No conversations
+                </Text>
 
-            <Text
-              className={`mt-2 text-center font-manrope text-sm text-text-muted`}
-            >
-              Start a conversation
-              with a technician
-              or admin.
-            </Text>
-          </View>
+                <Text className="mt-2 text-center font-manrope text-sm text-text-muted">
+                  Start a conversation with a technician or admin.
+                </Text>
+              </View>
+            )}
+          </>
         }
       />
 

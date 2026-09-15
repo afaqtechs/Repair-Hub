@@ -69,7 +69,7 @@ module.exports = {
         },
 
         primary: {
-          DEFAULT: '#5B3DF5',
+          DEFAULT: '#5EAE32',
           light: '#F1EEFF',
           lighter: '#F8F5FF',
           dark: '#111827',
@@ -82,11 +82,11 @@ module.exports = {
         },
 
         button: {
-          primary: '#5B3DF5',
+          primary: '#5EAE32',
           primaryPressed: '#4525D9',
 
           secondary: '#F1EEFF',
-          secondaryText: '#5B3DF5',
+          secondaryText: '#5EAE32',
 
           disabled: '#D1D5DB',
           disabledText: '#9CA3AF',
@@ -133,7 +133,7 @@ module.exports = {
 
         icon: {
           DEFAULT: '#667085',
-          active: '#5B3DF5',
+          active: '#5EAE32',
           muted: '#98A2B3',
 
           dark: '#CBD5E1',

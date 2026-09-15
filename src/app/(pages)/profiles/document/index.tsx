@@ -41,8 +41,6 @@ const LegalDocument = () => {
     const isLicenseUploaded = !!legalDocumentUrl;
     const licenseStatus = technician?.verification_status ?? "pending";
 
-    console.log()
-
     const [viewerVisible, setViewerVisible] = useState(false);
     const [viewerUrl, setViewerUrl] = useState<string | null>(null);
     const [deletingDocument, setDeletingDocument] = useState(false);

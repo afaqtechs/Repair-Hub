@@ -145,24 +145,23 @@ const ServiceCard = ({
 
       <View className={`${isListView ? "flex-1 justify-between ml-3" : "mt-3"}`}>
         <View>
-          <Text className="text-success font-black text-xl">
-            ETB {service?.price?.toLocaleString() ?? 0}
-          </Text>
+          {service?.price !== 0 ? (
+            <Text className="text-success font-black text-xl">
+              ETB {service?.price?.toLocaleString() ?? 0}
+            </Text>
+          ) : (
+            <View className="self-start rounded-full bg-success/10 px-3 py-1">
+              <Text className="text-warning text-xs font-bold">
+                Price after evaluation
+              </Text>
+            </View>
+          )}
 
-          <TouchableOpacity
-            activeOpacity={0.7}
-            onPress={() => router.push({ pathname: "/(pages)/services/service/[id]", params: { id: service.id } })}
-            className="self-start"
-            style={Platform.select({
-              web: {
-                cursor: 'pointer',
-                transition: 'opacity 0.2s ease',
-              },
-            })}
-          >
-            <Text
-              numberOfLines={2}
-              className="text-sm font-manrope-semibold text-text leading-5 min-h-[40px] hover:opacity-70"
+          <View className='min-h-[50px] flex-col gap-1'>
+            <TouchableOpacity
+              activeOpacity={0.7}
+              onPress={() => router.push({ pathname: "/(pages)/services/service/[id]", params: { id: service.id } })}
+              className="self-start"
               style={Platform.select({
                 web: {
                   cursor: 'pointer',
@@ -170,9 +169,28 @@ const ServiceCard = ({
                 },
               })}
             >
-              {service.title ?? "Untitled Service"}
-            </Text>
-          </TouchableOpacity>
+              <Text
+                numberOfLines={2}
+                className="text-sm font-manrope-semibold text-text leading-5  hover:opacity-70"
+                style={Platform.select({
+                  web: {
+                    cursor: 'pointer',
+                    transition: 'opacity 0.2s ease',
+                  },
+                })}
+              >
+                {service.title ?? "Untitled Service"}
+              </Text>
+            </TouchableOpacity>
+            {service?.technician?.city && (
+              <View className="flex-row items-center mt-0.5">
+                <Ionicons name="location-outline" size={12} color="#1F2937" />
+                <Text numberOfLines={1} className="text-xs text-text-muted ml-1">
+                  {service.technician.city}
+                </Text>
+              </View>
+            )}
+          </View>
 
           {service?.estimated_duration && (
             <View className="self-start mt-3 px-3 py-1 rounded-full bg-primary/10">
@@ -221,7 +239,7 @@ const ServiceCard = ({
           </TouchableOpacity>
         )}
       </View>
-    </View>
+    </View >
   );
 }
 

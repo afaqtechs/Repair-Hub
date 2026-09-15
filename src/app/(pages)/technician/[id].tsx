@@ -1,12 +1,13 @@
 import { createReview, getMyReview } from '@/src/api';
 import PartsCard from '@/src/components/cards/PartsCard';
+import RequestCard from '@/src/components/cards/RequestCard';
 import ServiceCard from '@/src/components/cards/ServiceCard';
 import EmptyState from '@/src/components/ui/EmptyState';
 import HTMLRenderer from '@/src/components/ui/HTMLRenderer';
 import RatingModal from '@/src/components/ui/RatingModal';
 import { useAuth } from '@/src/context/AuthContext';
 import { usePresenceStatus } from '@/src/context/PresenceContext';
-import { usePartByTechnician, useServicesByTechnician, useTechnician, useTechnicianLocation } from '@/src/hooks';
+import { usePartByTechnician, useRequestsByTechnician, useServicesByTechnician, useTechnician, useTechnicianLocation } from '@/src/hooks';
 import { useConversations } from '@/src/hooks/chat/useConversations';
 import { showError, showSuccess } from '@/src/lib/toast';
 import { getStatusColor, getStatusText } from '@/src/utils/statusStyles';
@@ -65,6 +66,12 @@ const TechnicianDetail = () => {
     } = useServicesByTechnician(id);
 
     const {
+        data: requests,
+        error: requestError,
+        refetch: fetchRequests
+    } = useRequestsByTechnician(id);
+
+    const {
         data: technicianLocation,
         error: loadMapError,
         refetch: loadMap
@@ -89,6 +96,10 @@ const TechnicianDetail = () => {
             {
                 name: "Services",
                 key: "services"
+            },
+            {
+                name: "Requests",
+                key: "requests"
             }
         ]
 
@@ -214,7 +225,7 @@ const TechnicianDetail = () => {
     if (loadingTechnician) {
         return (
             <View className="flex-1 items-center justify-center bg-bg">
-                <ActivityIndicator size="large" color="#2563EB" />
+                <ActivityIndicator size="large" color="#5FAF35" />
             </View>
         );
     }
@@ -226,7 +237,7 @@ const TechnicianDetail = () => {
                     <Ionicons name="alert-circle-outline" size={60} color="#EF4444" />
                     <Text className="text-red-500 text-lg font-bold mt-4">Something went wrong</Text>
                     <Text className="text-gray-500 text-sm text-center mt-2">{technicianError.message}</Text>
-                    <TouchableOpacity className="mt-6 bg-[#5B3DF5] px-6 py-3 rounded-xl" onPress={() => fetchTechnician()}>
+                    <TouchableOpacity className="mt-6 bg-[#5FAF35] px-6 py-3 rounded-xl" onPress={() => fetchTechnician()}>
                         <Text className="text-text font-semibold">Try Again</Text>
                     </TouchableOpacity>
                 </View>
@@ -258,7 +269,7 @@ const TechnicianDetail = () => {
                 {isOnline && (
                     <View className='absolute z-10 bottom-0 right-10 flex-row gap-1 items-center'>
                         <View className='h-2 w-2 rounded-full bg-success' />
-                        <Text className='text-success text-xs'>(online)</Text>
+                        <Text className='text-success text-xs'>(Active now)</Text>
                     </View>
                 )}
             </View>
@@ -311,7 +322,7 @@ const TechnicianDetail = () => {
                                         <Ionicons
                                             name="create-outline"
                                             size={12}
-                                            color="#5B3DF5"
+                                            color="#5EAE32"
                                         />
 
                                         <Text className="text-primary text-xs font-manrope-semibold">
@@ -400,7 +411,7 @@ const TechnicianDetail = () => {
                                     <Ionicons name="alert-circle-outline" size={60} color="#EF4444" />
                                     <Text className="text-red-500 text-lg font-bold mt-4">Something went wrong</Text>
                                     <Text className="text-gray-500 text-sm text-center mt-2">{loadMapError.message}</Text>
-                                    <TouchableOpacity className="mt-6 bg-[#5B3DF5] px-6 py-3 rounded-xl" onPress={() => loadMap()}>
+                                    <TouchableOpacity className="mt-6 bg-[#5FAF35] px-6 py-3 rounded-xl" onPress={() => loadMap()}>
                                         <Text className="text-text font-semibold">Try Again</Text>
                                     </TouchableOpacity>
                                 </View>
@@ -494,13 +505,13 @@ const TechnicianDetail = () => {
                                 key={tab.key}
                                 onPress={() => setActiveTab(tab.key)}
                                 className={`flex-1 pb-3 items-center ${activeTab === tab.key
-                                    ? "border-b-2 border-blue-500"
+                                    ? "border-b-2 border-green-500"
                                     : ""
                                     }`}
                             >
                                 <Text
                                     className={`font-medium ${activeTab === tab.key
-                                        ? "text-blue-500"
+                                        ? "text-green-500"
                                         : "text-gray-500"
                                         }`}
                                 >
@@ -519,7 +530,7 @@ const TechnicianDetail = () => {
                                         <Ionicons name="alert-circle-outline" size={60} color="#EF4444" />
                                         <Text className="text-red-500 text-lg font-bold mt-4">Something went wrong</Text>
                                         <Text className="text-gray-500 text-sm text-center mt-2">{partError.message}</Text>
-                                        <TouchableOpacity className="mt-6 bg-[#5B3DF5] px-6 py-3 rounded-xl" onPress={() => fetchParts()}>
+                                        <TouchableOpacity className="mt-6 bg-[#5EAE32] px-6 py-3 rounded-xl" onPress={() => fetchParts()}>
                                             <Text className="text-text font-semibold">Try Again</Text>
                                         </TouchableOpacity>
                                     </View>
@@ -545,14 +556,14 @@ const TechnicianDetail = () => {
                                             </View>}
                                     />)}
                             </>
-                        ) : (
+                        ) : (activeTab === "services") ? (
                             <>
                                 {serviceError ? (
                                     <View className="flex-1 items-center justify-center px-4">
                                         <Ionicons name="alert-circle-outline" size={60} color="#EF4444" />
                                         <Text className="text-red-500 text-lg font-bold mt-4">Something went wrong</Text>
                                         <Text className="text-gray-500 text-sm text-center mt-2">{serviceError.message}</Text>
-                                        <TouchableOpacity className="mt-6 bg-[#5B3DF5] px-6 py-3 rounded-xl" onPress={() => fetchServices()}>
+                                        <TouchableOpacity className="mt-6 bg-[#5FAF35] px-6 py-3 rounded-xl" onPress={() => fetchServices()}>
                                             <Text className="text-text font-semibold">Try Again</Text>
                                         </TouchableOpacity>
                                     </View>
@@ -574,6 +585,38 @@ const TechnicianDetail = () => {
                                         ListEmptyComponent={
                                             <View className="flex-1 items-center justify-center py-24">
                                                 <EmptyState title="No Services" description="No services here" />
+                                            </View>
+                                        }
+                                    />)}
+                            </>
+                        ) : (
+                            <>
+                                {requestError ? (
+                                    <View className="flex-1 items-center justify-center px-4">
+                                        <Ionicons name="alert-circle-outline" size={60} color="#EF4444" />
+                                        <Text className="text-red-500 text-lg font-bold mt-4">Something went wrong</Text>
+                                        <Text className="text-gray-500 text-sm text-center mt-2">{requestError.message}</Text>
+                                        <TouchableOpacity className="mt-6 bg-[#5FAF35] px-6 py-3 rounded-xl" onPress={() => fetchRequests()}>
+                                            <Text className="text-text font-semibold">Try Again</Text>
+                                        </TouchableOpacity>
+                                    </View>
+                                ) : (
+                                    <FlashList
+                                        data={requests}
+                                        keyExtractor={(item) => item.id}
+                                        contentContainerStyle={{ padding: 10, paddingHorizontal: 16, paddingBottom: 100 }}
+                                        showsVerticalScrollIndicator={false}
+                                        numColumns={1}
+                                        ItemSeparatorComponent={() => <View style={{ width: 16 }} />}
+                                        renderItem={({ item }) => (
+                                            <RequestCard
+                                                request={item}
+                                                showListView
+                                            />
+                                        )}
+                                        ListEmptyComponent={
+                                            <View className="flex-1 items-center justify-center py-24">
+                                                <EmptyState title="No Requests" description="No requests here" />
                                             </View>
                                         }
                                     />)}

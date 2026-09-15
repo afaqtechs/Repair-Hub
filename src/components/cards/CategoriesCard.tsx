@@ -25,16 +25,16 @@ const ListCategory = ({
                 })
             }
             activeOpacity={0.7}
-            className="w-[100px] items-center mx-[2px]"
+            className="w-[70px] items-center mx-[2px] border border-border rounded-xl bg-card"
         >
             {/* Category square */}
             <View
-                className="w-[94px] h-[94px] flex-col rounded-xl items-center justify-center bg-card p-3"
+                className="w-[64px] h-[84px] flex-col rounded-xl items-center justify-center bg-card p-3"
             >
                 <Image
                     source={category?.icon_url ? { uri: category?.icon_url } : require("@/assets/ui/background/category_image.jpg")}
                     resizeMode="cover"
-                    className="w-full h-[80%] rounded-xl"
+                    className="w-full h-[80%] rounded-lg"
                 />
 
                 {isOverflow && (
@@ -47,7 +47,7 @@ const ListCategory = ({
 
                 <Text
                     numberOfLines={2}
-                    className="text-[11px] leading-[14px] font-manrope-medium text-center w-[72px] mt-[6px] text-text"
+                    className="text-[9px] leading-[14px] font-manrope-medium text-center w-[72px] mt-[6px] text-text"
                 >
                     {category.name.substring(0, 10)}
                 </Text>

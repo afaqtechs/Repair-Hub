@@ -9,7 +9,7 @@ const AboutRepairHub = () => {
 
   const appVersion = "1.0.0";
   const buildNumber = "100";
-  const releaseDate = "January 2026";
+  const releaseDate = "August 2026";
 
   const features = [
     "Spare parts management",
@@ -36,7 +36,7 @@ const AboutRepairHub = () => {
             <Ionicons name="arrow-back" size={20} color="#1F2937" />
           </TouchableOpacity>
           <Text className="ml-3 text-[18px] font-manrope-semibold text-text">
-            About Repair Hub
+            About Addis Repair
           </Text>
         </View>
       </View>
@@ -53,7 +53,7 @@ const AboutRepairHub = () => {
           </Text>
           <View className="bg-card px-5 py-4 rounded-2xl shadow-sm">
             <Text className="text-sm font-manrope-regular text-text leading-6">
-              Repair Hub is a comprehensive mobile application designed for
+              Addis Repair is a comprehensive mobile application designed for
               technicians and repair professionals. It streamlines the process
               of managing spare parts, tracking repair requests, and providing
               efficient service to customers.
@@ -84,15 +84,15 @@ const AboutRepairHub = () => {
         </View>
 
         {/* Team */}
-        {/* About Repair Hub */}
+        {/* About Addis Repair */}
         <View className="mb-6">
           <Text className="mb-2 px-1 text-xs font-manrope-bold uppercase tracking-wider text-text-muted">
-            About Repair Hub
+            About Addis Repair
           </Text>
 
           <View className="bg-card px-5 py-4 rounded-2xl shadow-sm">
             <Text className="text-sm font-manrope-regular text-text leading-6">
-              Repair Hub brings essential repair services and resources together in
+              Addis Repair brings essential repair services and resources together in
               one convenient mobile platform. It helps technicians manage their
               professional activities, showcase their services, manage spare parts,
               and stay connected with customers.
@@ -106,7 +106,7 @@ const AboutRepairHub = () => {
             </Text>
 
             <Text className="mt-4 text-sm font-manrope-regular text-text leading-6">
-              Repair Hub also provides real-time communication and notifications,
+              Addis Repair also provides real-time communication and notifications,
               making it easier for technicians and customers to stay updated
               throughout the repair process.
             </Text>
@@ -160,7 +160,7 @@ const AboutRepairHub = () => {
             Made with ❤️ by Afaq Techs
           </Text>
           <Text className="text-xs text-text-muted font-manrope-light text-center mt-1.5">
-            © 2026 Repair Hub. All rights reserved.
+            © 2026 Addis Repair. All rights reserved.
           </Text>
         </View>
       </ScrollView>

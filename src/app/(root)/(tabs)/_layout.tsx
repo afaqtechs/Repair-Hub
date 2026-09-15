@@ -14,13 +14,11 @@ export default function TabsLayout() {
 
     const { user } = useAuth();
 
-    const {
-        conversations = [],
-    } = useConversations(user?.id);
+    const { conversations = [] } = useConversations(user?.id);
 
     const unreadCount = useMemo(() => {
         return conversations.reduce(
-            (total: any, conversation: any) =>
+            (total: number, conversation: any) =>
                 total + (conversation.unread_count ?? 0),
             0
         );
@@ -35,7 +33,7 @@ export default function TabsLayout() {
             screenOptions={{
                 headerShown: false,
 
-                tabBarActiveTintColor: "#5B3DF5",
+                tabBarActiveTintColor: "#5EAE32",
                 tabBarInactiveTintColor: "#94A3B8",
 
                 tabBarLabelStyle: {
@@ -67,7 +65,7 @@ export default function TabsLayout() {
                         paddingBottom:
                             Platform.OS === "ios" ? 8 : 6,
 
-                        // iOS
+                        // iOS shadow
                         shadowColor: "#000",
                         shadowOffset: {
                             width: 0,
@@ -136,17 +134,17 @@ export default function TabsLayout() {
                         <View
                             className="w-14 h-14 rounded-full items-center justify-center"
                             style={{
-                                backgroundColor: focused
-                                    ? "#4525D9"
-                                    : "#5B3DF5",
+                                backgroundColor: "#5EAE32",
 
-                                shadowColor: "#5B3DF5",
+                                shadowColor: "#5EAE32",
                                 shadowOffset: {
                                     width: 0,
                                     height: 6,
                                 },
                                 shadowOpacity: 0.25,
                                 shadowRadius: 8,
+
+                                elevation: 5,
                             }}
                         >
                             <Ionicons
@@ -163,10 +161,12 @@ export default function TabsLayout() {
                 name="inbox"
                 options={{
                     title: "Inbox",
+
                     tabBarBadge:
                         unreadCount > 0
                             ? unreadCount
                             : undefined,
+
                     tabBarIcon: ({ color, focused }) => (
                         <View
                             className={`w-10 h-8 items-center justify-center rounded-full ${focused ? "bg-primary/10" : ""

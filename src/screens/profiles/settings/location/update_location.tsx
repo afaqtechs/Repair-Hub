@@ -1,4 +1,4 @@
-import { getCurrentLocation } from '@/src/lib/location';
+import { registerCurrentLocation } from '@/src/lib/registerCurrentLocation';
 import { supabase } from '@/src/lib/supabase';
 import { showError, showSuccess } from '@/src/lib/toast';
 import { useProfileStore } from '@/store/useProfileStore';
@@ -10,7 +10,7 @@ import { ActivityIndicator, Text, TextInput, TouchableOpacity, View } from 'reac
 type Props = {
     setUpdatingLocation: React.Dispatch<React.SetStateAction<boolean>>;
     location: TechnicianLocation | null;
-     technicianId: string
+    technicianId: string
 };
 
 const UpdateLocation = ({ technicianId, location, setUpdatingLocation }: Props) => {
@@ -38,7 +38,7 @@ const UpdateLocation = ({ technicianId, location, setUpdatingLocation }: Props) 
     const handleGetCurrentLocation = async () => {
         setIsFetchingLocation(true);
         try {
-            const currentLocation = await getCurrentLocation();
+            const currentLocation = await registerCurrentLocation(technicianId);
 
             if (currentLocation) {
                 setField("latitude", currentLocation.latitude.toString());

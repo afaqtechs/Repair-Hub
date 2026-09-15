@@ -16,7 +16,6 @@ const HTMLRenderer = ({
 
     const { width } = useWindowDimensions();
 
-
     return (
         <RenderHTML
             contentWidth={width}

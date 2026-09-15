@@ -51,17 +51,8 @@ export function usePlatformMutations() {
     },
   });
 
-  const deletePlatform = useMutation({
-    mutationFn: (id: string) => platformsApi.remove(id),
-    onSuccess: (_, id) => {
-      queryClient.invalidateQueries({ queryKey: PLATFORM_KEYS.lists() });
-      queryClient.removeQueries({ queryKey: PLATFORM_KEYS.detail(id) });
-    },
-  });
-
   return {
     createPlatform,
-    updatePlatform,
-    deletePlatform,
+    updatePlatform
   };
 }

@@ -1,4 +1,5 @@
 import PartsCard from '@/src/components/cards/PartsCard';
+import RequestCard from '@/src/components/cards/RequestCard';
 import ServiceCard from '@/src/components/cards/ServiceCard';
 import AppRefreshControl from '@/src/components/ui/AppRefreshControl';
 import EmptyState from '@/src/components/ui/EmptyState';
@@ -91,7 +92,7 @@ const CategoryDetail = () => {
             default:
                 return sorted;
         }
-    }, [services, sortValue, activeTab, parts,requests]);
+    }, [services, sortValue, activeTab, parts, requests]);
 
     const error = partsError || serviceError || requestError;
     const loading = loadingParts || loadingServices || loadingRequests;
@@ -99,7 +100,7 @@ const CategoryDetail = () => {
     if (loading) {
         return (
             <View className="flex-1 items-center justify-center bg-bg">
-                <ActivityIndicator size="large" color="#2563EB" />
+                <ActivityIndicator size="large" color="#5EAE32" />
             </View>
         );
     }
@@ -111,7 +112,7 @@ const CategoryDetail = () => {
                     <Ionicons name="alert-circle-outline" size={60} color="#EF4444" />
                     <Text className="text-red-500 text-lg font-bold mt-4">Something went wrong</Text>
                     <Text className="text-gray-500 text-sm text-center mt-2">{error.message}</Text>
-                    <TouchableOpacity className="mt-6 bg-[#5B3DF5] px-6 py-3 rounded-xl" onPress={() => {
+                    <TouchableOpacity className="mt-6 bg-[#5FAF35] px-6 py-3 rounded-xl" onPress={() => {
                         refetchParts();
                         refetchServices();
                     }}>
@@ -149,13 +150,13 @@ const CategoryDetail = () => {
                             key={tab.key}
                             onPress={() => setActiveTab(tab.key)}
                             className={`flex-1 pb-3 items-center ${activeTab === tab.key
-                                ? "border-b-2 border-blue-500"
+                                ? "border-b-2 border-green-500"
                                 : ""
                                 }`}
                         >
                             <Text
                                 className={`font-medium ${activeTab === tab.key
-                                    ? "text-blue-500"
+                                    ? "text-green-500"
                                     : "text-gray-500"
                                     }`}
                             >
@@ -286,11 +287,10 @@ const CategoryDetail = () => {
                                 }
                                 ItemSeparatorComponent={() => <View style={{ width: 16 }} />}
                                 renderItem={({ item, index }) => (
-                                    <ServiceCard
-                                        service={item}
+                                    <RequestCard
+                                        request={item}
                                         index={index}
                                         showListView={listView}
-                                        showSave
                                     />
                                 )}
                                 ListEmptyComponent={

@@ -55,7 +55,7 @@ const SavedItems = () => {
                     <Ionicons name="alert-circle-outline" size={60} color="#EF4444" />
                     <Text className="text-red-500 text-lg font-bold mt-4">Something went wrong</Text>
                     <Text className="text-gray-500 text-sm text-center mt-2">{error.message}</Text>
-                    <TouchableOpacity className="mt-6 bg-[#5B3DF5] px-6 py-3 rounded-xl" onPress={() => {
+                    <TouchableOpacity className="mt-6 bg-[#5EAE32] px-6 py-3 rounded-xl" onPress={() => {
                         refetchParts();
                         refetchServices();
                     }}>
@@ -94,13 +94,13 @@ const SavedItems = () => {
                             key={tab.key}
                             onPress={() => setActiveTab(tab.key)}
                             className={`flex-1 pb-3 items-center ${activeTab === tab.key
-                                ? "border-b-2 border-blue-500"
+                                ? "border-b-2 border-green-500"
                                 : ""
                                 }`}
                         >
                             <Text
                                 className={`font-medium ${activeTab === tab.key
-                                    ? "text-blue-500"
+                                    ? "text-green-500"
                                     : "text-gray-500"
                                     }`}
                             >
@@ -112,7 +112,7 @@ const SavedItems = () => {
             </View>
             {loading ? (
                 <View className="flex-1 justify-center items-center">
-                    <ActivityIndicator size="large" color="#60A5FA" />
+                    <ActivityIndicator size="large" color="#5EAE32" />
                     <Text className="text-text mt-4">Loading services...</Text>
                 </View>
             ) : (

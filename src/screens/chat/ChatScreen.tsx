@@ -181,7 +181,7 @@ const MessageItem = memo(
         >
           <View
             className={`max-w-[80%] rounded-lg px-4 py-1 ${isMine
-              ? ' bg-primary'
+              ? ' bg-blue-500'
               : ' bg-primary/30'
               }`}
           >
@@ -228,7 +228,7 @@ const MessageItem = memo(
               )}
 
               {isMine && status === 'seen' && (
-                <Ionicons name="checkmark-done" size={14} color="#60A5FA" />
+                <Ionicons name="checkmark-done" size={14} color="#5EAE32" />
               )}
             </View>
           </View>
@@ -905,19 +905,7 @@ export default function ChatScreen({
           >
             <View className="border-t px-3 pt-2 border-border bg-bg">
               <View className="flex-row items-end rounded-3xl px-2 py-1.5 bg-card">
-                <TouchableOpacity
-                  activeOpacity={0.7}
-                  className="h-10 w-10 items-center justify-center"
-                  hitSlop={8}
-                  onPress={() => { }}
-                >
-                  <Ionicons
-                    name="add"
-                    size={24}
-                    color="#9CA3AF"
-                  />
-                </TouchableOpacity>
-
+               
                 <TextInput
                   value={text}
                   onChangeText={handleChangeText}

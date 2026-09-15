@@ -237,13 +237,13 @@ const AppSelectModal = ({
                                     {adding ? (
                                         <ActivityIndicator
                                             size="small"
-                                            color="#2563EB"
+                                            color="#5EAE32"
                                         />
                                     ) : (
                                         <Ionicons
                                             name="add-circle-outline"
                                             size={20}
-                                            color="#2563EB"
+                                            color="#5EAE32"
                                         />
                                     )}
 
@@ -261,7 +261,7 @@ const AppSelectModal = ({
                                 <View className="flex-1 items-center justify-center">
                                     <ActivityIndicator
                                         size="large"
-                                        color="#2563EB"
+                                        color="#5EAE32"
                                     />
                                 </View>
                             ) : (
@@ -307,7 +307,7 @@ const AppSelectModal = ({
                                                     <Ionicons
                                                         name="checkmark"
                                                         size={20}
-                                                        color="#3B82F6"
+                                                        color="#5EAE32"
                                                     />
                                                 )}
                                             </TouchableOpacity>

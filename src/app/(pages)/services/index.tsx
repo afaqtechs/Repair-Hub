@@ -2,10 +2,11 @@ import ServiceCard from '@/src/components/cards/ServiceCard'
 import Filters from '@/src/components/common/Filters'
 import AppRefreshControl from '@/src/components/ui/AppRefreshControl'
 import SortModal from '@/src/components/ui/SortModal'
-import { useTechniciansLocation } from '@/src/hooks'
+import { useCategories, usePlatforms, useServicesByCategory, useTechniciansLocation } from '@/src/hooks'
 import { useSearch } from '@/src/hooks/useSearch'
 import { useInfiniteServices } from '@/src/hooks/useServices'
 import { clearAllFilters, clearFilter, getActiveFilterCount, getFilterLabels } from '@/src/utils/filters'
+import { Category } from '@/types/category'
 import { FilterValues } from '@/types/filters'
 import { Service } from '@/types/services'
 import { Ionicons } from '@expo/vector-icons'
@@ -27,17 +28,37 @@ const Services = () => {
     const { searchQuery, setSearchQuery } = useSearch();
     const [debouncedSearch, setDebouncedSearch] = useState(searchQuery);
 
+    const [activeCategory, setActiveCategory] = useState<Category | null>(null);
+
     const [showFilters, setShowFilters] = useState(false);
 
     const [filters, setFilters] =
         useState<FilterValues>(clearAllFilters());
 
-    const filterLabels = getFilterLabels(filters, 'parts');
+    const { data: categories = [] } = useCategories();
+    const { data: platforms = [] } = usePlatforms();
+
+    const {
+        data: categoryServices = [],
+        isLoading: loadingCategoryServices,
+    } = useServicesByCategory(String(activeCategory?.id));
+
+    const categoryItems = [
+        {
+            id: 'all',
+            name: 'All',
+            icon_url: null,
+        },
+        ...categories,
+    ];
+
+    const filterLabels = getFilterLabels(filters, 'parts', categories, platforms);
 
     const activeFilterCount = getActiveFilterCount(
         filters,
         'parts'
     );
+
 
     const handleClearFilter = (key: keyof FilterValues) => {
         setFilters((prev) => clearFilter(prev, key));
@@ -89,7 +110,9 @@ const Services = () => {
         return data?.pages.flatMap((page) => page.data || []) ?? [];
     }, [data]);
 
-    const servicesWithDistance = services.map((service) => ({
+    const displayedPartsWithDistance = (
+        activeCategory === null ? services : categoryServices
+    ).map((service) => ({
         ...service,
         distance: distanceMap.get(service.technician_id),
     }));
@@ -109,7 +132,7 @@ const Services = () => {
 
     // 4. Sort the server-filtered results locally
     const sortedResults = React.useMemo(() => {
-        const sorted = [...servicesWithDistance];
+        const sorted = [...displayedPartsWithDistance];
 
         switch (sortValue) {
             case 'latest':
@@ -139,7 +162,7 @@ const Services = () => {
             default:
                 return sorted;
         }
-    }, [servicesWithDistance, sortValue]);
+    }, [displayedPartsWithDistance, sortValue]);
 
     // Handle fetching next page on scroll end
     const handleEndReached = () => {
@@ -178,7 +201,7 @@ const Services = () => {
                             placeholderTextColor="#94A3B8"
                             className="flex-1 ml-2 "
                             style={{
-                                color: '#F8FAFC',
+                                color: '#171A2B',
                                 fontSize: 16,
                             }}
                             onChangeText={(text) => setSearchQuery(text)}
@@ -215,10 +238,11 @@ const Services = () => {
             </View>
 
             {/* Controls Header */}
-            <View className="px-5 pb-3 border-b border-border">
-                {filterLabels.length > 0 && (
-                    <View className="mb-3 flex-row items-center justify-between gap-2">
-                        <ScrollView horizontal>
+            <View className="px-5 mb-3">
+
+                {filterLabels.length > 0 ? (
+                    <View className="flex-row items-center justify-between gap-2">
+                        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
                             <View className="flex-row flex-wrap gap-2">
                                 {filterLabels.map((filter) => (
                                     <View
@@ -228,7 +252,11 @@ const Services = () => {
                                         <Text className="text-sm font-medium text-primary">
                                             {filter.label}
                                         </Text>
-                                        <TouchableOpacity onPress={() => handleClearFilter(filter.key)} className="items-center p-0.5 rounded-full bg-danger">
+
+                                        <TouchableOpacity
+                                            onPress={() => handleClearFilter(filter.key)}
+                                            className="items-center p-0.5 rounded-full bg-danger"
+                                        >
                                             <Ionicons
                                                 name="close"
                                                 size={12}
@@ -239,52 +267,68 @@ const Services = () => {
                                 ))}
                             </View>
                         </ScrollView>
+
                         <TouchableOpacity
-                            onPress={() => handleClearAll()}
-                            className="border-danger bg-danger px-3 py-1.5 rounded-full">
-                            <Text className="text-white text-xs">Clear All</Text>
+                            onPress={handleClearAll}
+                            className="border-danger bg-danger px-3 py-1.5 rounded-full"
+                        >
+                            <Text className="text-white text-xs">
+                                Clear All
+                            </Text>
                         </TouchableOpacity>
+                    </View>
+                ) : (
+                    <View className="">
+                        <ScrollView
+                            horizontal
+                            showsHorizontalScrollIndicator={false}
+                            contentContainerStyle={{
+                                gap: 8,
+                            }}
+                        >
+                            {categoryItems.map((category) => {
+                                const isActive =
+                                    category.id === 'all'
+                                        ? activeCategory === null
+                                        : activeCategory?.id === category.id;
+
+                                return (
+                                    <TouchableOpacity
+                                        key={category.id}
+                                        onPress={() => {
+                                            if (category.id === 'all') {
+                                                setActiveCategory(null);
+                                            } else {
+                                                setActiveCategory(category as Category);
+                                            }
+                                        }}
+                                        activeOpacity={0.8}
+                                        className={`flex-row items-center gap-1.5 rounded-full px-5 py-1.5 ${isActive
+                                            ? 'bg-primary'
+                                            : 'bg-primary/10 border border-border'
+                                            }`}
+                                    >
+                                        <Text
+                                            className={`text-sm font-medium ${isActive
+                                                ? 'text-white'
+                                                : 'text-text'
+                                                }`}
+                                        >
+                                            {category.name}
+                                        </Text>
+                                    </TouchableOpacity>
+                                );
+                            })}
+                        </ScrollView>
                     </View>
                 )}
-                <View className="flex-row items-center justify-between">
-                    <Text className="text-text-muted text-base font-medium">
-                        Found{' '}
-                        <Text className="font-bold text-primary">
-                            ({totalCount})
-                        </Text>
-                    </Text>
-
-                    <View className="flex-row items-center gap-2">
-                        <TouchableOpacity
-                            onPress={() => setSortModalVisible(true)}
-                            className="w-10 h-10 rounded-md border border-border bg-card items-center justify-center"
-                        >
-                            <Ionicons
-                                name="swap-vertical-outline"
-                                size={20}
-                                color='#1F2937'
-                            />
-                        </TouchableOpacity>
-
-                        <TouchableOpacity
-                            onPress={() => setListView(!listView)}
-                            className="w-10 h-10 rounded-md border border-border bg-card items-center justify-center"
-                        >
-                            <Ionicons
-                                name={listView ? 'grid-outline' : 'list-outline'}
-                                size={20}
-                                color="#1F2937"
-                            />
-                        </TouchableOpacity>
-                    </View>
-                </View>
             </View>
 
             {/* List Body */}
-            <View className="flex-1 pt-3">
-                {isLoading ? (
+            <View className="flex-1">
+                {isLoading || loadingCategoryServices ? (
                     <View className="flex-1 justify-center items-center">
-                        <ActivityIndicator size="large" color='#60A5FA' />
+                        <ActivityIndicator size="large" color='#5EAE32' />
                         <Text className="text-text mt-4">Loading services...</Text>
                     </View>
                 ) : sortedResults.length > 0 ? (
@@ -307,10 +351,44 @@ const Services = () => {
                             }
                             onEndReached={handleEndReached}
                             onEndReachedThreshold={0.5}
+                            ListHeaderComponent={
+                                <View className="px-2 flex-row items-center justify-between pb-3 border-b border-border">
+                                    <Text className="text-text-muted text-base font-medium">
+                                        Found{' '}
+                                        <Text className="font-bold text-primary">
+                                            ({totalCount})
+                                        </Text>
+                                    </Text>
+
+                                    <View className="flex-row items-center gap-2">
+                                        <TouchableOpacity
+                                            onPress={() => setSortModalVisible(true)}
+                                            className="w-10 h-10 rounded-md border border-border bg-card items-center justify-center"
+                                        >
+                                            <Ionicons
+                                                name="swap-vertical-outline"
+                                                size={20}
+                                                color='#1F2937'
+                                            />
+                                        </TouchableOpacity>
+
+                                        <TouchableOpacity
+                                            onPress={() => setListView(!listView)}
+                                            className="w-10 h-10 rounded-md border border-border bg-card items-center justify-center"
+                                        >
+                                            <Ionicons
+                                                name={listView ? 'grid-outline' : 'list-outline'}
+                                                size={20}
+                                                color="#1F2937"
+                                            />
+                                        </TouchableOpacity>
+                                    </View>
+                                </View>
+                            }
                             ListFooterComponent={
                                 isFetchingNextPage ? (
                                     <View className="flex-row justify-center items-center py-4">
-                                        <ActivityIndicator color='#60A5FA' />
+                                        <ActivityIndicator color='#5EAE32' />
                                         <Text className="text-text ml-2">
                                             Loading more services...
                                         </Text>

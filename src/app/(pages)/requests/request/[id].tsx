@@ -108,7 +108,7 @@ const RequestDetail = () => {
     if (loading) {
         return (
             <View className="flex-1 items-center justify-center bg-bg">
-                <ActivityIndicator size="large" color="#2563EB" />
+                <ActivityIndicator size="large" color="#5EAE32" />
             </View>
         );
     }
@@ -320,7 +320,7 @@ const RequestDetail = () => {
                                 <Ionicons
                                     name="location"
                                     size={15}
-                                    color="#5B3DF5"
+                                    color="#5EAE32"
                                 />
                                 <Text className="text-xs text-textSecondary font-manrope-medium">
                                     {technician?.city}
@@ -363,7 +363,7 @@ const RequestDetail = () => {
                                     className="flex-1 border border-primary py-3 rounded-xl items-center"
                                 >
                                     {updateRequestStatus.isPending ? (
-                                        <ActivityIndicator size="small" color="#5B3DF5" />
+                                        <ActivityIndicator size="small" color="#5EAE32" />
                                     ) : (
                                         <Text className="text-primary font-manrope-semibold">
                                             {request?.is_active ? "Mark In Active" : "Mark Active"}
@@ -376,7 +376,7 @@ const RequestDetail = () => {
                                     className="flex-1 bg-danger border border-danger py-3 rounded-xl items-center"
                                 >
                                     {deleteRequest.isPending ? (
-                                        <ActivityIndicator size="small" color="#5B3DF5" />
+                                        <ActivityIndicator size="small" color="#5EAE32" />
                                     ) : (
                                         <Text className="text-white font-manrope-semibold">
                                             Remove Request
@@ -454,7 +454,7 @@ const RequestDetail = () => {
                             />
                             {isLongDesc && (
                                 <TouchableOpacity onPress={() => setExpanded(!expanded)}>
-                                    <Text className="text-blue-600 text-sm font-manrope mb-5">
+                                    <Text className="text-green-600 text-sm font-manrope mb-5">
                                         {expanded ? "Show less" : "Read more"}
                                     </Text>
                                 </TouchableOpacity>

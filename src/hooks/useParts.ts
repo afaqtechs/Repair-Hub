@@ -1,5 +1,5 @@
 import { GetAllPartsParams, partApi } from '@/src/api';
-import { CreatePartDto, UpdatePartDto } from '@/types/parts';
+import {  CreatePartDto, UpdatePartDto } from '@/types/parts';
 import {
   keepPreviousData,
   useInfiniteQuery,
@@ -31,24 +31,41 @@ export function useParts(params: GetAllPartsParams = {}) {
 }
 
 // Fixed infinite loading hook
-export function useInfiniteParts(params: Omit<GetAllPartsParams, 'page'> = {}) {
-  return useInfiniteQuery({
-    queryKey: PART_KEYS.infinite(params),
-    queryFn: ({ pageParam = 1 }) =>
-      partApi.getAllParts({ ...params, page: pageParam }),
-    initialPageParam: 1,
-    getNextPageParam: (lastPage) => {
-      // Prevent pagination if data is empty or end of pages reached
-      if (!lastPage || !lastPage.data || lastPage.data.length === 0) {
-        return undefined;
-      }
-      if (lastPage.currentPage < lastPage.totalPages) {
-        return lastPage.currentPage + 1;
-      }
-      return undefined;
-    },
-    staleTime: 1000 * 60 * 3,
-  });
+export function useInfiniteParts(
+    params: GetAllPartsParams = {}
+) {
+    return useInfiniteQuery({
+        queryKey: PART_KEYS.infinite(params),
+
+        queryFn: ({ pageParam = 1 }) =>
+            partApi.getAllParts({
+                ...params,
+                page: pageParam,
+            }),
+
+        initialPageParam: 1,
+
+        getNextPageParam: (lastPage) => {
+            if (
+                !lastPage ||
+                !lastPage.data ||
+                lastPage.data.length === 0
+            ) {
+                return undefined;
+            }
+
+            if (
+                lastPage.currentPage <
+                lastPage.totalPages
+            ) {
+                return lastPage.currentPage + 1;
+            }
+
+            return undefined;
+        },
+
+        staleTime: 1000 * 60 * 3,
+    });
 }
 
 export function usePart(id: string) {
@@ -57,6 +74,31 @@ export function usePart(id: string) {
     queryFn: () => partApi.getSinglePart(id),
     enabled: Boolean(id),
   });
+}
+export function useIncrementPartViews(partId: string) {
+    const queryClient = useQueryClient();
+
+    const queryKey = PART_KEYS.detail(partId);
+
+    return useMutation({
+        mutationFn: () => partApi.incrementPartViews(partId),
+
+        onSuccess: (incremented) => {
+            if (!incremented) return;
+
+            queryClient.setQueryData(
+                queryKey,
+                (oldData: any) => {
+                    if (!oldData) return oldData;
+
+                    return {
+                        ...oldData,
+                        views_count: (oldData.views_count ?? 0) + 1,
+                    };
+                }
+            );
+        },
+    });
 }
 
 export function usePartByTechnician(technicianId: string) {

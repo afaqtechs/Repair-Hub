@@ -6,7 +6,7 @@ import { Part } from '@/types/parts';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import React from 'react';
-import { Image, Platform, Text, TouchableOpacity, View } from 'react-native';
+import { Image, Text, TouchableOpacity, View } from 'react-native';
 import SimpleDropdownMenu from '../common/CustomDropDown';
 
 type PartsCardProps = {
@@ -17,6 +17,8 @@ type PartsCardProps = {
     showSave?: boolean;
     index?: number;
     allowEdit?: boolean;
+    isNew?: boolean;
+    isNear?: boolean;
 };
 
 const PartsCard = ({
@@ -27,6 +29,8 @@ const PartsCard = ({
     showListView = false,
     index,
     allowEdit = false,
+    isNew = false,
+    isNear = false,
 }: PartsCardProps) => {
     const router = useRouter();
     const { user } = useAuth();
@@ -82,19 +86,9 @@ const PartsCard = ({
     const isListView = showListView;
     const isFeatured = index === 0;
 
-    const getConditionColor = (condition: string) => {
-        const conditionLower = condition?.toLowerCase() || '';
-        if (conditionLower.includes('new')) return '#10B981';
-        if (conditionLower.includes('slightly used')) return '#34D399';
-        if (conditionLower.includes('refurbished')) return '#F59E0B';
-        if (conditionLower.includes('used')) return '#F97316';
-        if (conditionLower.includes('damaged')) return '#EF4444';
-        return '#6B7280';
-    };
-
     return (
         <View
-            className={`m-1 ${isListView ? "w-full flex-row items-center" : "flex-col"} bg-card p-2 rounded-md`}
+            className={`m-1 ${isListView ? "w-full flex-row items-center" : (isNew || isNear) ? "w-[200px]" : "flex-col"} bg-card p-2 rounded-md`}
             style={{ elevation: 0 }}
         >
             <TouchableOpacity
@@ -116,8 +110,8 @@ const PartsCard = ({
                         />
                     </TouchableOpacity>
                 )}
-                {isOwner && !part?.is_available && (
-                    <View className={`absolute bottom-2 left-2 self-start px-3 py-1 rounded-full ${part?.is_available
+                {(isOwner && !part?.is_available) && (
+                    <View className={`absolute bottom-2 left-1 self-start px-3 py-1 rounded-full ${part?.is_available
                         ? "bg-success"
                         : "bg-danger"
                         }`}>
@@ -126,106 +120,168 @@ const PartsCard = ({
                         </Text>
                     </View>
                 )}
+
+                {isListView && (
+                    <View className="absolute top-2 right-1">
+                        {part?.condition?.toLowerCase() === "new" ? (
+                            <View className="flex-row items-center bg-primary/50 px-2 py-1 rounded-full">
+                                <Ionicons
+                                    name="sparkles"
+                                    size={11}
+                                    color="#4CAF50"
+                                />
+
+                                <Text className="ml-1 text-[8px] font-manrope-bold text-success">
+                                    NEW
+                                </Text>
+                            </View>
+                        ) : (
+                            <View className="items-center bg-primary/50 px-2 py-1 rounded-full">
+                                <Text className="ml-1 text-[8px] font-manrope-bold text-orange-500">
+                                    USED
+                                </Text>
+                            </View>
+                        )}</View>
+                )}
+
+                {(part?.views_count !== 0 && part?.is_available) && (
+                    <View className="absolute bottom-2 right-1 flex-row items-center bg-black/50 px-2 py-0.5 rounded-3xl">
+                        <Ionicons
+                            name="eye-outline"
+                            size={15}
+                            color="#FFFFFF"
+                        />
+
+                        <Text className="ml-1 text-white text-xs font-manrope-medium">
+                            {part?.views_count} {part?.views_count === 1 ? "view" : "views"}
+                        </Text>
+                    </View>
+                )}
             </TouchableOpacity>
 
             <View className={`${isListView ? "flex-1 justify-between ml-3" : "mt-3"}`}>
                 <View>
-                    <Text className="text-success font-black text-xl">
-                        ETB {part?.price?.toLocaleString() ?? 0}
-                    </Text>
 
-                    <TouchableOpacity
-                        activeOpacity={0.7}
-                        onPress={() => router.push({ pathname: "/(pages)/parts/part/[id]", params: { id: part.id } })}
-                        className="self-start"
-                        style={Platform.select({
-                            web: {
-                                cursor: 'pointer',
-                                transition: 'opacity 0.2s ease',
-                            },
-                        })}
-                    >
+                    <View className="flex-row items-start justify-between gap-2">
+                        {/* TITLE */}
                         <Text
                             numberOfLines={2}
-                            className="text-sm font-manrope-semibold text-text leading-5 min-h-[40px] hover:opacity-70"
-                            style={Platform.select({
-                                web: {
-                                    cursor: 'pointer',
-                                    transition: 'opacity 0.2s ease',
-                                },
-                            })}
+                            className="flex-1 text-[11px] leading-[16px] font-manrope-semibold text-text min-h-[32px]"
                         >
-                            {part.title ?? "Untitled Part"}
+                            {part?.title || "Untitled Part"}
                         </Text>
-                    </TouchableOpacity>
 
-                    <View className="flex-row items-center mt-1">
-                        <Ionicons name="business-outline" size={12} color="#1F2937" />
-                        <Text numberOfLines={1} className="text-xs text-text-muted ml-1 flex-1">
-                            {part.brand ?? "Unknown Brand"}
-                            {part.model ? ` • ${part.model}` : ""}
-                        </Text>
+                        {/* SPECIAL BADGE */}
+                        {!isListView && (
+
+                            <>
+                                {part?.condition?.toLowerCase() === "new" ? (
+                                    <View className="flex-row items-center bg-primary/10 px-2 py-1 rounded-full">
+                                        <Ionicons
+                                            name="sparkles"
+                                            size={11}
+                                            color="#4CAF50"
+                                        />
+
+                                        <Text className="ml-1 text-[8px] font-manrope-bold text-success">
+                                            NEW
+                                        </Text>
+                                    </View>
+                                ) : (
+                                    <View className="items-center bg-primary/10 px-2 py-1 rounded-full">
+                                        <Text className="ml-1 text-[8px] font-manrope-bold text-orange-500">
+                                            USED
+                                        </Text>
+                                    </View>
+                                )}
+                            </>
+                        )}
                     </View>
 
-                    {part?.technician?.city && (
-                        <View className="flex-row items-center mt-0.5">
-                            <Ionicons name="location-outline" size={12} color="#1F2937" />
-                            <Text numberOfLines={1} className="text-xs text-text-muted ml-1">
-                                {part.technician.city}
-                            </Text>
-                        </View>
-                    )}
+                    <Text
+                        className="text-[9px] leading-[16px] font-manrope-semibold text-text-muted mt-0.5 bg-primary/10 px-2 py-0.5 rounded-md self-start"
+                    >
+                        {part?.category?.name || "Untitled"}
+                    </Text>
+
+                    <Text
+                        numberOfLines={1}
+                        className="mt-1.5 text-[14px] leading-[18px] font-manrope-bold text-success"
+                    >
+                        {part?.price?.toLocaleString() || "0"} ETB
+                    </Text>
+
                 </View>
 
                 <View className="flex-row items-center justify-between mt-2 pt-2 border-t border-border/30">
-                    <View className="flex-row items-center">
-                        <View
-                            className="w-6 h-6 rounded-full items-center justify-center"
-                            style={{ backgroundColor: getConditionColor(part?.condition?.name || 'New') }}
-                        >
-                            <Text className="text-[10px] text-white font-bold">
-                                {part?.condition?.name?.[0]?.toUpperCase() || 'N'}
-                            </Text>
-                        </View>
-                        <Text className="text-[10px] text-gray-400 ml-1.5 font-manrope-medium">
-                            {part?.condition?.name || 'New'}
-                        </Text>
-                    </View>
 
-                    {isOwner ? (
-                        <SimpleDropdownMenu
-                            items={menuItems}
-                            onSelect={handleMenuAction}
-                            triggerIcon="ellipsis-vertical"
-                            triggerSize={18}
-                        />
+                    {isNew ? (
+                        <View className="flex-row items-center mt-1">
+
+                            <Text
+                                numberOfLines={1}
+                                className="text-[9px] font-manrope-medium text-text-muted"
+                            >
+                                {part?.condition || "New"}
+                            </Text>
+
+                            <View className="w-1 h-1 rounded-full bg-text-muted mx-1.5" />
+
+                            <Text
+                                numberOfLines={1}
+                                className="flex-1 text-[9px] font-manrope-medium text-text-muted"
+                            >
+                                {part?.technician?.city || "Nearby"}
+                            </Text>
+
+                        </View>
                     ) : (
-                        (distance !== null && distance !== undefined && !isOwner) && (
-                            <View className="flex-row items-center">
-                                <Ionicons name="location-outline" size={14} color="#6B7280" />
-                                <Text className="ml-1 text-xs text-gray-500 font-manrope-medium">
-                                    {distance} km away
-                                </Text>
-                            </View>
-                        )
+                        <>
+                            <Text
+                                numberOfLines={1}
+                                className="flex-1 text-[9px] font-manrope-medium text-text-muted"
+                            >
+                                {part?.technician?.city || "Nearby"}
+                            </Text>
+
+                            {isOwner ? (
+                                <SimpleDropdownMenu
+                                    items={menuItems}
+                                    onSelect={handleMenuAction}
+                                    triggerIcon="ellipsis-vertical"
+                                    triggerSize={18}
+                                />
+                            ) : (
+                                (distance !== null && distance !== undefined && !isOwner) && (
+                                    <View className="flex-row items-center">
+                                        <Ionicons name="location-outline" size={14} color="#6B7280" />
+                                        <Text className="ml-1 text-xs text-gray-500 font-manrope-medium">
+                                            {distance} km away
+                                        </Text>
+                                    </View>
+                                )
+                            )}
+                        </>
                     )}
                 </View>
             </View>
 
-            {(showSave && isListView) && (
-                <TouchableOpacity
-                    onPress={() => toggleSave()}
-                    disabled={saveLoading}
-                    className="absolute top-2 right-2 bg-bg rounded-full p-2 items-center justify-center"
-                >
-                    <Ionicons
-                        name={isSaved ? "heart" : "heart-outline"}
-                        size={20}
-                        color={isSaved ? "#EF4444" : "#1F2937"}
-                    />
-                </TouchableOpacity>
-            )}
-        </View>
+            {
+                (showSave && isListView) && (
+                    <TouchableOpacity
+                        onPress={() => toggleSave()}
+                        disabled={saveLoading}
+                        className="absolute top-2 right-2 bg-bg rounded-full p-2 items-center justify-center"
+                    >
+                        <Ionicons
+                            name={isSaved ? "heart" : "heart-outline"}
+                            size={20}
+                            color={isSaved ? "#EF4444" : "#1F2937"}
+                        />
+                    </TouchableOpacity>
+                )
+            }
+        </View >
     );
 }
 

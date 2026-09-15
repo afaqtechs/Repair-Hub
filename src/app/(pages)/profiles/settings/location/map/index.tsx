@@ -64,7 +64,7 @@ export default function MapScreen() {
                     onPress={handleOpenGoogleMaps}
                     className="flex-row items-center gap-1.5 px-3 py-2 bg-primary/20 rounded-full"
                 >
-                    <Ionicons name="navigate-outline" size={14} color="#6366F1" />
+                    <Ionicons name="navigate-outline" size={14} color="#5FAF35" />
                     <Text className="text-primary text-xs font-manrope-semibold">
                         Directions
                     </Text>
@@ -80,7 +80,7 @@ export default function MapScreen() {
                         startInLoadingState={true}
                         renderLoading={() => (
                             <View className="absolute inset-0 items-center justify-center bg-bg">
-                                <ActivityIndicator size="large" color="#6366F1" />
+                                <ActivityIndicator size="large" color="#5FAF35" />
                                 <Text className="mt-4 text-sm font-manrope-medium text-text-muted">
                                     Loading map...
                                 </Text>
@@ -110,7 +110,7 @@ export default function MapScreen() {
                         <View className="mb-3 px-4 py-3 bg-card/95 rounded-xl border border-border">
                             <View className="flex-row items-center justify-between">
                                 <View className="flex-row items-center gap-2">
-                                    <Ionicons name="location" size={16} color="#6366F1" />
+                                    <Ionicons name="location" size={16} color="#5FAF35" />
                                     <Text className="text-xs font-manrope-medium text-text-muted">
                                         {lat?.toFixed(6)}, {lng?.toFixed(6)}
                                     </Text>

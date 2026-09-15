@@ -95,11 +95,7 @@ export const useCreateServiceStore =
       if (!form.category_id) {
         errors.category_id = 'Category is required';
       }
-
-      if (form.price <= 0) {
-        errors.price = 'Price is required';
-      }
-
+      
       if (form.localImages.length === 0) {
         errors.images =
           'Select at least one image';

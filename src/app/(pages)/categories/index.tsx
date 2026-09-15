@@ -26,7 +26,7 @@ const CategoryPage = () => {
           <Ionicons name="alert-circle-outline" size={60} color="#EF4444" />
           <Text className="text-red-500 text-lg font-bold mt-4">Something went wrong</Text>
           <Text className="text-gray-500 text-sm text-center mt-2">{categoryError.message}</Text>
-          <TouchableOpacity className="mt-6 bg-[#5B3DF5] px-6 py-3 rounded-xl" onPress={() => {
+          <TouchableOpacity className="mt-6 bg-[#5EAE32] px-6 py-3 rounded-xl" onPress={() => {
             fetchCategories();
           }}>
             <Text className="text-text font-semibold">Try Again</Text>
@@ -103,7 +103,7 @@ const CategoryPage = () => {
 
       {loadingCategory ? (
         <View className="flex-1 items-center justify-center bg-bg">
-          <ActivityIndicator size="large" color="#2563EB" />
+          <ActivityIndicator size="large" color="#5EAE32" />
         </View>
       ) : (
         <FlashList
@@ -111,7 +111,7 @@ const CategoryPage = () => {
           keyExtractor={(item) => item.id}
           contentContainerStyle={{ paddingHorizontal: 10, paddingTop: 10, paddingBottom: 5 }}
           showsVerticalScrollIndicator={false}
-          numColumns={2}
+          numColumns={3}
           refreshControl={
             <AppRefreshControl
               refreshing={refetchingCategory}
@@ -142,7 +142,7 @@ const CategoryPage = () => {
               </View>
               <Text
                 numberOfLines={1}
-                className="text-[11px] font-manrope-semibold text-center w-full px-3 py-1 bg-primary/10 mt-2 text-primary rounded-lg"
+                className="mt-3 text-[9px] font-manrope-semibold text-center w-full px-3 py-1 bg-primary/10 text-primary rounded-lg"
               >
                 {item.name}
               </Text>

@@ -243,7 +243,7 @@ const Notifications = () => {
                         size={20}
                         color={
                             enabled
-                                ? "#6366F1"
+                                ? "#5FAF35"
                                 : "#64748B"
                         }
                     />
@@ -267,7 +267,7 @@ const Notifications = () => {
                     }
                     trackColor={{
                         false: "#64748B",
-                        true: "#6366F1",
+                        true: "#5FAF35",
                     }}
                     thumbColor="#FFFFFF"
                     ios_backgroundColor="#2D3A4F"
@@ -343,7 +343,7 @@ const Notifications = () => {
                             color={
                                 allEnabled
                                     ? "#1F2937"
-                                    : "#22C55E"
+                                    : "#ffffff"
                             }
                         />
 

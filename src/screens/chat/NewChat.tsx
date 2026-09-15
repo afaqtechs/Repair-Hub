@@ -129,7 +129,7 @@ const NewChat = ({
             <View className="flex-1 items-center justify-center bg-bg">
                 <ActivityIndicator
                     size="large"
-                    color="#2563EB"
+                    color="#5EAE32"
                 />
             </View>
         );
@@ -279,7 +279,7 @@ const NewChat = ({
                                 selectedTechnicianId === item.id ? (
                                 <ActivityIndicator
                                     size="small"
-                                    color="#5B3DF5"
+                                    color="#5EAE32"
                                 />
                             ) : (
                                 <Ionicons

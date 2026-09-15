@@ -112,7 +112,7 @@ const SubmitFeedback = () => {
                     <View className="mb-6">
                         <View className="flex-row items-center gap-3 bg-primary/20 p-4 rounded-xl">
                             <View className="w-10 h-10 bg-primary/20 rounded-full items-center justify-center">
-                                <Ionicons name="bulb-outline" size={24} color="#6366F1" />
+                                <Ionicons name="bulb-outline" size={24} color="#5FAF35" />
                             </View>
                             <View className="flex-1">
                                 <Text className="text-sm font-manrope-semibold text-text">

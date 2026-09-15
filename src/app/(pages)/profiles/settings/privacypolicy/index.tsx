@@ -37,13 +37,13 @@ const PrivacyPolicy = () => {
         <View className="bg-card rounded-2xl shadow-sm px-5 py-3">
           <View className="items-center mb-6">
             <View className="w-16 h-16 bg-primary/10 rounded-full items-center justify-center mb-3">
-              <Ionicons name="shield-checkmark-outline" size={32} color="#6366F1" />
+              <Ionicons name="shield-checkmark-outline" size={32} color="#5FAF35" />
             </View>
             <Text className="text-2xl font-manrope-bold text-text">
               Privacy Policy
             </Text>
             <Text className="text-xs text-text-muted font-manrope-light mt-1">
-              Repair Hub Mobile Application
+              Addis Repair Mobile Application
             </Text>
           </View>
 
@@ -54,7 +54,7 @@ const PrivacyPolicy = () => {
           </View>
 
           <Text className="text-sm font-manrope-regular text-text leading-6 mb-6">
-            At Repair Hub, we take your privacy seriously. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our mobile application. Please read this privacy policy carefully.
+            At Addis Repair, we take your privacy seriously. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our mobile application. Please read this privacy policy carefully.
           </Text>
 
           {/* Section 1 */}
@@ -226,7 +226,7 @@ const PrivacyPolicy = () => {
               </Text>
             </View>
             <Text className="text-sm font-manrope-regular text-text leading-6 ml-8">
-              Repair Hub is not intended for use by individuals under the age of 13. We do not knowingly collect personal information from children under 13. If you believe we have collected such information, please contact us immediately.
+              Addis Repair is not intended for use by individuals under the age of 13. We do not knowingly collect personal information from children under 13. If you believe we have collected such information, please contact us immediately.
             </Text>
           </View>
 
@@ -251,7 +251,7 @@ const PrivacyPolicy = () => {
               Effective Date: August 2026
             </Text>
             <Text className="text-xs font-manrope-light text-text-muted text-center mt-2">
-              © 2026 Repair Hub. All rights reserved.
+              © 2026 Addis Repair. All rights reserved.
             </Text>
           </View>
         </View>

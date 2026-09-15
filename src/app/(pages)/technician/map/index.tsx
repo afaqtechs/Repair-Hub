@@ -53,10 +53,10 @@ export default function MapScreen() {
                             () => { }
                         )
                     }
-                    className={`flex-row items-center gap-1 px-3 py-2 rounded-full ${hasValidCoordinates ? 'bg-blue-50' : 'bg-gray-100'}`}
+                    className={`flex-row items-center gap-1 px-3 py-2 rounded-full ${hasValidCoordinates ? 'bg-green-50' : 'bg-gray-100'}`}
                 >
-                    <Ionicons name="navigate-outline" size={14} color="#2563EB" />
-                    <Text className="text-blue-600 text-xs font-semibold">
+                    <Ionicons name="navigate-outline" size={14} color="#5EAE32" />
+                    <Text className="text-green-600 text-xs font-semibold">
                         Google Maps
                     </Text>
                 </TouchableOpacity>

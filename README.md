@@ -1,6 +1,6 @@
-# RepairHub Mobile App
+# Addis Repairs Mobile App
 
-RepairHub is a mobile marketplace that connects customers with trusted repair technicians and helps users find repair services and spare parts for their devices.
+Addis Repairs is a mobile marketplace that connects customers with trusted repair technicians and helps users find repair services and spare parts for their devices.
 
 The app provides a convenient platform for discovering nearby technicians, exploring available services and spare parts, communicating with technicians, and managing repair-related activities from a single mobile application.
 
@@ -32,4 +32,4 @@ The app provides a convenient platform for discovering nearby technicians, explo
 * **PostGIS**
 * **Expo Notifications**
 
-RepairHub aims to make device repair easier by connecting customers with nearby technicians and providing a centralized marketplace for repair services and spare parts.
+Addis Repairs aims to make device repair easier by connecting customers with nearby technicians and providing a centralized marketplace for repair services and spare parts.

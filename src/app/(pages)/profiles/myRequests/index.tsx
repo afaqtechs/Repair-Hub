@@ -89,7 +89,7 @@ const MyRequests = () => {
                     <Ionicons name="alert-circle-outline" size={60} color="#EF4444" />
                     <Text className="text-red-500 text-lg font-bold mt-4">Something went wrong</Text>
                     <Text className="text-gray-500 text-sm text-center mt-2">{requestError.message}</Text>
-                    <TouchableOpacity className="mt-6 bg-[#5B3DF5] px-6 py-3 rounded-xl" onPress={() => {
+                    <TouchableOpacity className="mt-6 bg-[#5FAF35] px-6 py-3 rounded-xl" onPress={() => {
                         fetchRequests();
                     }}>
                         <Text className="text-text font-semibold">Try Again</Text>
@@ -183,7 +183,7 @@ const MyRequests = () => {
                     <View className="flex-1 justify-center items-center">
                         <ActivityIndicator
                             size="large"
-                            color="#60A5FA"
+                            color="#5FAF35"
                         />
                         <Text className="text-text mt-4">
                             Loading requests...

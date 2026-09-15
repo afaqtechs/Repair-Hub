@@ -8,8 +8,6 @@ export type PendingUpload = {
 
 export interface CreatePartForm extends CreatePartDto {
   technician_id: string;
-  model: string;
-  brand: string;
   localImages: string[];
   removedImages: string[];
   pendingUploads: PendingUpload[];
@@ -25,10 +23,8 @@ const initialState: CreatePartForm = {
 
   category_id: '',
   platform_id: '',
-  condition_id: '',
+  condition: "used",
 
-  model: '',
-  brand: '',
   description: '',
 
   price: 0,
@@ -118,17 +114,9 @@ export const useCreatePartStore =
           'Category is required';
       }
 
-      if (!form.condition_id) {
-        errors.condition_id =
+      if (!form.condition) {
+        errors.condition =
           'Condition is required';
-      }
-
-      if (!form.model?.trim()) {
-        errors.model = 'Model is required';
-      }
-
-      if (!form.brand?.trim()) {
-        errors.brand = 'Brand is required';
       }
 
       if (form.price <= 0) {
@@ -157,10 +145,8 @@ export const useCreatePartStore =
 
           category_id: '',
           platform_id: '',
-          condition_id: '',
+          condition: "used",
 
-          model: '',
-          brand: '',
           description: '',
 
           price: 0,

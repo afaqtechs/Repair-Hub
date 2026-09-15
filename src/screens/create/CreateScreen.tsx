@@ -3,7 +3,7 @@ import { useTechnician } from '@/src/hooks';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
-import { Text, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, Text, TouchableOpacity, View } from 'react-native';
 
 type TabType = 'part' | 'service' | 'request';
 
@@ -15,7 +15,18 @@ const CreateScreen = () => {
 
     const loggedInUserId = String(user?.id)
 
-    const { data: technician } = useTechnician(loggedInUserId);
+    const { data: technician, isLoading: isTechnicianLoading } = useTechnician(loggedInUserId);
+
+    if (isTechnicianLoading) {
+        return (
+            <View className="flex-1 items-center justify-center bg-bg">
+                <ActivityIndicator
+                    size="large"
+                    color="#5EAE32"
+                />
+            </View>
+        );
+    }
 
     if (technician?.verification_status !== "verified") {
         return (

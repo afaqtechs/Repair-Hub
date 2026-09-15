@@ -171,7 +171,7 @@ const ConversationCard = memo(({
                 <Ionicons name="checkmark" size={14} color="#9CA3AF" />
               )}
               {status === "seen" && (
-                <Ionicons name="checkmark-done" size={15} color="#60A5FA" />
+                <Ionicons name="checkmark-done" size={15} color="#5EAE32" />
               )}
             </View>
           )}

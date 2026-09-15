@@ -138,7 +138,7 @@ const UpdateGeneralInfo = ({ setEditingGeneralInfo, technician }: Props) => {
                     icon="phone-portrait-outline"
                     value={form.phone}
                     placeholder="Phone number"
-                    keyboardType="numeric"
+                    keyboardType="phone-pad"
                     onChangeText={(value: any) =>
                         setField("phone", value)
                     }

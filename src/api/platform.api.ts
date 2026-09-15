@@ -116,24 +116,4 @@ export const platformsApi = {
       return null;
     }
   },
-
-  // ─────────────────────────────────────────────
-  // Remove platform
-  // ─────────────────────────────────────────────
-
-  async remove(id: string): Promise<boolean> {
-    try {
-      const { error } = await supabase.from('platforms').delete().eq('id', id);
-
-      if (error) {
-        logApiError('remove', error);
-        return false;
-      }
-
-      return true;
-    } catch (error) {
-      logApiError('remove', error);
-      return false;
-    }
-  },
 };

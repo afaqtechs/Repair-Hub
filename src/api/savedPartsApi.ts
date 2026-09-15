@@ -163,7 +163,6 @@ export const savedPartsApi = {
               *,
               category:categories(*),
               platform:platforms(*),
-              condition:conditions(*),
               technician:profiles(*)
             )
           `

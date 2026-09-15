@@ -37,13 +37,13 @@ const TermsAndConditions = () => {
                 <View className="bg-card rounded-xl shadow-sm px-5 py-3">
                     <View className="items-center mb-6">
                         <View className="w-16 h-16 bg-primary/10 rounded-full items-center justify-center mb-3">
-                            <Ionicons name="document-text-outline" size={32} color="#6366F1" />
+                            <Ionicons name="document-text-outline" size={32} color="#5FAF35" />
                         </View>
                         <Text className="text-2xl font-manrope-bold text-text">
                             Terms and Conditions
                         </Text>
                         <Text className="text-xs text-text-muted font-manrope-light mt-1">
-                            Repair Hub Mobile Application
+                            Addis Repair Mobile Application
                         </Text>
                     </View>
 
@@ -54,7 +54,7 @@ const TermsAndConditions = () => {
                     </View>
 
                     <Text className="text-sm font-manrope-regular text-text leading-6 mb-6">
-                        Welcome to Repair Hub. By downloading, installing, or using our mobile application, you agree to be bound by these Terms and Conditions. Please read them carefully before using the app.
+                        Welcome to Addis Repair. By downloading, installing, or using our mobile application, you agree to be bound by these Terms and Conditions. Please read them carefully before using the app.
                     </Text>
 
                     {/* Section 1 */}
@@ -68,7 +68,7 @@ const TermsAndConditions = () => {
                             </Text>
                         </View>
                         <Text className="text-sm font-manrope-regular text-text leading-6 ml-8">
-                            By using Repair Hub, you agree to comply with and be bound by these terms. If you do not agree to these terms, please do not use the application.
+                            By using Addis Repair, you agree to comply with and be bound by these terms. If you do not agree to these terms, please do not use the application.
                         </Text>
                     </View>
 
@@ -83,7 +83,7 @@ const TermsAndConditions = () => {
                             </Text>
                         </View>
                         <Text className="text-sm font-manrope-regular text-text leading-6 ml-8">
-                            Repair Hub is a mobile application that connects technicians and repair professionals, facilitating the management of spare parts, repair requests, services, and professional networking.
+                            Addis Repair is a mobile application that connects technicians and repair professionals, facilitating the management of spare parts, repair requests, services, and professional networking.
                         </Text>
                     </View>
 
@@ -124,7 +124,7 @@ const TermsAndConditions = () => {
                             </Text>
                         </View>
                         <Text className="text-sm font-manrope-regular text-text leading-6 ml-8 mb-2">
-                            You agree to use Repair Hub only for lawful purposes and in a way that does not infringe the rights of others. You must not:
+                            You agree to use Addis Repair only for lawful purposes and in a way that does not infringe the rights of others. You must not:
                         </Text>
                         <View className="ml-8">
                             <Text className="text-sm font-manrope-regular text-text leading-6 mb-1.5">
@@ -163,7 +163,7 @@ const TermsAndConditions = () => {
                                 • All listings must be accurate and truthful.
                             </Text>
                             <Text className="text-sm font-manrope-regular text-text leading-6 mb-1.5">
-                                • Transactions between users are private agreements. Repair Hub is not responsible for disputes.
+                                • Transactions between users are private agreements. Addis Repair is not responsible for disputes.
                             </Text>
                             <Text className="text-sm font-manrope-regular text-text leading-6">
                                 • We reserve the right to remove any listing that violates our policies.
@@ -182,7 +182,7 @@ const TermsAndConditions = () => {
                             </Text>
                         </View>
                         <Text className="text-sm font-manrope-regular text-text leading-6 ml-8">
-                            All content, features, and functionality of Repair Hub, including but not limited to text, graphics, logos, icons, and software, are the exclusive property of Afaq Techs and are protected by copyright and other intellectual property laws.
+                            All content, features, and functionality of Addis Repair, including but not limited to text, graphics, logos, icons, and software, are the exclusive property of Afaq Techs and are protected by copyright and other intellectual property laws.
                         </Text>
                     </View>
 
@@ -197,7 +197,7 @@ const TermsAndConditions = () => {
                             </Text>
                         </View>
                         <Text className="text-sm font-manrope-regular text-text leading-6 ml-8">
-                            Your use of Repair Hub is also governed by our Privacy Policy. Please review our Privacy Policy to understand how we collect, use, and protect your personal information.
+                            Your use of Addis Repair is also governed by our Privacy Policy. Please review our Privacy Policy to understand how we collect, use, and protect your personal information.
                         </Text>
                     </View>
 
@@ -212,7 +212,7 @@ const TermsAndConditions = () => {
                             </Text>
                         </View>
                         <Text className="text-sm font-manrope-regular text-text leading-6 ml-8">
-                            Repair Hub may contain links to third-party websites or services that are not owned or controlled by us. We have no control over and assume no responsibility for the content, privacy policies, or practices of any third-party services.
+                            Addis Repair may contain links to third-party websites or services that are not owned or controlled by us. We have no control over and assume no responsibility for the content, privacy policies, or practices of any third-party services.
                         </Text>
                     </View>
 
@@ -242,7 +242,7 @@ const TermsAndConditions = () => {
                             </Text>
                         </View>
                         <Text className="text-sm font-manrope-regular text-text leading-6 ml-8">
-                            Repair Hub is provided &quot;as is&quot; and &quot;as available&quot; without warranties of any kind, either express or implied. We do not warrant that the app will be uninterrupted or error-free.
+                            Addis Repair is provided &quot;as is&quot; and &quot;as available&quot; without warranties of any kind, either express or implied. We do not warrant that the app will be uninterrupted or error-free.
                         </Text>
                     </View>
 
@@ -297,7 +297,7 @@ const TermsAndConditions = () => {
                             Effective Date: August 2026
                         </Text>
                         <Text className="text-xs font-manrope-light text-text-muted text-center mt-2">
-                            © 2026 Repair Hub. All rights reserved.
+                            © 2026 Addis Repair. All rights reserved.
                         </Text>
                     </View>
                 </View>

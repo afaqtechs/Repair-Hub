@@ -1,6 +1,5 @@
 export * from "./auth.api"
 export * from "./categories.api"
-export * from "./condition.api"
 export * from "./filters.api"
 export * from "./parts.api"
 export * from "./platform.api"
@@ -13,4 +12,4 @@ export * from "./technicianLocation.api"
 export * from "./requests.api"
 export * from "./reviews.api";
 export * from "./submitFeedback.api";
-
+export * from "./trendingParts.api";

@@ -150,7 +150,6 @@ export const categoriesApi = {
             *,
             technician:profiles!inner(*,is_active),
             category:categories(*),
-            condition:conditions(*),
             platform:platforms(*)
           `
         )

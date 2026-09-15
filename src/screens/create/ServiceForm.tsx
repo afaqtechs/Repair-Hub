@@ -1,17 +1,35 @@
 import { deleteServiceImages } from '@/src/api';
+import AddLocationModal from '@/src/components/ui/AddLocationModal';
 import AppSelectModal from '@/src/components/ui/AppSelectModal';
 import { useAuth } from '@/src/context/AuthContext';
-import { useCategories, useCategoryMutations, usePlatformMutations, usePlatforms, useServiceMutations } from '@/src/hooks';
+import {
+    useCategories,
+    useCategoryMutations,
+    useMyLocation,
+    usePlatformMutations,
+    usePlatforms,
+    useServiceMutations
+} from '@/src/hooks';
+import { registerCurrentLocation } from '@/src/lib/registerCurrentLocation';
 import { requestMediaLibraryPermission } from '@/src/lib/requestMediaLibraryPermission';
 import { supabase } from '@/src/lib/supabase';
 import { showError, showSuccess } from '@/src/lib/toast';
 import { decodeBase64 } from '@/src/utils/decodeBase64';
 import { useCreateServiceStore } from '@/store/useCreateServiceStore';
+import { useProfileStore } from '@/store/useProfileStore';
 import { Ionicons } from '@expo/vector-icons';
-import * as ImagePicker from "expo-image-picker";
+import * as ImagePicker from 'expo-image-picker';
 import React, { useEffect, useRef, useState } from 'react';
-import { ActivityIndicator, Image, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
-import { RichEditor, RichToolbar } from "react-native-pell-rich-editor";
+import {
+    ActivityIndicator,
+    Image,
+    ScrollView,
+    Text,
+    TextInput,
+    TouchableOpacity,
+    View,
+} from 'react-native';
+import { RichEditor, RichToolbar } from 'react-native-pell-rich-editor';
 
 type ServiceFormProps = {
     isEdit?: boolean;
@@ -19,20 +37,83 @@ type ServiceFormProps = {
     onCancel?: () => void;
 };
 
-const ServiceForm = ({ isEdit = false, service, onCancel }: ServiceFormProps) => {
+const ServiceForm = ({
+    isEdit = false,
+    service,
+    onCancel,
+}: ServiceFormProps) => {
     const { user } = useAuth();
     const technicianId = user?.id;
     const descriptionRef = useRef<RichEditor>(null);
 
+    const { data: myLocation, isFetching: isFetchingLocation } =
+        useMyLocation(technicianId);
+
+    const { setFields: setPersonalFields } =
+        useProfileStore();
+
+    useEffect(() => {
+        if (!technicianId) return;
+
+        if (isFetchingLocation) return;
+
+        if (myLocation) return;
+
+        const registerLocation = async () => {
+            try {
+                setRegisteringLocation(true);
+
+                const currentLocation =
+                    await registerCurrentLocation(technicianId);
+
+                // Update the form with the newly registered location
+                setPersonalFields({
+                    latitude: currentLocation.latitude.toString(),
+                    longitude: currentLocation.longitude.toString(),
+                });
+            } catch (error: any) {
+                console.log(
+                    'Failed to register current location:',
+                    error
+                );
+
+                if (
+                    error?.message === 'Location permission denied'
+                ) {
+                    setShowLocationModal(true);
+                } else {
+                    showError(
+                        'Location Error',
+                        error?.message ||
+                        'Could not register your current location.'
+                    );
+                }
+            } finally {
+                setRegisteringLocation(false);
+            }
+        };
+
+        registerLocation();
+    }, [
+        technicianId,
+        myLocation,
+        isFetchingLocation,
+        setPersonalFields,
+    ]);
+
     const { data: categories = [], isLoading: loadingCategory } = useCategories();
     const { data: platforms = [], isLoading: loadingPlatform } = usePlatforms();
-    const { form, errors, setField, initializeForm, validate, reset } = useCreateServiceStore();
+    const { form, errors, setField, initializeForm, validate, reset } =
+        useCreateServiceStore();
     const { createService, updateService } = useServiceMutations();
     const { createCategory } = useCategoryMutations();
     const { createPlatform } = usePlatformMutations();
 
     const [uploadingImages, setUploadingImages] = useState(false);
     const [uploadProgress, setUploadProgress] = useState(0);
+
+    const [showLocationModal, setShowLocationModal] = useState(false);
+    const [registeringLocation, setRegisteringLocation] = useState(false);
 
     useEffect(() => {
         if (isEdit && service) {
@@ -81,14 +162,17 @@ const ServiceForm = ({ isEdit = false, service, onCancel }: ServiceFormProps) =>
         if (result.canceled || !result.assets.length) return;
 
         // Store local previews and base64 data for later upload
-        const newLocalImages = result.assets.map(asset => asset.uri);
-        const newPendingUploads = result.assets.map(asset => ({
+        const newLocalImages = result.assets.map((asset) => asset.uri);
+        const newPendingUploads = result.assets.map((asset) => ({
             uri: asset.uri,
             base64: asset.base64 || '',
         }));
 
         setField('localImages', [...form.localImages, ...newLocalImages]);
-        setField('pendingUploads', [...(form.pendingUploads || []), ...newPendingUploads]);
+        setField('pendingUploads', [
+            ...(form.pendingUploads || []),
+            ...newPendingUploads,
+        ]);
     };
 
     const handleRemoveImage = (index: number) => {
@@ -96,37 +180,56 @@ const ServiceForm = ({ isEdit = false, service, onCancel }: ServiceFormProps) =>
 
         if (!imageToRemove) return;
 
-        // Check if it's an existing Supabase image (edit mode)
-        if (isEdit && imageToRemove.startsWith('http')) {
-            setField('removedImages', [...form.removedImages, imageToRemove]);
-            setField('images', form.images.filter(url => url !== imageToRemove));
-        } else {
-            // Remove from pending uploads if it's a new image
-            const pendingIndex = form.pendingUploads?.findIndex(p => p.uri === imageToRemove);
-            if (pendingIndex !== undefined && pendingIndex !== -1) {
-                const newPendingUploads = [...(form.pendingUploads || [])];
-                newPendingUploads.splice(pendingIndex, 1);
-                setField('pendingUploads', newPendingUploads);
-            }
+        // Existing remote image
+        if (imageToRemove.startsWith('http')) {
+            setField(
+                'removedImages',
+                [...form.removedImages, imageToRemove]
+            );
+
+            setField(
+                'images',
+                form.images.filter((url) => url !== imageToRemove)
+            );
+        }
+        // Newly selected local image
+        else {
+            setField(
+                'pendingUploads',
+                (form.pendingUploads || []).filter(
+                    (image) => image.uri !== imageToRemove
+                )
+            );
         }
 
-        setField('localImages', form.localImages.filter((_, i) => i !== index));
+        setField(
+            'localImages',
+            form.localImages.filter((_, i) => i !== index)
+        );
     };
 
     const uploadImages = async (): Promise<string[]> => {
         const pendingUploads = form.pendingUploads || [];
-        if (pendingUploads.length === 0) return form.images;
+
+        if (pendingUploads.length === 0) {
+            return form.images;
+        }
 
         setUploadingImages(true);
+
         const uploadedUrls: string[] = [];
         const total = pendingUploads.length;
 
         try {
             for (let i = 0; i < pendingUploads.length; i++) {
                 const { base64 } = pendingUploads[i];
+
                 if (!base64) continue;
 
-                const fileName = `${technicianId}/service_${Date.now()}_${Math.random().toString(36).slice(2)}.jpg`;
+                const fileName = `${technicianId}/service_${Date.now()}_${Math.random()
+                    .toString(36)
+                    .slice(2)}.jpg`;
+
                 const buffer = decodeBase64(base64);
 
                 const { error } = await supabase.storage
@@ -136,23 +239,68 @@ const ServiceForm = ({ isEdit = false, service, onCancel }: ServiceFormProps) =>
                         upsert: false,
                     });
 
-                if (error) console.log(error);
+                if (error) {
+                    throw error;
+                }
 
-                const { data } = supabase.storage.from('service-images').getPublicUrl(fileName);
-                if (!data.publicUrl) showError('Could not generate image URL.');
+                const { data } = supabase.storage
+                    .from('service-images')
+                    .getPublicUrl(fileName);
+
+                if (!data.publicUrl) {
+                    throw new Error('Could not generate image URL.');
+                }
 
                 uploadedUrls.push(data.publicUrl);
-                setUploadProgress(Math.round(((i + 1) / total) * 100));
+
+                setUploadProgress(
+                    Math.round(((i + 1) / total) * 100)
+                );
             }
 
             return [...form.images, ...uploadedUrls];
         } catch (error: any) {
-            showError('Upload Failed', error?.message || 'Could not upload the images.');
+            showError(
+                'Upload Failed',
+                error?.message || 'Could not upload the images.'
+            );
             throw error;
         } finally {
             setUploadingImages(false);
             setUploadProgress(0);
-            setField('pendingUploads', []);
+        }
+    };
+
+    const handleAddLocation = async () => {
+        if (!technicianId) return;
+
+        try {
+            setRegisteringLocation(true);
+
+            const currentLocation =
+                await registerCurrentLocation(technicianId);
+
+            setPersonalFields({
+                latitude: currentLocation.latitude.toString(),
+                longitude: currentLocation.longitude.toString(),
+            });
+
+            setShowLocationModal(false);
+
+            showSuccess(
+                'Location Added',
+                'Your current location has been saved.'
+            );
+        } catch (error: any) {
+            console.log('Location error:', error);
+
+            showError(
+                'Location Error',
+                error?.message ||
+                'Unable to get your current location.'
+            );
+        } finally {
+            setRegisteringLocation(false);
         }
     };
 
@@ -174,7 +322,13 @@ const ServiceForm = ({ isEdit = false, service, onCancel }: ServiceFormProps) =>
                     return;
                 }
 
-                const { localImages, removedImages, pendingUploads, technician_id, ...payload } = form;
+                const {
+                    localImages,
+                    removedImages,
+                    pendingUploads,
+                    technician_id,
+                    ...payload
+                } = form;
 
                 await updateService.mutateAsync({
                     id: service.id,
@@ -185,7 +339,10 @@ const ServiceForm = ({ isEdit = false, service, onCancel }: ServiceFormProps) =>
                     await deleteServiceImages(removedImages);
                 }
 
-                showSuccess('Service Updated', 'Your service was updated successfully.');
+                showSuccess(
+                    'Service Updated',
+                    'Your service was updated successfully.'
+                );
                 onCancel?.();
                 return;
             }
@@ -198,7 +355,10 @@ const ServiceForm = ({ isEdit = false, service, onCancel }: ServiceFormProps) =>
                 images: finalImages,
             });
 
-            showSuccess('Service Created', 'Your service was published successfully.');
+            showSuccess(
+                'Service Created',
+                'Your service was published successfully.'
+            );
             reset();
         } catch (error: any) {
             showError(
@@ -209,7 +369,8 @@ const ServiceForm = ({ isEdit = false, service, onCancel }: ServiceFormProps) =>
     };
 
     const displayImages = form.localImages;
-    const isUploading = uploadingImages || createService.isPending || updateService.isPending;
+    const isUploading =
+        uploadingImages || createService.isPending || updateService.isPending;
 
     return (
         <>
@@ -230,7 +391,11 @@ const ServiceForm = ({ isEdit = false, service, onCancel }: ServiceFormProps) =>
                 </View>
             )}
             <ScrollView
-                contentContainerStyle={{ paddingTop: 20, paddingHorizontal: 8, paddingBottom: 250 }}
+                contentContainerStyle={{
+                    paddingTop: 20,
+                    paddingHorizontal: 8,
+                    paddingBottom: 250,
+                }}
                 showsVerticalScrollIndicator={false}
                 keyboardShouldPersistTaps="handled"
             >
@@ -238,7 +403,7 @@ const ServiceForm = ({ isEdit = false, service, onCancel }: ServiceFormProps) =>
                 <View className="flex-col gap-1 px-3">
                     <View className="flex-row justify-between">
                         <Text className={`text-text font-manrope-semibold`}>
-                            Photos{" "}
+                            Photos{' '}
                             <Text className={`text-gray-500 font-manrope-light`}>
                                 (up to 3)
                             </Text>
@@ -268,10 +433,16 @@ const ServiceForm = ({ isEdit = false, service, onCancel }: ServiceFormProps) =>
 
                         {displayImages.map((uri, index) => (
                             <View key={`${uri}-${index}`} className="relative mx-1">
-                                <Image source={{ uri }} className="w-24 h-24 rounded-lg" resizeMode="cover" />
+                                <Image
+                                    source={{ uri }}
+                                    className="w-24 h-24 rounded-lg"
+                                    resizeMode="cover"
+                                />
                                 {index === 0 && (
                                     <View className="absolute top-1 left-1 bg-info px-1.5 py-0.5 rounded-full">
-                                        <Text className="text-white text-[9px] font-bold">COVER</Text>
+                                        <Text className="text-white text-[9px] font-bold">
+                                            COVER
+                                        </Text>
                                     </View>
                                 )}
                                 <TouchableOpacity
@@ -288,13 +459,14 @@ const ServiceForm = ({ isEdit = false, service, onCancel }: ServiceFormProps) =>
                     <Text className={`text-xs mt-2 text-gray-500`}>
                         {form.localImages.length} of 3 images selected
                         {(form.pendingUploads?.length || 0) > 0 &&
-                            ` (${form.pendingUploads?.length || 0} pending uploads)`
-                        }
+                            ` (${form.pendingUploads?.length || 0} pending uploads)`}
                     </Text>
 
                     {uploadingImages && uploadProgress > 0 && (
                         <View className="mt-2">
-                            <Text className="text-xs text-info">Uploading: {uploadProgress}%</Text>
+                            <Text className="text-xs text-info">
+                                Uploading: {uploadProgress}%
+                            </Text>
                             <View className="h-1 bg-gray-700 rounded-full mt-1">
                                 <View
                                     className="h-1 bg-info rounded-full"
@@ -304,7 +476,9 @@ const ServiceForm = ({ isEdit = false, service, onCancel }: ServiceFormProps) =>
                         </View>
                     )}
 
-                    {errors.images && <Text className="text-red-500 text-xs mt-1">{errors.images}</Text>}
+                    {errors.images && (
+                        <Text className="text-red-500 text-xs mt-1">{errors.images}</Text>
+                    )}
                 </View>
 
                 {/* Title */}
@@ -318,11 +492,13 @@ const ServiceForm = ({ isEdit = false, service, onCancel }: ServiceFormProps) =>
                             placeholder="Enter title..."
                             placeholderTextColor="#94A3B8"
                             value={form.title}
-                            onChangeText={(text) => setField("title", text)}
+                            onChangeText={(text) => setField('title', text)}
                             className="h-14 px-4 rounded-lg bg-bg/50 border border-border/50 text-text font-manrope"
                         />
                     </View>
-                    {errors.title && <Text className="text-red-500 text-xs mt-1">{errors.title}</Text>}
+                    {errors.title && (
+                        <Text className="text-red-500 text-xs mt-1">{errors.title}</Text>
+                    )}
                 </View>
 
                 {/* Platform & Category */}
@@ -334,10 +510,13 @@ const ServiceForm = ({ isEdit = false, service, onCancel }: ServiceFormProps) =>
                         <AppSelectModal
                             title="Platform"
                             placeholder="Select platform"
-                            data={platforms.map(item => ({ label: item.name, value: item.id }))}
+                            data={platforms.map((item) => ({
+                                label: item.name,
+                                value: item.id,
+                            }))}
                             value={form.platform_id}
                             isLoading={loadingPlatform}
-                            onChange={(item) => setField("platform_id", item.value)}
+                            onChange={(item) => setField('platform_id', item.value)}
                             onAdd={async (name) => {
                                 const created = await createPlatform.mutateAsync({
                                     name,
@@ -355,7 +534,11 @@ const ServiceForm = ({ isEdit = false, service, onCancel }: ServiceFormProps) =>
                             }}
                         />
                     </View>
-                    {errors.platform_id && <Text className="text-red-500 text-xs mt-1">{errors.platform_id}</Text>}
+                    {errors.platform_id && (
+                        <Text className="text-red-500 text-xs mt-1">
+                            {errors.platform_id}
+                        </Text>
+                    )}
 
                     <View className="gap-2">
                         <Text className="text-text text-sm font-manrope-semibold">
@@ -364,10 +547,13 @@ const ServiceForm = ({ isEdit = false, service, onCancel }: ServiceFormProps) =>
                         <AppSelectModal
                             title="Category"
                             placeholder="Select category"
-                            data={categories.map(item => ({ label: item.name, value: item.id }))}
+                            data={categories.map((item) => ({
+                                label: item.name,
+                                value: item.id,
+                            }))}
                             value={form.category_id}
                             isLoading={loadingCategory}
-                            onChange={(item) => setField("category_id", item.value)}
+                            onChange={(item) => setField('category_id', item.value)}
                             onAdd={async (name) => {
                                 const created = await createCategory.mutateAsync({
                                     name,
@@ -385,14 +571,18 @@ const ServiceForm = ({ isEdit = false, service, onCancel }: ServiceFormProps) =>
                             }}
                         />
                     </View>
-                    {errors.category_id && <Text className="text-red-500 text-xs mt-1">{errors.category_id}</Text>}
+                    {errors.category_id && (
+                        <Text className="text-red-500 text-xs mt-1">
+                            {errors.category_id}
+                        </Text>
+                    )}
                 </View>
 
                 {/* Price */}
                 <View className="mt-6 p-5 bg-card rounded-lg">
                     <View className="gap-2">
                         <Text className="text-text text-sm font-manrope-semibold">
-                            Price <Text className="text-red-500">*</Text>
+                            Price <Text className='ml-2 text-text-muted text-xs'>(Optional)</Text>
                         </Text>
                         <TextInput
                             keyboardType="numeric"
@@ -400,13 +590,15 @@ const ServiceForm = ({ isEdit = false, service, onCancel }: ServiceFormProps) =>
                             placeholderTextColor="#94A3B8"
                             onChangeText={(text) => {
                                 const numericValue = text === '' ? 0 : Number(text);
-                                setField("price", isNaN(numericValue) ? 0 : numericValue);
+                                setField('price', isNaN(numericValue) ? 0 : numericValue);
                             }}
                             value={form.price === 0 ? '' : form.price.toString()}
                             className="h-14 px-4 rounded-lg bg-bg/50 border border-border/50 text-text font-manrope"
                         />
                     </View>
-                    {errors.price && <Text className="text-red-500 text-xs mt-1">{errors.price}</Text>}
+                    {errors.price && (
+                        <Text className="text-red-500 text-xs mt-1">{errors.price}</Text>
+                    )}
                 </View>
 
                 {/* Negotiable */}
@@ -416,22 +608,28 @@ const ServiceForm = ({ isEdit = false, service, onCancel }: ServiceFormProps) =>
                     </Text>
                     <View className="flex-row items-center gap-5">
                         {[
-                            { label: "Yes", value: true },
-                            { label: "No", value: false },
+                            { label: 'Yes', value: true },
+                            { label: 'No', value: false },
                         ].map((option) => {
                             const selected = form.is_negotiable === option.value;
                             return (
                                 <TouchableOpacity
                                     key={option.label}
-                                    onPress={() => setField("is_negotiable", option.value)}
+                                    onPress={() => setField('is_negotiable', option.value)}
                                     className="flex-row items-center gap-2"
                                 >
                                     <Ionicons
-                                        name={selected ? "radio-button-on" : "radio-button-off"}
+                                        name={selected ? 'radio-button-on' : 'radio-button-off'}
                                         size={20}
-                                        color={selected ? "#10B981" : "#CBD5E1"}
+                                        color={selected ? '#10B981' : '#CBD5E1'}
                                     />
-                                    <Text className={selected ? "text-emerald-500 font-manrope-semibold" : "text-text font-manrope"}>
+                                    <Text
+                                        className={
+                                            selected
+                                                ? 'text-emerald-500 font-manrope-semibold'
+                                                : 'text-text font-manrope'
+                                        }
+                                    >
                                         {option.label}
                                     </Text>
                                 </TouchableOpacity>
@@ -444,18 +642,22 @@ const ServiceForm = ({ isEdit = false, service, onCancel }: ServiceFormProps) =>
                 <View className="mt-6 p-5 bg-card rounded-lg">
                     <View className="gap-2">
                         <Text className="text-text text-sm font-manrope-semibold">
-                            Duration to fix <Text className="text-red-500">*</Text>
+                            Duration to fix <Text className='ml-2 text-text-muted text-xs'>(Optional)</Text>
                         </Text>
                         <TextInput
                             keyboardType="default"
                             placeholder="2 hours..."
                             placeholderTextColor="#94A3B8"
                             value={form.estimated_duration}
-                            onChangeText={(text) => setField("estimated_duration", text)}
+                            onChangeText={(text) => setField('estimated_duration', text)}
                             className="h-14 px-4 rounded-lg bg-bg/50 border border-border/50 text-text font-manrope"
                         />
                     </View>
-                    {errors.estimated_duration && <Text className="text-red-500 text-xs mt-1">{errors.estimated_duration}</Text>}
+                    {errors.estimated_duration && (
+                        <Text className="text-red-500 text-xs mt-1">
+                            {errors.estimated_duration}
+                        </Text>
+                    )}
                 </View>
 
                 {/* Description */}
@@ -466,21 +668,32 @@ const ServiceForm = ({ isEdit = false, service, onCancel }: ServiceFormProps) =>
                     <View className="rounded-lg overflow-hidden border border-border/50">
                         <RichToolbar
                             editor={descriptionRef}
-                            actions={["heading1", "bold", "italic", "underline", "unorderedList", "orderedList", "link", "removeFormat", "undo", "redo"]}
-                            style={{ backgroundColor: "#F8F7FC" }}
+                            actions={[
+                                'heading1',
+                                'bold',
+                                'italic',
+                                'underline',
+                                'unorderedList',
+                                'orderedList',
+                                'link',
+                                'removeFormat',
+                                'undo',
+                                'redo',
+                            ]}
+                            style={{ backgroundColor: '#F8F7FC' }}
                             iconTint="#1F2937"
                         />
                         <RichEditor
                             ref={descriptionRef}
                             editorStyle={{
-                                backgroundColor: "#fff",
-                                color: "#1F2937",
-                                placeholderColor: "#94A3B8",
+                                backgroundColor: '#fff',
+                                color: '#1F2937',
+                                placeholderColor: '#94A3B8',
                                 contentCSSText: `font-family: Manrope; font-size: 16px; padding: 12px; min-height: 120px;`,
                             }}
                             placeholder="Describe your services..."
                             initialHeight={150}
-                            onChange={(html) => setField("description", html)}
+                            onChange={(html) => setField('description', html)}
                         />
                     </View>
                 </View>
@@ -489,31 +702,35 @@ const ServiceForm = ({ isEdit = false, service, onCancel }: ServiceFormProps) =>
                 <View className="w-full flex-row items-center gap-3 mt-8">
                     <TouchableOpacity
                         onPress={handleSubmit}
-                        disabled={isUploading}
+                        disabled={createService.isPending || isUploading}
                         className="flex-1 h-14 bg-button-primary rounded-xl flex-row items-center justify-center"
                     >
-                        {isUploading ? (
+                        {createService.isPending || isUploading ? (
                             <ActivityIndicator size="small" color="#FFFFFF" />
                         ) : (
                             <>
-                                <Ionicons name={isEdit ? 'checkmark-circle-outline' : 'add-circle-outline'} size={20} color="#FFFFFF" />
-                                <Text className="ml-2 text-white text-base font-semibold">
+                                <Ionicons
+                                    name={
+                                        isEdit ? 'checkmark-circle-outline' : 'add-circle-outline'
+                                    }
+                                    size={20}
+                                    color="#FFFFFF"
+                                />
+                                <Text className="ml-2 text-white text-base font-manrope-semibold">
                                     {isEdit ? 'Update Service' : 'Create Service'}
                                 </Text>
                             </>
                         )}
                     </TouchableOpacity>
-
-                    <TouchableOpacity
-                        onPress={reset}
-                        disabled={isUploading}
-                        className="flex-1 h-14 bg-danger rounded-xl flex-row items-center justify-center"
-                    >
-                        <Ionicons name="refresh" size={20} color="#FFFFFF" />
-                        <Text className="ml-2 text-white text-base font-semibold">Reset Form</Text>
-                    </TouchableOpacity>
                 </View>
             </ScrollView>
+
+            <AddLocationModal
+                visible={showLocationModal}
+                loading={registeringLocation}
+                onAddLocation={handleAddLocation}
+                onClose={() => setShowLocationModal(false)}
+            />
         </>
     );
 };

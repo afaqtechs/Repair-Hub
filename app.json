@@ -1,12 +1,12 @@
 {
   "expo": {
-    "name": "Repair Hub",
-    "slug": "repair-hub",
+    "name": "Addis Repairs",
+    "slug": "addis-repairs",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "repairhub",
-    "userInterfaceStyle": "light",
+    "scheme": "addisrepairs",
+   "userInterfaceStyle": "light",
     "ios": {
       "supportsTablet": true
     },
@@ -32,10 +32,7 @@
           "image": "./assets/images/splash-icon.png",
           "imageWidth": 200,
           "resizeMode": "contain",
-          "backgroundColor": "#F7F6FB",
-          "dark": {
-            "backgroundColor": "#F7F6FB"
-          }
+          "backgroundColor": "#F7F6FB"
         }
       ],
       [

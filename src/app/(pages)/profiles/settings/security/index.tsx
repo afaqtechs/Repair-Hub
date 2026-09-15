@@ -222,7 +222,7 @@ const SecurityAndPrivacy = () => {
                                     Don&apos;t reuse passwords
                                 </Text>
                                 <Text className="text-xs text-text-muted font-manrope-light">
-                                    Use a unique password for your Repair Hub account.
+                                    Use a unique password for your Addis Repair account.
                                 </Text>
                             </View>
                         </View>

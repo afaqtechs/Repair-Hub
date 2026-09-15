@@ -1,7 +1,6 @@
 
 import {
     useCategories,
-    useConditions,
     useFilterParts,
     useFilterServices,
     useFilterTechnicians,
@@ -205,20 +204,14 @@ const Filters = ({
 
     // Dropdown states
     const [openDropdowns, setOpenDropdowns] = useState<{
-        brand: boolean;
-        model: boolean;
         price: boolean;
         category: boolean;
         platform: boolean;
-        condition: boolean;
         city: boolean;
     }>({
-        brand: false,
-        model: false,
         price: false,
         category: false,
         platform: false,
-        condition: false,
         city: false,
     });
 
@@ -228,29 +221,6 @@ const Filters = ({
 
     const { data: categories = [] } = useCategories();
     const { data: platforms = [] } = usePlatforms();
-    const { data: conditions = [] } = useConditions();
-
-    /*
-     * -------------------------
-     * Parts
-     * -------------------------
-     */
-
-    const brands = [
-        ...new Set(
-            parts
-                .map((part) => part.brand)
-                .filter((brand): brand is string => Boolean(brand))
-        ),
-    ];
-
-    const models = [
-        ...new Set(
-            parts
-                .map((part) => part.model)
-                .filter((model): model is string => Boolean(model))
-        ),
-    ];
 
     /*
      * -------------------------
@@ -329,26 +299,6 @@ const Filters = ({
         }));
     };
 
-    /*
-     * -------------------------
-     * Selection helpers
-     * -------------------------
-     */
-
-    const selectBrand = (brand: string) => {
-        setDraftFilters((prev) => ({
-            ...prev,
-            brand: prev.brand === brand ? null : brand,
-        }));
-    };
-
-    const selectModel = (model: string) => {
-        setDraftFilters((prev) => ({
-            ...prev,
-            model: prev.model === model ? null : model,
-        }));
-    };
-
     const selectPrice = (range: RangeOption) => {
         setDraftFilters((prev) => {
             const alreadySelected =
@@ -376,14 +326,6 @@ const Filters = ({
             ...prev,
             platformId:
                 prev.platformId === id ? null : id,
-        }));
-    };
-
-    const selectCondition = (id: string) => {
-        setDraftFilters((prev) => ({
-            ...prev,
-            conditionId:
-                prev.conditionId === id ? null : id,
         }));
     };
 
@@ -453,55 +395,61 @@ const Filters = ({
                             paddingBottom: 120,
                         }}
                     >
-                        {/* ========================= */}
-                        {/* PART-SPECIFIC FILTERS */}
-                        {/* ========================= */}
 
-                        {type === 'parts' && (
-                            <>
-                                {/* Brand */}
-                                <FilterDropdown
-                                    title="Brand"
-                                    isOpen={openDropdowns.brand}
-                                    onToggle={() => toggleDropdown('brand')}
-                                    activeCount={draftFilters.brand ? 1 : 0}
-                                    iconName="pricetag-outline"
-                                >
-                                    {brands.map((brand) => (
-                                        <FilterChip
-                                            key={brand}
-                                            label={brand}
-                                            selected={draftFilters.brand === brand}
-                                            onPress={() => selectBrand(brand)}
-                                            onClear={() => handleClearFilter("brand")}
-                                        />
-                                    ))}
-                                </FilterDropdown>
+                        <FilterDropdown
+                            title="Platform"
+                            isOpen={openDropdowns.platform}
+                            onToggle={() => toggleDropdown('platform')}
+                            activeCount={draftFilters.platformId ? 1 : 0}
+                            iconName="phone-portrait-outline"
+                        >
+                            {platforms.map((platform) => (
+                                <FilterChip
+                                    key={platform.id}
+                                    label={platform.name}
+                                    selected={draftFilters.platformId === platform.id}
+                                    onPress={() => selectPlatform(platform.id)}
+                                    onClear={() => handleClearFilter("platformId")}
+                                />
+                            ))}
+                        </FilterDropdown>
 
-                                {/* Model */}
-                                <FilterDropdown
-                                    title="Model"
-                                    isOpen={openDropdowns.model}
-                                    onToggle={() => toggleDropdown('model')}
-                                    activeCount={draftFilters.model ? 1 : 0}
-                                    iconName="car-outline"
-                                >
-                                    {models.map((model) => (
-                                        <FilterChip
-                                            key={model}
-                                            label={model}
-                                            selected={draftFilters.model === model}
-                                            onPress={() => selectModel(model)}
-                                            onClear={() => handleClearFilter("model")}
-                                        />
-                                    ))}
-                                </FilterDropdown>
-                            </>
-                        )}
+                        <FilterDropdown
+                            title="Category"
+                            isOpen={openDropdowns.category}
+                            onToggle={() => toggleDropdown('category')}
+                            activeCount={draftFilters.categoryId ? 1 : 0}
+                            iconName="grid-outline"
+                        >
+                            {categories.map((category) => (
+                                <FilterChip
+                                    key={category.id}
+                                    label={category.name}
+                                    selected={draftFilters.categoryId === category.id}
+                                    onPress={() => selectCategory(category.id)}
+                                    onClear={() => handleClearFilter("categoryId")}
+                                />
+                            ))}
+                        </FilterDropdown>
 
-                        {/* ========================= */}
-                        {/* PRICE */}
-                        {/* ========================= */}
+                        <FilterDropdown
+                            title="City"
+                            isOpen={openDropdowns.city}
+                            onToggle={() => toggleDropdown('city')}
+                            activeCount={draftFilters.city ? 1 : 0}
+                            iconName="location-outline"
+                        >
+                            {cities.map((city) => (
+                                <FilterChip
+                                    key={city}
+                                    label={city}
+                                    selected={draftFilters.city === city}
+                                    onPress={() => selectCity(city)}
+                                    onClear={() => handleClearFilter("city")}
+                                />
+                            ))}
+                        </FilterDropdown>
+
 
                         {type !== "requests" && (
                             <FilterDropdown
@@ -532,95 +480,6 @@ const Filters = ({
                             </FilterDropdown>
 
                         )}
-                        {/* ========================= */}
-                        {/* CATEGORY */}
-                        {/* ========================= */}
-
-                        <FilterDropdown
-                            title="Category"
-                            isOpen={openDropdowns.category}
-                            onToggle={() => toggleDropdown('category')}
-                            activeCount={draftFilters.categoryId ? 1 : 0}
-                            iconName="grid-outline"
-                        >
-                            {categories.map((category) => (
-                                <FilterChip
-                                    key={category.id}
-                                    label={category.name}
-                                    selected={draftFilters.categoryId === category.id}
-                                    onPress={() => selectCategory(category.id)}
-                                    onClear={() => handleClearFilter("categoryId")}
-                                />
-                            ))}
-                        </FilterDropdown>
-
-                        {/* ========================= */}
-                        {/* PLATFORM */}
-                        {/* ========================= */}
-
-                        <FilterDropdown
-                            title="Platform"
-                            isOpen={openDropdowns.platform}
-                            onToggle={() => toggleDropdown('platform')}
-                            activeCount={draftFilters.platformId ? 1 : 0}
-                            iconName="phone-portrait-outline"
-                        >
-                            {platforms.map((platform) => (
-                                <FilterChip
-                                    key={platform.id}
-                                    label={platform.name}
-                                    selected={draftFilters.platformId === platform.id}
-                                    onPress={() => selectPlatform(platform.id)}
-                                    onClear={() => handleClearFilter("platformId")}
-                                />
-                            ))}
-                        </FilterDropdown>
-
-                        {/* ========================= */}
-                        {/* CONDITION */}
-                        {/* ========================= */}
-
-                        {type === 'parts' && (
-                            <FilterDropdown
-                                title="Condition"
-                                isOpen={openDropdowns.condition}
-                                onToggle={() => toggleDropdown('condition')}
-                                activeCount={draftFilters.conditionId ? 1 : 0}
-                                iconName="flag-outline"
-                            >
-                                {conditions.map((condition) => (
-                                    <FilterChip
-                                        key={condition.id}
-                                        label={condition.name}
-                                        selected={draftFilters.conditionId === condition.id}
-                                        onPress={() => selectCondition(condition.id)}
-                                        onClear={() => handleClearFilter("conditionId")}
-                                    />
-                                ))}
-                            </FilterDropdown>
-                        )}
-
-                        {/* ========================= */}
-                        {/* CITY */}
-                        {/* ========================= */}
-
-                        <FilterDropdown
-                            title="City"
-                            isOpen={openDropdowns.city}
-                            onToggle={() => toggleDropdown('city')}
-                            activeCount={draftFilters.city ? 1 : 0}
-                            iconName="location-outline"
-                        >
-                            {cities.map((city) => (
-                                <FilterChip
-                                    key={city}
-                                    label={city}
-                                    selected={draftFilters.city === city}
-                                    onPress={() => selectCity(city)}
-                                    onClear={() => handleClearFilter("city")}
-                                />
-                            ))}
-                        </FilterDropdown>
                     </ScrollView>
 
                     {/* Bottom actions */}

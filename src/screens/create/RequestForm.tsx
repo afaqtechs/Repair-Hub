@@ -1,12 +1,15 @@
 import { deleteRequestImages } from '@/src/api';
+import AddLocationModal from '@/src/components/ui/AddLocationModal';
 import AppSelectModal from '@/src/components/ui/AppSelectModal';
 import { useAuth } from '@/src/context/AuthContext';
-import { useCategories, useCategoryMutations, usePlatformMutations, usePlatforms } from '@/src/hooks';
+import { useCategories, useCategoryMutations, useMyLocation, usePlatformMutations, usePlatforms } from '@/src/hooks';
 import { useRequestMutations } from '@/src/hooks/useRequest';
+import { registerCurrentLocation } from '@/src/lib/registerCurrentLocation';
 import { requestMediaLibraryPermission } from '@/src/lib/requestMediaLibraryPermission';
 import { supabase } from '@/src/lib/supabase';
 import { showError, showSuccess } from '@/src/lib/toast';
 import { decodeBase64 } from '@/src/utils/decodeBase64';
+import { useProfileStore } from '@/store/useProfileStore';
 import { useCreateRequestStore } from '@/store/useRequestStore';
 import { RequestPriority } from '@/types/requests';
 import { Ionicons } from '@expo/vector-icons';
@@ -40,6 +43,62 @@ const RequestForm = ({ isEdit = false, request, onCancel }: RequestFormProps) =>
     const technicianId = user?.id;
     const descriptionRef = useRef<RichEditor>(null);
 
+    const { data: myLocation, isFetching: isFetchingLocation } =
+        useMyLocation(technicianId);
+
+    const { setFields: setPersonalFields } =
+        useProfileStore();
+
+    useEffect(() => {
+        if (!technicianId) return;
+
+        if (isFetchingLocation) return;
+
+        if (myLocation) return;
+
+        const registerLocation = async () => {
+            try {
+                setRegisteringLocation(true);
+
+                const currentLocation =
+                    await registerCurrentLocation(technicianId);
+
+                // Update the form with the newly registered location
+                setPersonalFields({
+                    latitude: currentLocation.latitude.toString(),
+                    longitude: currentLocation.longitude.toString(),
+                });
+            } catch (error: any) {
+                console.log(
+                    'Failed to register current location:',
+                    error
+                );
+
+                if (
+                    error?.message === 'Location permission denied'
+                ) {
+                    setShowLocationModal(true);
+                } else {
+                    showError(
+                        'Location Error',
+                        error?.message ||
+                        'Could not register your current location.'
+                    );
+                }
+            } finally {
+                setRegisteringLocation(false);
+            }
+        };
+
+        registerLocation();
+    }, [
+        technicianId,
+        myLocation,
+        isFetchingLocation,
+        setPersonalFields,
+    ]);
+
+
     const { data: categories = [], isLoading: loadingCategory } = useCategories();
     const { data: platforms = [], isLoading: loadingPlatform } = usePlatforms();
     const { form, errors, setField, initializeForm, validate, reset } = useCreateRequestStore();
@@ -49,6 +108,9 @@ const RequestForm = ({ isEdit = false, request, onCancel }: RequestFormProps) =>
 
     const [uploadingImages, setUploadingImages] = useState(false);
     const [uploadProgress, setUploadProgress] = useState(0);
+
+    const [showLocationModal, setShowLocationModal] = useState(false);
+    const [registeringLocation, setRegisteringLocation] = useState(false);
 
     useEffect(() => {
         if (isEdit && request) {
@@ -110,37 +172,55 @@ const RequestForm = ({ isEdit = false, request, onCancel }: RequestFormProps) =>
 
         if (!imageToRemove) return;
 
-        // Check if it's an existing Supabase image (edit mode)
-        if (isEdit && imageToRemove.startsWith('http')) {
-            setField('removedImages', [...form.removedImages, imageToRemove]);
-            setField('images', form.images.filter(url => url !== imageToRemove));
+        if (imageToRemove.startsWith('http')) {
+            // Existing image
+            setField(
+                'removedImages',
+                [...form.removedImages, imageToRemove]
+            );
+
+            setField(
+                'images',
+                form.images.filter((url) => url !== imageToRemove)
+            );
         } else {
-            // Remove from pending uploads if it's a new image
-            const pendingIndex = form.pendingUploads?.findIndex(p => p.uri === imageToRemove);
-            if (pendingIndex !== undefined && pendingIndex !== -1) {
-                const newPendingUploads = [...(form.pendingUploads || [])];
-                newPendingUploads.splice(pendingIndex, 1);
-                setField('pendingUploads', newPendingUploads);
-            }
+            // Newly selected image
+            setField(
+                'pendingUploads',
+                (form.pendingUploads || []).filter(
+                    (image) => image.uri !== imageToRemove
+                )
+            );
         }
 
-        setField('localImages', form.localImages.filter((_, i) => i !== index));
+        setField(
+            'localImages',
+            form.localImages.filter((_, i) => i !== index)
+        );
     };
 
     const uploadImages = async (): Promise<string[]> => {
         const pendingUploads = form.pendingUploads || [];
-        if (pendingUploads.length === 0) return form.images;
+
+        if (pendingUploads.length === 0) {
+            return form.images;
+        }
 
         setUploadingImages(true);
+
         const uploadedUrls: string[] = [];
         const total = pendingUploads.length;
 
         try {
             for (let i = 0; i < pendingUploads.length; i++) {
                 const { base64 } = pendingUploads[i];
+
                 if (!base64) continue;
 
-                const fileName = `${technicianId}/request_${Date.now()}_${Math.random().toString(36).slice(2)}.jpg`;
+                const fileName = `${technicianId}/request_${Date.now()}_${Math.random()
+                    .toString(36)
+                    .slice(2)}.jpg`;
+
                 const buffer = decodeBase64(base64);
 
                 const { error } = await supabase.storage
@@ -150,23 +230,68 @@ const RequestForm = ({ isEdit = false, request, onCancel }: RequestFormProps) =>
                         upsert: false,
                     });
 
-                if (error) console.log(error);
+                if (error) {
+                    throw error;
+                }
 
-                const { data } = supabase.storage.from('request-images').getPublicUrl(fileName);
-                if (!data.publicUrl) showError('Could not generate image URL.');
+                const { data } = supabase.storage
+                    .from('request-images')
+                    .getPublicUrl(fileName);
+
+                if (!data.publicUrl) {
+                    throw new Error('Could not generate image URL.');
+                }
 
                 uploadedUrls.push(data.publicUrl);
-                setUploadProgress(Math.round(((i + 1) / total) * 100));
+
+                setUploadProgress(
+                    Math.round(((i + 1) / total) * 100)
+                );
             }
 
             return [...form.images, ...uploadedUrls];
         } catch (error: any) {
-            showError('Upload Failed', error?.message || 'Could not upload the images.');
+            showError(
+                'Upload Failed',
+                error?.message || 'Could not upload the images.'
+            );
             throw error;
         } finally {
             setUploadingImages(false);
             setUploadProgress(0);
-            setField('pendingUploads', []);
+        }
+    };
+
+    const handleAddLocation = async () => {
+        if (!technicianId) return;
+
+        try {
+            setRegisteringLocation(true);
+
+            const currentLocation =
+                await registerCurrentLocation(technicianId);
+
+            setPersonalFields({
+                latitude: currentLocation.latitude.toString(),
+                longitude: currentLocation.longitude.toString(),
+            });
+
+            setShowLocationModal(false);
+
+            showSuccess(
+                'Location Added',
+                'Your current location has been saved.'
+            );
+        } catch (error: any) {
+            console.log('Location error:', error);
+
+            showError(
+                'Location Error',
+                error?.message ||
+                'Unable to get your current location.'
+            );
+        } finally {
+            setRegisteringLocation(false);
         }
     };
 
@@ -443,9 +568,9 @@ const RequestForm = ({ isEdit = false, request, onCancel }: RequestFormProps) =>
                         <RichEditor
                             ref={descriptionRef}
                             editorStyle={{
-                                backgroundColor:"#fff",
+                                backgroundColor: "#fff",
                                 color: "#1F2937",
-                                placeholderColor:"#94A3B8",
+                                placeholderColor: "#94A3B8",
                                 contentCSSText: `font-family: Manrope; font-size: 16px; padding: 12px; min-height: 120px;`,
                             }}
                             placeholder="Describe your services..."
@@ -459,10 +584,10 @@ const RequestForm = ({ isEdit = false, request, onCancel }: RequestFormProps) =>
                 <View className="w-full flex-row items-center gap-3 mt-8">
                     <TouchableOpacity
                         onPress={handleSubmit}
-                        disabled={isUploading}
+                        disabled={createRequest.isPending || isUploading}
                         className="flex-1 h-14 bg-button-primary rounded-xl flex-row items-center justify-center"
                     >
-                        {isUploading ? (
+                        {createRequest.isPending || isUploading ? (
                             <ActivityIndicator size="small" color="#FFFFFF" />
                         ) : (
                             <>
@@ -473,17 +598,15 @@ const RequestForm = ({ isEdit = false, request, onCancel }: RequestFormProps) =>
                             </>
                         )}
                     </TouchableOpacity>
-
-                    <TouchableOpacity
-                        onPress={reset}
-                        disabled={isUploading}
-                        className="flex-1 h-14 bg-danger rounded-xl flex-row items-center justify-center"
-                    >
-                        <Ionicons name="refresh" size={20} color="#FFFFFF" />
-                        <Text className="ml-2 text-white text-base font-semibold">Reset Form</Text>
-                    </TouchableOpacity>
                 </View>
             </ScrollView>
+
+            <AddLocationModal
+                visible={showLocationModal}
+                loading={registeringLocation}
+                onAddLocation={handleAddLocation}
+                onClose={() => setShowLocationModal(false)}
+            />
         </>
     );
 };

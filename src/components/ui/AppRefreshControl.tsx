@@ -15,8 +15,8 @@ const AppRefreshControl = ({
         <RefreshControl
             {...props}
             // Spinner color always same
-            colors={["#5B3DF5"]}
-            tintColor="#5B3DF5"
+            colors={["#5EAE32"]}
+            tintColor="#5EAE32"
 
             // Text color
             title="Pull to refresh"

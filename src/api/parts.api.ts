@@ -1,5 +1,5 @@
 import { supabase } from '@/src/lib/supabase';
-import { CreatePartDto, Part, UpdatePartDto } from '@/types/parts';
+import { Condition, CreatePartDto, Part, UpdatePartDto } from '@/types/parts';
 import { deletePartImages } from './storage.api';
 import { sendNotification } from './notifications/send-notifications.api';
 
@@ -11,13 +11,10 @@ export interface GetAllPartsParams {
   page?: number;
   pageSize?: number;
   search?: string;
-
-  brand?: string | null;
-  model?: string | null;
+  condition?: Condition | null;
 
   categoryId?: string | null;
   platformId?: string | null;
-  conditionId?: string | null;
 
   priceMin?: number | null;
   priceMax?: number | null;
@@ -57,13 +54,10 @@ export const partApi = {
     page = 1,
     pageSize = 100,
     search = '',
-
-    brand = null,
-    model = null,
+    condition = null,
 
     categoryId = null,
     platformId = null,
-    conditionId = null,
 
     priceMin = null,
     priceMax = null,
@@ -118,7 +112,6 @@ export const partApi = {
               *,
               technician:profiles!inner(*),
               category:categories(*),
-              condition:conditions(*),
               platform:platforms(*)
             `,
             { count: 'exact' }
@@ -134,16 +127,12 @@ export const partApi = {
         // FILTERS
         // ==========================================
 
+          if (condition !== null) {
+          query = query.eq('condition', condition);
+        }
+        
         if (isAvailable !== null) {
           query = query.eq('is_available', isAvailable);
-        }
-
-        if (brand) {
-          query = query.eq('brand', brand);
-        }
-
-        if (model) {
-          query = query.eq('model', model);
         }
 
         if (categoryId) {
@@ -152,10 +141,6 @@ export const partApi = {
 
         if (platformId) {
           query = query.eq('platform_id', platformId);
-        }
-
-        if (conditionId) {
-          query = query.eq('condition_id', conditionId);
         }
 
         if (priceMin !== null) {
@@ -214,7 +199,6 @@ export const partApi = {
             *,
             technician:profiles!inner(*),
             category:categories(*),
-            condition:conditions(*),
             platform:platforms(*)
           `,
           { count: 'exact' }
@@ -229,16 +213,12 @@ export const partApi = {
       // FILTERS
       // ==========================================
 
+      if (condition !== null) {
+        query = query.eq('condition', condition);
+      }
+
       if (isAvailable !== null) {
         query = query.eq('is_available', isAvailable);
-      }
-
-      if (brand) {
-        query = query.eq('brand', brand);
-      }
-
-      if (model) {
-        query = query.eq('model', model);
       }
 
       if (categoryId) {
@@ -247,10 +227,6 @@ export const partApi = {
 
       if (platformId) {
         query = query.eq('platform_id', platformId);
-      }
-
-      if (conditionId) {
-        query = query.eq('condition_id', conditionId);
       }
 
       if (priceMin !== null) {
@@ -315,7 +291,6 @@ export const partApi = {
             *,
             technician:profiles(*),
             category:categories(*),
-            condition:conditions(*),
             platform:platforms(*)
           `
         )
@@ -349,7 +324,6 @@ export const partApi = {
             *,
             technician:profiles!inner(*),
             category:categories(*),
-            condition:conditions(*),
             platform:platforms(*)
           `
         )
@@ -439,6 +413,18 @@ export const partApi = {
       return null;
     }
   },
+
+async incrementPartViews(partId: string) {
+     const { data,error } = await supabase.rpc("increment_part_views", {
+        p_part_id: partId,
+    });
+
+    if (error) {
+        console.error("[partApi.incrementPartViews]", error);
+    }
+
+   return data;
+},
 
   // ==========================================
   // MARK UNAVAILABLE

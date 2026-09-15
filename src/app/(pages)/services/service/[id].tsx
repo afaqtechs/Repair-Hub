@@ -2,7 +2,13 @@ import ServiceCard from '@/src/components/cards/ServiceCard';
 import EmptyState from '@/src/components/ui/EmptyState';
 import HTMLRenderer from '@/src/components/ui/HTMLRenderer';
 import { useAuth } from '@/src/context/AuthContext';
-import { useInfiniteServices, useService, useServiceMutations, useTechnician, useTechnicianLocation } from '@/src/hooks';
+import {
+    useInfiniteServices,
+    useService,
+    useServiceMutations,
+    useTechnician,
+    useTechnicianLocation,
+} from '@/src/hooks';
 import { useConversations } from '@/src/hooks/chat/useConversations';
 import { useSavedService } from '@/src/hooks/useSavedService';
 import { showError, showSuccess } from '@/src/lib/toast';
@@ -10,17 +16,31 @@ import { Ionicons } from '@expo/vector-icons';
 import { FlashList } from '@shopify/flash-list';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import React, { useCallback, useMemo, useState } from 'react';
-import { ActivityIndicator, Dimensions, FlatList, Image, Linking, NativeScrollEvent, NativeSyntheticEvent, ScrollView, Text, TouchableOpacity, View, } from 'react-native';
+import {
+    ActivityIndicator,
+    Dimensions,
+    FlatList,
+    Image,
+    Linking,
+    NativeScrollEvent,
+    NativeSyntheticEvent,
+    ScrollView,
+    Text,
+    TouchableOpacity,
+    View,
+} from 'react-native';
 import ImageViewing from 'react-native-image-viewing';
-import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
+import {
+    SafeAreaView,
+    useSafeAreaInsets,
+} from 'react-native-safe-area-context';
 
-const { width } = Dimensions.get("window");
+const { width } = Dimensions.get('window');
 const PAGE_SIZE = 6;
 const ServiceDetail = () => {
-
     const { id } = useLocalSearchParams<{ id: string }>();
     const { user } = useAuth();
-    const { isSaved, saveLoading, toggleSave } = useSavedService(id ?? "");
+    const { isSaved, saveLoading, toggleSave } = useSavedService(id ?? '');
     const router = useRouter();
 
     const insets = useSafeAreaInsets();
@@ -39,7 +59,7 @@ const ServiceDetail = () => {
         refetch: refetchService,
     } = useService(id);
 
-    const technicianId = service?.technician_id ?? "";
+    const technicianId = service?.technician_id ?? '';
 
     const { getOrCreateConversation } = useConversations();
 
@@ -49,15 +69,13 @@ const ServiceDetail = () => {
         error: technicianError,
     } = useTechnician(technicianId);
 
-    const {
-        data: loggedInUser,
-    } = useTechnician(loggedInUserId);
+    const { data: loggedInUser } = useTechnician(loggedInUserId);
 
-    const {
-        data: technicianLocation,
-    } = useTechnicianLocation(technicianId);
+    const { data: technicianLocation } = useTechnicianLocation(technicianId);
 
-    const isVerified = loggedInUser?.verification_status === "verified" && technician?.verification_status === "verified";
+    const isVerified =
+        loggedInUser?.verification_status === 'verified' &&
+        technician?.verification_status === 'verified';
 
     const {
         data: serviceData,
@@ -69,24 +87,19 @@ const ServiceDetail = () => {
 
     const distance = technicianLocation?.distance ?? null;
 
-    const services = useMemo(() =>
-        serviceData?.pages.flatMap(
-            (page) => page.data
-        ) ?? [],
+    const services = useMemo(
+        () => serviceData?.pages.flatMap((page) => page.data) ?? [],
         [serviceData]
     );
-
 
     const relatedServices = useMemo(() => {
         if (!service) return [];
 
         return services.filter(
-            item =>
+            (item) =>
                 item.id !== service.id &&
-                (
-                    item.category?.id === service.category?.id ||
-                    item.platform?.id === service.platform?.id
-                )
+                (item.category?.id === service.category?.id ||
+                    item.platform?.id === service.platform?.id)
         );
     }, [services, service]);
     const visibleRelatedServices = useMemo(() => {
@@ -96,7 +109,7 @@ const ServiceDetail = () => {
     const loadMoreServices = useCallback(() => {
         if (visibleCount >= relatedServices.length) return;
 
-        setVisibleCount(prev => prev + PAGE_SIZE);
+        setVisibleCount((prev) => prev + PAGE_SIZE);
     }, [visibleCount, relatedServices.length]);
 
     const onScroll = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
@@ -110,19 +123,22 @@ const ServiceDetail = () => {
     if (loading) {
         return (
             <View className="flex-1 items-center justify-center bg-bg">
-                <ActivityIndicator size="large" color="#2563EB" />
+                <ActivityIndicator size="large" color="#5EAE32" />
             </View>
         );
     }
 
-
     if (error) {
         return (
-            <SafeAreaView edges={["top", "left", "right"]} className="flex-1 bg-bg">
+            <SafeAreaView edges={['top', 'left', 'right']} className="flex-1 bg-bg">
                 <View className="flex-1 items-center justify-center px-4">
                     <Ionicons name="alert-circle-outline" size={60} color="#EF4444" />
-                    <Text className="text-danger-text text-lg font-bold mt-4">Something went wrong</Text>
-                    <Text className="text-textSecondary text-sm text-center mt-2">{error.message}</Text>
+                    <Text className="text-danger-text text-lg font-bold mt-4">
+                        Something went wrong
+                    </Text>
+                    <Text className="text-textSecondary text-sm text-center mt-2">
+                        {error.message}
+                    </Text>
                     <TouchableOpacity
                         className="mt-6 bg-primary px-6 py-3 rounded-xl"
                         onPress={() => refetchService()}
@@ -142,17 +158,18 @@ const ServiceDetail = () => {
         );
     }
 
-
     const isLongDesc = (service.description?.length ?? 0) > 150;
     const displayDesc =
         expanded || !isLongDesc
             ? service.description
-            : service.description?.slice(0, 150) + "...";
+            : service.description?.slice(0, 150) + '...';
 
     const renderHeader = () => {
         return (
             <View className={`px-4 py-3 items-start`}>
-                <Text className="text-lg text-text font-manrope-semibold">Related Services</Text>
+                <Text className="text-lg text-text font-manrope-semibold">
+                    Related Services
+                </Text>
             </View>
         );
     };
@@ -191,7 +208,6 @@ const ServiceDetail = () => {
         }
     };
 
-
     const handleChat = async () => {
         const conversationId =
             await getOrCreateConversation.mutateAsync(technicianId);
@@ -199,7 +215,7 @@ const ServiceDetail = () => {
         if (!conversationId) return;
 
         router.push({
-            pathname: "/(root)/(tabs)/inbox",
+            pathname: '/(root)/(tabs)/inbox',
             params: {
                 conversationId: conversationId,
             },
@@ -249,14 +265,18 @@ const ServiceDetail = () => {
             className="flex-1 bg-bg"
         >
             <View>
-                <View >
+                <View>
                     <FlatList
                         data={imageData}
                         keyExtractor={(_, i) => i.toString()}
                         renderItem={({ item }) => (
                             <TouchableOpacity onPress={() => setImageViewerVisible(true)}>
                                 <Image
-                                    source={item ? { uri: item } : require("@/assets/ui/background/service_image.jpg")}
+                                    source={
+                                        item
+                                            ? { uri: item }
+                                            : require('@/assets/ui/background/service_image.jpg')
+                                    }
                                     style={{ width, height: 300 }}
                                     resizeMode="cover"
                                 />
@@ -268,7 +288,7 @@ const ServiceDetail = () => {
                         onScroll={onScroll}
                         scrollEventThrottle={16}
                     />
-                </View >
+                </View>
 
                 {(service?.images?.length ?? 0) > 0 && (
                     <View className="absolute bottom-3 right-4 bg-black/50 px-3 py-1 rounded-full">
@@ -278,26 +298,27 @@ const ServiceDetail = () => {
                     </View>
                 )}
 
-                {
-                    (service?.images ?? []).length > 1 && (
-                        <View className="absolute bottom-3 left-0 right-0 flex-row justify-center gap-1">
-                            {(service.images ?? []).map((_, i) => (
-                                <View
-                                    key={i}
-                                    className={`h-1.5 rounded-full ${i === activeIndex
-                                        ? "w-4 bg-white"
-                                        : "w-1.5 bg-white/50"
-                                        }`}
-                                />
-                            ))}
-                        </View>
-                    )
-                }
+                {(service?.images ?? []).length > 1 && (
+                    <View className="absolute bottom-3 left-0 right-0 flex-row justify-center gap-1">
+                        {(service.images ?? []).map((_, i) => (
+                            <View
+                                key={i}
+                                className={`h-1.5 rounded-full ${i === activeIndex ? 'w-4 bg-white' : 'w-1.5 bg-white/50'
+                                    }`}
+                            />
+                        ))}
+                    </View>
+                )}
 
-                <View style={{ flex: 1, paddingTop: insets.top }} className="absolute top-0 left-0 right-0">
+                <View
+                    style={{ flex: 1, paddingTop: insets.top }}
+                    className="absolute top-0 left-0 right-0"
+                >
                     <View className="flex-row items-center justify-between px-4 pt-2">
                         <TouchableOpacity
-                            onPress={() => { router.back() }}
+                            onPress={() => {
+                                router.back();
+                            }}
                             className="w-10 h-10 items-center justify-center rounded-2xl bg-bg border border-border"
                         >
                             <Ionicons name="arrow-back" size={20} color="#1F2937" />
@@ -307,33 +328,33 @@ const ServiceDetail = () => {
                             disabled={saveLoading}
                             className="absolute top-2 right-2 bg-bg rounded-full p-2 items-center justify-center"
                         >
-                            <Ionicons name={isSaved ? "heart" : "heart-outline"} size={20} color={isSaved ? "#EF4444" : "#1F2937"} />
+                            <Ionicons
+                                name={isSaved ? 'heart' : 'heart-outline'}
+                                size={20}
+                                color={isSaved ? '#EF4444' : '#1F2937'}
+                            />
                         </TouchableOpacity>
                     </View>
                 </View>
-            </View >
+            </View>
 
             <ScrollView showsVerticalScrollIndicator={false}>
-                <View className='flex-col gap-5 mt-5 pb-32 px-5'>
+                <View className="flex-col gap-5 mt-5 pb-32 px-5">
                     <View className="w-full px-5 pt-5 pb-6 bg-card rounded-xl shadow-xs">
-
                         <View className="flex-row items-center justify-between mb-4">
-                            <View className="flex-row items-center gap-1">
-                                <Ionicons
-                                    name="location"
-                                    size={15}
-                                    color="#5B3DF5"
-                                />
-                                <Text className="text-xs text-textSecondary font-manrope-medium">
-                                    {technician?.city}
-                                </Text>
-                            </View>
+                            {technician?.city && (
+                                <View className="flex-row items-center gap-1">
+                                    <Ionicons name="location" size={15} color="#5EAE32" />
+                                    <Text className="text-xs text-textSecondary font-manrope-medium">
+                                        {technician?.city}
+                                    </Text>
+                                </View>
+                            )}
                             <View className="px-3 py-1 bg-bg/70 rounded-xl">
                                 <Text className="text-xs text-text font-manrope-medium">
                                     Service
                                 </Text>
                             </View>
-
                         </View>
                         <Text
                             className="text-xl text-text font-manrope-bold mb-2"
@@ -342,14 +363,20 @@ const ServiceDetail = () => {
                             {service?.title}
                         </Text>
 
+                        {service?.price !== 0 ? (
+                            <Text className="text-2xl text-emerald-500 font-manrope-extra mb-5">
+                                ETB {service?.price?.toLocaleString() ?? 0}
+                            </Text>
+                        ) : (
+                            <View className="mb-5 self-start rounded-full bg-success/10 px-3 py-1">
+                                <Text className="text-warning text-xs font-bold">
+                                    Price after evaluation
+                                </Text>
+                            </View>
+                        )}
 
-                        <Text className="text-2xl text-emerald-500 font-manrope-extra mb-5">
-                            ETB {service?.price?.toLocaleString()}
-                        </Text>
-
-                        {(!isOwner && isVerified) && (
+                        {!isOwner && isVerified && (
                             <View className="flex-row gap-3 mb-5">
-
                                 <TouchableOpacity
                                     onPress={handleChat}
                                     className="flex-1 border border-primary py-3 rounded-xl items-center"
@@ -362,9 +389,7 @@ const ServiceDetail = () => {
                                     onPress={handleCall}
                                     className="flex-1 bg-primary border border-primary py-3 rounded-xl items-center"
                                 >
-                                    <Text className="text-white font-manrope-semibold">
-                                        Call
-                                    </Text>
+                                    <Text className="text-white font-manrope-semibold">Call</Text>
                                 </TouchableOpacity>
                             </View>
                         )}
@@ -376,10 +401,10 @@ const ServiceDetail = () => {
                                     className="flex-1 border border-primary py-3 rounded-xl items-center"
                                 >
                                     {updateServiceStatus.isPending ? (
-                                        <ActivityIndicator size="small" color="#5B3DF5" />
+                                        <ActivityIndicator size="small" color="#5EAE32" />
                                     ) : (
                                         <Text className="text-primary font-manrope-semibold">
-                                            {service?.is_active ? "Mark In Active" : "Mark Active"}
+                                            {service?.is_active ? 'Mark In Active' : 'Mark Active'}
                                         </Text>
                                     )}
                                 </TouchableOpacity>
@@ -389,7 +414,7 @@ const ServiceDetail = () => {
                                     className="flex-1 bg-danger border border-danger py-3 rounded-xl items-center"
                                 >
                                     {deleteService.isPending ? (
-                                        <ActivityIndicator size="small" color="#5B3DF5" />
+                                        <ActivityIndicator size="small" color="#5EAE32" />
                                     ) : (
                                         <Text className="text-white font-manrope-semibold">
                                             Remove Service
@@ -405,10 +430,9 @@ const ServiceDetail = () => {
                             Details
                         </Text>
                         <View className="flex-row flex-wrap justify-between gap-y-5">
-
                             <View className="w-[48%]">
                                 <Text className="text-base text-text font-manrope-semibold">
-                                    {service?.platform?.name || "N/A"}
+                                    {service?.platform?.name || 'N/A'}
                                 </Text>
                                 <Text className="text-xs text-gray-500 font-manrope">
                                     Platform
@@ -418,29 +442,24 @@ const ServiceDetail = () => {
                             {/* Category */}
                             <View className="w-[48%]">
                                 <Text className="text-base text-text font-manrope-semibold">
-                                    {service?.category?.name || "N/A"}
+                                    {service?.category?.name || 'N/A'}
                                 </Text>
                                 <Text className="text-xs text-gray-500 font-manrope">
                                     Category
                                 </Text>
                             </View>
 
-
-                            {/* Condition */}
-                            <View className="w-[48%]">
-                                <Text className="text-base text-text font-manrope-semibold">
-                                    Service
-                                </Text>
-                                <Text className="text-xs text-gray-500 font-manrope">
-                                    Condition
-                                </Text>
-                            </View>
-
                             {/* Price */}
                             <View className="w-[48%]">
-                                <Text className="text-base text-emerald-500 font-manrope-bold">
-                                    ETB {service?.price?.toLocaleString() || 0}
-                                </Text>
+                                {service?.price !== 0 ? (
+                                    <Text className="text-base text-text font-manrope-semibold">
+                                        ETB {service?.price?.toLocaleString() ?? 0}
+                                    </Text>
+                                ) : (
+                                    <Text className="text-warning text-xs font-bold">
+                                        Price after evaluation
+                                    </Text>
+                                )}
                                 <Text className="text-xs text-gray-500 font-manrope">
                                     Price
                                 </Text>
@@ -448,12 +467,12 @@ const ServiceDetail = () => {
 
                             {/* Availability */}
                             <View className="w-[48%]">
-                                <View className={`self-start px-3 py-1 rounded-full ${service?.is_active
-                                    ? "bg-success"
-                                    : "bg-danger"
-                                    }`}>
+                                <View
+                                    className={`self-start px-3 py-1 rounded-full ${service?.is_active ? 'bg-success' : 'bg-danger'
+                                        }`}
+                                >
                                     <Text className={`text-xs font-manrope-semibold text-white`}>
-                                        {service?.is_active ? "Active" : "Unavailable"}
+                                        {service?.is_active ? 'Active' : 'In Active'}
                                     </Text>
                                 </View>
 
@@ -464,80 +483,87 @@ const ServiceDetail = () => {
                         </View>
                     </View>
 
-
                     {service?.description && (
                         <View className="w-full px-5 pt-5 pb-6 bg-card rounded-xl shadow-xs">
                             <Text className="text-lg text-text font-manrope-bold mb-4">
                                 Description
                             </Text>
 
-                            <HTMLRenderer
-                                html={displayDesc}
-                                fontSize={16}
-                                lineHeight={24}
-                            />
+                            <HTMLRenderer html={displayDesc} fontSize={16} lineHeight={24} />
 
                             {isLongDesc && (
                                 <TouchableOpacity onPress={() => setExpanded(!expanded)}>
-                                    <Text className="text-blue-600 text-sm font-manrope mb-5">
-                                        {expanded ? "Show less" : "Read more"}
+                                    <Text className="text-green-600 text-sm font-manrope mb-5">
+                                        {expanded ? 'Show less' : 'Read more'}
                                     </Text>
                                 </TouchableOpacity>
                             )}
                         </View>
                     )}
 
-                    <View className="w-full px-5 pt-5 pb-6 bg-card rounded-xl shadow-xs">
-                        <View className="w-full flex-row items-center justify-center gap-3">
-                            <Ionicons
-                                name={service?.is_negotiable ? "checkmark-circle" : "close-circle"}
-                                size={20}
-                                color={service?.is_negotiable ? "#10B981" : "#EF4444"}
-                            />
-                            <Text className={service?.is_negotiable ? "text-base text-emerald-500 font-manrope" : "text-base text-red-500 font-manrope"}>
-                                {service?.is_negotiable ? "Price Negotiable" : "Price Not Negotiable"}
-                            </Text>
+                    {service?.price !== 0 && (
+                        <View className="w-full px-5 pt-5 pb-6 bg-card rounded-xl shadow-xs">
+                            <View className="w-full flex-row items-center justify-center gap-3">
+                                <Ionicons
+                                    name={
+                                        service?.is_negotiable ? 'checkmark-circle' : 'close-circle'
+                                    }
+                                    size={20}
+                                    color={service?.is_negotiable ? '#10B981' : '#EF4444'}
+                                />
+                                <Text
+                                    className={
+                                        service?.is_negotiable
+                                            ? 'text-base text-emerald-500 font-manrope'
+                                            : 'text-base text-red-500 font-manrope'
+                                    }
+                                >
+                                    {service?.is_negotiable
+                                        ? 'Price Negotiable'
+                                        : 'Price Not Negotiable'}
+                                </Text>
+                            </View>
                         </View>
-                    </View>
+                    )}
 
-                    <View className='flex-row w-full px-5 pt-5 pb-6 bg-card rounded-xl shadow-xs gap-3'>
-                        <View className='self-start overflow-hidden'>
+                    <View className="flex-row w-full px-5 pt-5 pb-6 bg-card rounded-xl shadow-xs gap-3">
+                        <View className="self-start overflow-hidden">
                             <Image
                                 source={
                                     technician?.profile_image_url
                                         ? { uri: technician.profile_image_url }
-                                        : require("@/assets/ui/placeholder_person_photo.png")
+                                        : require('@/assets/ui/placeholder_person_photo.png')
                                 }
                                 className="w-16 h-16 rounded-full"
                             />
                         </View>
                         <View className="flex-col flex-1 gap-2">
-
                             {/* Name + Rating */}
                             <View className="flex-row items-center justify-between">
                                 <TouchableOpacity
                                     onPress={() =>
                                         router.push({
-                                            pathname: "/(pages)/technician/[id]",
+                                            pathname: '/(pages)/technician/[id]',
                                             params: { id: String(technician?.id) },
                                         })
                                     }
                                 >
-                                    <Text className="text-lg text-primary font-manrope-semibold">{technician?.first_name} {technician?.last_name}</Text>
+                                    <Text className="text-lg text-primary font-manrope-semibold">
+                                        {technician?.first_name} {technician?.last_name}
+                                    </Text>
                                 </TouchableOpacity>
 
                                 <View className="flex-row items-center bg-yellow-50 px-2.5 py-1 rounded-full">
                                     <Ionicons name="star" size={12} color="#F59E0B" />
                                     <Text className="ml-1 text-xs font-manrope-semibold text-yellow-700">
-                                        {technician?.rating_avg?.toFixed(1) || "New"}
+                                        {technician?.rating_avg?.toFixed(1) || 'New'}
                                     </Text>
                                 </View>
                             </View>
 
                             {/* Meta Info */}
                             <View className="flex-row flex-wrap items-center justify-between gap-3">
-
-                                {(distance !== null && distance !== undefined && !isOwner) && (
+                                {distance !== null && distance !== undefined && !isOwner && (
                                     <View className="flex-row items-center">
                                         <Ionicons
                                             name="location-outline"
@@ -551,31 +577,33 @@ const ServiceDetail = () => {
                                 )}
 
                                 <View className="flex-row items-center">
-                                    <Ionicons
-                                        name="checkmark-circle"
-                                        size={14}
-                                        color="#10B981"
-                                    />
+                                    <Ionicons name="checkmark-circle" size={14} color="#10B981" />
                                     <Text className="ml-1 text-xs text-emerald-600 font-manrope-medium">
                                         Verified
                                     </Text>
                                 </View>
-
                             </View>
 
                             {/* Actions */}
 
-                            <TouchableOpacity className="self-start mt-1">
+                            <TouchableOpacity
+                                onPress={() =>
+                                    router.push({
+                                        pathname: '/(pages)/technician/[id]',
+                                        params: { id: String(technician?.id) },
+                                    })
+                                }
+                                className="self-start mt-1"
+                            >
                                 <Text className="text-primary text-sm font-manrope-medium underline">
                                     View More...
                                 </Text>
                             </TouchableOpacity>
-
                         </View>
                     </View>
                 </View>
 
-                <View className='bg-slate-100'>
+                <View className="bg-slate-100">
                     <FlashList
                         data={visibleRelatedServices}
                         keyExtractor={(item) => item.id}
@@ -601,12 +629,15 @@ const ServiceDetail = () => {
                         onEndReachedThreshold={0.5}
                         ListEmptyComponent={
                             <View className="flex-1 items-center justify-center py-24">
-                                <EmptyState title="No Related Services" description="No related services here" />
+                                <EmptyState
+                                    title="No Related Services"
+                                    description="No related services here"
+                                />
                             </View>
                         }
                     />
                 </View>
-            </ScrollView >
+            </ScrollView>
 
             <ImageViewing
                 images={(service?.images ?? []).map((uri) => ({ uri }))}
@@ -614,9 +645,8 @@ const ServiceDetail = () => {
                 visible={imageViewerVisible}
                 onRequestClose={() => setImageViewerVisible(false)}
             />
+        </View>
+    );
+};
 
-        </View >
-    )
-}
-
-export default ServiceDetail
+export default ServiceDetail;
